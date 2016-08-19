@@ -18,7 +18,7 @@ module.exports = function (router) {
 			name: 'index',
 			component: index,
 			subRoutes: {
-				'/dynamics': {
+				'/': {
 					name: 'dynamics',
 					component: dynamic
 				},
@@ -55,6 +55,6 @@ module.exports = function (router) {
 	})
 
 	router.redirect({
-		'*': '/dynamics',
+		'*': '/',
 	})
 }

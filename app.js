@@ -10,7 +10,8 @@ var express = require('express'),
 	 mongodb = require('mongodb'),
 	 mongoServer = new mongodb.Server(config.mongo.host, config.mongo.port, {auto_reconnect:true}),
 	 proxy = require('./router/proxy'),
-	 weixin = require('./router/weixin');
+	 weixin = require('./router/weixin'),
+	 weixinService = require('./service/weixinService');
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname + ''));
@@ -19,7 +20,21 @@ app.use(express.static(path.join(__dirname, './public/assets')));
 app.use(express.query());
 
 app.use('/$',function (req,res) {
-	res.sendFile(path.join(__dirname,'./public/views/index.html'))
+	var code=req.query.code || '';
+	if (code) {
+		weixinService.codeForToken(code).then(function (token) {
+			res.cookie('Authorization',token)
+			res.sendFile(path.resolve('./public/views/index.html'))
+		}).catch(function (error) {
+			console.log(error)
+			res.setHeader('content-type','text/html; charset=UTF-8');
+			res.writeHead(403)
+			res.end('服务器错误,请重新登陆')
+		})
+	}
+	else {
+		res.sendFile(path.resolve('index.html'))
+	}
 });
 
 app.use('/', proxy);

@@ -5,10 +5,13 @@
 		<tab-item :selected="$route.name == 'mysign'" v-link="{name:'mysign'}">我的打卡</tab-item>
 	</tab>
 
-	<scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px" >
-		<router-view>
+	<scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
+		<div>
+			<router-view>
 
-		</router-view>
+			</router-view>
+		</div>
+
 	</scroller>
 
 

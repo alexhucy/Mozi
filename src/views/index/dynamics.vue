@@ -1,9 +1,10 @@
 <template>
-	<card title="任务一:坚持12天计划"
-				time-range="2016年 8月 16日 --- 8月28日"
-				last-time="8月16日"
-				:number="2">
-
+	<card v-for="item in items" :title="item.title"
+				:time-range="item.start_time+' —— '+item.end_time"
+				:number="item.signup_number"
+		  		:money="item.deposit"
+		  		:course="item.course_desc"
+	>
 	</card>
 </template>
 
@@ -13,10 +14,18 @@
 
 <script>
 import card from './dynamicsCard.vue'
+import {getActivityList} from '../../vuex/getters/activityGetter'
 
 export default{
 	components:{
 		card
+	},
+	vuex: {
+		getters: {
+			items: getActivityList
+		}
+	},
+	ready: function () {
 	}
 }
 </script>

@@ -21,8 +21,8 @@ Vue.http.interceptors.push({
 	}
 });
 
-export const activityListResource = Vue.resource('/api/activity/list')//近期活动列表
-export const activityResource = Vue.resource('/activity/{id}')//单个活动信息
+export const activityListResource = Vue.resource('/api/signin/activity/list')//近期活动列表
+export const activityResource = Vue.resource('/api/signin/activity/{id}')//单个活动信息
 export const signListResource = Vue.resource('/activity/{id}/signin_list')//签到信息列表
 export const signUpResource = Vue.resource('/activity/{id}/signup')//报名
 export const signResource = Vue.resource('/activity/{id}/signin')//签到

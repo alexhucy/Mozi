@@ -28,7 +28,18 @@
 </style>
 
 <script>
-export default{
+import store from '../vuex/store'
+import {activityListQuery} from '../vuex/actions/activityAction'
 
+export default{
+	vuex: {
+		actions: {
+			activityListQuery
+		}
+	},
+	store: store,
+	ready() {
+		this.activityListQuery()
+	}
 }
 </script>
