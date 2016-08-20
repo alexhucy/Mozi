@@ -22,7 +22,10 @@ Vue.http.interceptors.push({
 });
 
 export const activityListResource = Vue.resource('/api/signin/activity/list')//近期活动列表
-export const activityResource = Vue.resource('/api/signin/activity/{id}')//单个活动信息
-export const signListResource = Vue.resource('/activity/{id}/signin_list')//签到信息列表
-export const signUpResource = Vue.resource('/activity/{id}/signup')//报名
-export const signResource = Vue.resource('/activity/{id}/signin')//签到
+export const activityResource = Vue.resource('/api/signin/activity/{activity_id}')//单个活动信息
+export const signListResource = Vue.resource('/api/signin/activity/{activity_id}/signin_list')//签到信息列表
+export const signUpResource = Vue.resource('/api/signin/activity/{activity_id}/signup')//报名
+export const signResource = Vue.resource('/api/signin/activity/{activity_id}/signin')//签到
+export const agreeResource = Vue.resource('/api/signin/activity/{activity_id}/{signin_id}/agree')//点赞
+export const messageResource = Vue.resource('/api/signin/activity/{activity_id}/{signin_id}/message')//发表留言
+export const messageListResource = Vue.resource('/api/signin/activity/{activity_id}/{signin_id}/message/list')//获取留言列表

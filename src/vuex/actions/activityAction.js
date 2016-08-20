@@ -15,3 +15,5 @@ export const activityQuery = function ({ dispatch }, id) {
 		dispatch(types.GET_ACTIVITY_INFO, data)
 	})
 }
+
+

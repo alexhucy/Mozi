@@ -1,6 +1,6 @@
 <template>
 	<card type="success">
-		<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" v-link="{name:'book',params:{id:1}}">
+		<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" v-link="{name:'book',params:{id:id}}">
 			<h4>{{title}}</h4>
 			<icon-item>活动时间: {{timeRange}}</icon-item>
 			<icon-item>每人交保证金: {{money}}</icon-item>
@@ -42,7 +42,8 @@ export default {
 		lastTime: Number,
 		number: Number,
 		money: Number,
-		course: String
+		course: String,
+		id:Number
 	}
 }
 </script>

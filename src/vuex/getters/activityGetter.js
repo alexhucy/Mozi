@@ -4,6 +4,8 @@
 import store from '../store'
 
 export function getActivityList() {
-	console.log(store.state.activity.activitylist)
 	return store.state.activity.activitylist
+}
+export function getActivity() {
+	return store.state.activity.activity
 }
