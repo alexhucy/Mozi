@@ -2,17 +2,17 @@
 	<scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
 		<div class="mz-sign">
 			<div class="mz-item-cover">
-				<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg">
-					<h4>墨子家</h4>
-					<p>发起了活动: 《100天阅读计划》</p>
+				<avatar-item :avatar-url="item.sponsor_avatar">
+					<h4></h4>
+					<p>发起了活动: 《》</p>
 					<p>活动时间: 07月28日 - 08月16日</p>
 					<p>报名截至时间:08月16日</p>
-					<p>每人保证金: 100元</p>
+					<p>每人保证金: 元</p>
 				</avatar-item>
 			</div>
 
 			<wrap title="活动介绍:" type="success">
-				打卡规则:三天为一个周期学完一课,一个月十节课,三个月结束初级A班所有课程。
+
 			</wrap>
 
 			<wrap title="相关课程:" type="warn">
@@ -59,9 +59,17 @@ import card from '../../components/card/cardWithAvatar.vue'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import fButton from '../../components/button/footerButton.vue'
 import confirm from '../../components/Dialog/confirm.vue'
-
+import {activityQuery,signListQuery} from '../../vuex/actions/activityAction'
+import {getActivityInfo} from '../../vuex/getters/activityGetter'
 
 export default {
+	data (){
+		return {
+			id: Number,
+			start_time: '',
+			end_time: ''
+		}
+	},
 	components: {
 		avatarItem,
 		wrap,
@@ -71,9 +79,31 @@ export default {
 		fButton,
 		confirm
 	},
+	vuex: {
+		getters: {
+			item: getActivityInfo
+		},
+		actions: {
+			activityQuery,
+			signListQuery
+		}
+	},
 	events: {
 		DO: function () {
 			this.$broadcast('showDialog');
+		}
+	},
+	route: {
+		data ({to: {params: {id}}}){
+			this.id = id
+		}
+	},
+	ready: function () {
+		this.activityQuery(this.id)
+		this.signListQuery(this.id)
+	},
+	computed: {
+		item: function () {
 		}
 	}
 }

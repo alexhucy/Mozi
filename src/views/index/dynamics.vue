@@ -4,6 +4,8 @@
 				:number="item.signup_number"
 		  		:money="item.deposit"
 		  		:course="item.course_desc"
+		  		:avatar="item.sponsor_avatar "
+		  		:id="item.activity_id"
 	>
 	</card>
 </template>

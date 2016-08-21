@@ -4,6 +4,21 @@
 import store from '../store'
 
 export function getActivityList() {
-	console.log(store.state.activity.activitylist)
 	return store.state.activity.activitylist
+}
+
+export function getActivityInfo() {
+	return store.state.activity.activity
+}
+
+export function getSignList() {
+	return store.state.activity.signlist
+}
+
+export function getSignUp() {
+	return store.state.activity.signup
+}
+
+export function postSignIn() {
+	return store.state.activity.signin
 }
