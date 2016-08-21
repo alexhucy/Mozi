@@ -13137,7 +13137,7 @@ webpackJsonp([0,1],[
 	// 		<tab-item :selected="$route.name == 'mysign'" v-link="{name:'mysign'}">我的打卡</tab-item>
 	// 	</tab>
 	//
-	// 	<scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px" >
+	// 	<scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;left: 0;right: 0;" >
 	// 		<router-view>
 	//
 	// 		</router-view>
@@ -13281,7 +13281,7 @@ webpackJsonp([0,1],[
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n<tab>\n\t<tab-item :selected=\"$route.name == 'dynamics'\" v-link=\"{name:'dynamics'}\">一周活动</tab-item>\n\t<tab-item :selected=\"$route.name == 'mysign'\" v-link=\"{name:'mysign'}\">我的打卡</tab-item>\n</tab>\n\n<scroller lock-x height=\"auto\" style=\"position:absolute;top: 44px;bottom: 60px\" >\n\t<router-view>\n\n\t</router-view>\n</scroller>\n\n\n<foot></foot>\n";
+	module.exports = "\n\n<tab>\n\t<tab-item :selected=\"$route.name == 'dynamics'\" v-link=\"{name:'dynamics'}\">一周活动</tab-item>\n\t<tab-item :selected=\"$route.name == 'mysign'\" v-link=\"{name:'mysign'}\">我的打卡</tab-item>\n</tab>\n\n<scroller lock-x height=\"auto\" style=\"position:absolute;top: 44px;bottom: 60px;left: 0;right: 0;\" >\n\t<router-view>\n\n\t</router-view>\n</scroller>\n\n\n<foot></foot>\n";
 
 /***/ },
 /* 16 */
@@ -15261,7 +15261,6 @@ webpackJsonp([0,1],[
 	// 				<h4>支付成功</h4>
 	// 			</div>
 	//
-	//
 	// 			<m-button type="glass" large @click="confirm">
 	// 				我要打卡
 	// 			</m-button>
@@ -15340,7 +15339,7 @@ webpackJsonp([0,1],[
 /* 86 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<dialog :show.sync=\"showNoScroll\" :scroll=\"false\">\n\t<div class=\"mz-dialog-box\">\n\n\t\t<div class=\"mz-dialog-success\">\n\t\t\t<div class=\"mz-dialog-tip\">\n\n\t\t\t</div>\n\t\t\t<h4>支付成功</h4>\n\t\t</div>\n\n\n\t\t<m-button type=\"glass\" large @click=\"confirm\">\n\t\t\t我要打卡\n\t\t</m-button>\n\n\t\t<m-button type=\"success\" large>\n\t\t\t随便看看\n\t\t</m-button>\n\t</div>\n</dialog>\n";
+	module.exports = "\n<dialog :show.sync=\"showNoScroll\" :scroll=\"false\">\n\t<div class=\"mz-dialog-box\">\n\n\t\t<div class=\"mz-dialog-success\">\n\t\t\t<div class=\"mz-dialog-tip\">\n\n\t\t\t</div>\n\t\t\t<h4>支付成功</h4>\n\t\t</div>\n\n\t\t<m-button type=\"glass\" large @click=\"confirm\">\n\t\t\t我要打卡\n\t\t</m-button>\n\n\t\t<m-button type=\"success\" large>\n\t\t\t随便看看\n\t\t</m-button>\n\t</div>\n</dialog>\n";
 
 /***/ },
 /* 87 */

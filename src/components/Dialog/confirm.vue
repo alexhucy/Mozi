@@ -9,7 +9,6 @@
 				<h4>支付成功</h4>
 			</div>
 
-
 			<m-button type="glass" large @click="confirm">
 				我要打卡
 			</m-button>

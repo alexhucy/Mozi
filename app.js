@@ -10,7 +10,8 @@ var express = require('express'),
 	 mongodb = require('mongodb'),
 	 mongoServer = new mongodb.Server(config.mongo.host, config.mongo.port, {auto_reconnect:true}),
 	 proxy = require('./router/proxy'),
-	 weixin = require('./router/weixin');
+	 weixin = require('./router/weixin'),
+	 routes = require('./router/index');
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname + ''));
@@ -18,9 +19,7 @@ app.set('view engine', 'html'); //替换文件扩展名ejs为html;;
 app.use(express.static(path.join(__dirname, './public/assets')));
 app.use(express.query());
 
-app.use('/$',function (req,res) {
-	res.sendFile(path.join(__dirname,'./public/views/index.html'))
-});
+app.use('/',routes);
 
 app.use('/', proxy);
 

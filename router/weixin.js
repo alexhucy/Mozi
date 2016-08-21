@@ -13,7 +13,6 @@ router.use('/wechat/',wechat(config, function (req, res, next) {
 	
 }));
 
-
 /**
  * 获取个人信息
  */

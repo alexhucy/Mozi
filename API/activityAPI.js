@@ -4,7 +4,7 @@
 
 var wechat = require('wechat'),
 	express = require('express'),
-	activityService = require('../service/activityService')
+	activityService = require('../service/activityService'),
 	router = express.Router;
 
 router.post('/api/activities',function (req,res) {
