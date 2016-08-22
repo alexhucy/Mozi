@@ -11,6 +11,7 @@ import center from './views/me/index.vue'
 import info from './views/me/info.vue'
 import upload from './views/sign/upload.vue'
 import sign from './views/sign/sign.vue'
+import update from './components/Dialog/UpdateChildInfo.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -47,6 +48,10 @@ module.exports = function (router) {
 		'/info/edit': {
 			name: 'info',
 			component: info
+		},
+		'/info/updateInfo': {
+			name: 'update',
+			component: update
 		},
 		'/item/:id/signup': {
 			name: 'upload',

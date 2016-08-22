@@ -29,18 +29,20 @@
 
 <script>
 import store from '../vuex/store'
-import {userInfoQuery} from '../vuex/actions/userAction'
+import {userInfoQuery,userUpInfoQuery} from '../vuex/actions/userAction'
 import {jssdkConfigInit} from '../service/weixinService'
 
 export default{
 	store: store,
 	vuex: {
 		actions:{
-			userInfoQuery
+			userInfoQuery,
+			userUpInfoQuery
 		}
 	},
 	ready: function () {
 		this.userInfoQuery()
+		this.userUpInfoQuery()
 		jssdkConfigInit(false,['uploadImage','chooseImage'])
 	}
 }
