@@ -1,7 +1,7 @@
 <template>
 	<div class="mz-center-cover">
 		<div class="mz-center-name">
-			张三
+			{{user.info.user_name}}
 		</div>
 
 		<div class="mz-flex mz-container">
@@ -12,7 +12,7 @@
 			</div>
 			<div class="mz-center-avatar mz-item">
 				<div class="mz-center-crown">小白</div>
-				<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-center-img-avatar"><!--
+				<img :src="user.info.user_avatar" class="mz-center-img-avatar"><!--
 			--></div>
 			<div class="mz-flex">
 				<div class="mz-center-billboard mz-pop" v-link="{name:'billboard'}">
@@ -22,11 +22,11 @@
 		</div>
 
 		<div class="mz-signature mz-center-item">
-			个人战绩: 坚持打卡<span class="mz-bold">10</span>天
+			个人战绩: 坚持打卡<span class="mz-bold">{{user.info.duration}}</span>天
 		</div>
 
 		<div class="mz-center-point mz-center-item">
-			1234积分
+			{{user.info.score}}积分
 		</div>
 
 		<div class="mz-center-item">
@@ -141,6 +141,8 @@
 <script>
 import card from '../../components/card/cardWithoutAvatar.vue'
 import dialog from './awardDialog.vue'
+import {childInfoQuery,userUpInfoQuery} from '../../vuex/actions/userAction'
+import {getUserUpInfo} from '../../vuex/getters/userGetter'
 
 export default {
 	components: {
@@ -151,6 +153,19 @@ export default {
 		awardIntroduce: function () {
 			this.$broadcast('showDialog')
 		}
+	},
+	vuex: {
+		actions: {
+			childInfoQuery,
+			userUpInfoQuery
+		},
+		getters: {
+			user: getUserUpInfo
+		}
+	},
+	ready: function(){
+		this.userUpInfoQuery()
+		this.childInfoQuery()
 	}
 }
 </script>

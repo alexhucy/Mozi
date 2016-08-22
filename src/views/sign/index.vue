@@ -112,22 +112,6 @@ export default {
 			signList: getSignList,
 		}
 	},
-	route: {
-		data ({to: { params: { id }}}){
-			this.id = id
-		}
-	},
-	vuex: {
-		actions: {
-			activityQuery
-		},
-		getters: {
-			activityInfo:getActivity
-		}
-	},
-	ready: function () {
-		this.activityQuery(id)
-	},
 	events: {
 		DO: function () {
 			this.show = true

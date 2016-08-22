@@ -14,7 +14,10 @@
 
 	<group>
 		<group-title type="glass">孩子信息</group-title>
+		<panel :list="list"></panel>
+		<card-center @click="updateInfo"></card-center>
 	</group>
+	<dialog></dialog>
 
 </template>
 
@@ -27,18 +30,36 @@ import Group from '../../../node_modules/vux/dist/components/group/index'
 import GroupTitle from '../../components/group/group-title.vue'
 import Cell from '../../../node_modules/vux/dist/components/cell/index'
 import Panel from '../../../node_modules/vux/dist/components/panel/index'
-import {getUserInfo} from '../../vuex/getters/userGetter'
+import dialog from '../../components/Dialog/UpdateChildInfo.vue'
+import CardCenter from '../../components/card/cardCenterContent.vue'
+import {getUserInfo,getChildInfo} from '../../vuex/getters/userGetter'
 
 export default{
+	data: function () {
+		return {
+			list: []
+		}
+	},
 	components: {
 		GroupTitle,
 		Group,
 		Cell,
-		Panel
+		Panel,
+		CardCenter,
+		dialog
 	},
 	vuex: {
 		getters: {
-			user: getUserInfo
+			user: getUserInfo,
+			child: getChildInfo
+		}
+	},
+	ready: function () {
+		this.list = this.child
+	},
+	methods: {
+		updateInfo: function () {
+			this.$broadcast('showDialog')
 		}
 	}
 }

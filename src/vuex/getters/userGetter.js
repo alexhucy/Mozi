@@ -9,3 +9,10 @@ export function getUserInfo () {
 	return store.state.user.userInfo
 }
 
+export function getChildInfo() {
+	return store.state.user.childInfo
+}
+
+export function getUserUpInfo() {
+	return store.state.user.userUpInfo
+}

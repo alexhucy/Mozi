@@ -16,3 +16,7 @@ export function getSignList() {
 export function getMessageList() {
 	return store.state.activity.messageList
 }
+
+export function getRecord() {
+	return store.state.activity.record
+}

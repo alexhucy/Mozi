@@ -28,3 +28,8 @@ export const activityMessageQuery = function ({dispatch}, activityId, signId) {
 	})
 }
 
+export const recordQuery = function ({ dispatch }, activity_id) {
+	return activity.API_RECORD(activity_id).then(function (data) {
+		dispatch(types.GET_RECORD, data)
+	})
+}

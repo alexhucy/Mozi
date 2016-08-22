@@ -10,7 +10,8 @@ import {
 	signUpResource,
 	agreeResource,
 	messageListResource,
-	messageResource
+	messageResource,
+	recordResource
 } from './resourse'
 
 
@@ -45,6 +46,10 @@ export default {
 
 	API_COMMIT_MESSAGE: function (activity_id, signin_id, content) {
 	    return messageResource.save({activity_id: activity_id,signin_id: signin_id},{text:content})
+	},
+
+	API_RECORD: function (activity_id) {
+			return recordResource.get({activity_id: activity_id})
 	}
 
 }

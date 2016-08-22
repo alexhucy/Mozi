@@ -10,13 +10,15 @@ import {
   SIGN_ACTIVITY,
   GET_ACTIVITY_MESSAGE_LIST,
   COMMIT_ACTIVITY_MESSAGE,
+	GET_RECORD
 } from '../mutation-types'
 
 const state = {
 	activityList: [],
 	activity: {},
 	signList: [],
-	messageList: []
+	messageList: [],
+	record: {}
 }
 
 const mutations = {
@@ -44,6 +46,9 @@ const mutations = {
 	},
 	[COMMIT_ACTIVITY_MESSAGE](state){
 		
+	},
+	[GET_RECORD](state, record){
+		state.record = record.data
 	}
 }
 
