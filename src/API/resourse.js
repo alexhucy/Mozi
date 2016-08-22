@@ -36,3 +36,4 @@ export const messageListResource = Vue.resource(API_ROOT + '/api/signin/activity
 
 export const userResource = Vue.resource(API_ROOT + '/api/self-info/')// 获取个人信息
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
+

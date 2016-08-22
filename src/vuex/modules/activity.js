@@ -43,7 +43,7 @@ const mutations = {
 		state.messageList = list.data.list
 	},
 	[COMMIT_ACTIVITY_MESSAGE](state){
-
+		
 	}
 }
 
