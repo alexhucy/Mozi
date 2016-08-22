@@ -8,6 +8,7 @@ export function getActivityList() {
 }
 
 export function getActivityInfo() {
+	console.log(store.state.activity.activity)
 	return store.state.activity.activity
 }
 

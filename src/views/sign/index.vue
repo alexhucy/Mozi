@@ -2,7 +2,7 @@
 	<scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
 		<div class="mz-sign">
 			<div class="mz-item-cover">
-				<avatar-item :avatar-url="item.sponsor_avatar">
+				<avatar-item :avatar-url="">
 					<h4></h4>
 					<p>发起了活动: 《》</p>
 					<p>活动时间: 07月28日 - 08月16日</p>
@@ -12,7 +12,7 @@
 			</div>
 
 			<wrap title="活动介绍:" type="success">
-
+				<!--{{item.info.desc}}-->
 			</wrap>
 
 			<wrap title="相关课程:" type="warn">
@@ -59,7 +59,7 @@ import card from '../../components/card/cardWithAvatar.vue'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import fButton from '../../components/button/footerButton.vue'
 import confirm from '../../components/Dialog/confirm.vue'
-import {activityQuery,signListQuery} from '../../vuex/actions/activityAction'
+import {activityQuery} from '../../vuex/actions/activityAction'
 import {getActivityInfo} from '../../vuex/getters/activityGetter'
 
 export default {
@@ -81,15 +81,15 @@ export default {
 	},
 	vuex: {
 		getters: {
-			item: getActivityInfo
+			uf: getActivityInfo
 		},
 		actions: {
-			activityQuery,
-			signListQuery
+			activityQuery
 		}
 	},
 	events: {
 		DO: function () {
+			console.log(uf)
 			this.$broadcast('showDialog');
 		}
 	},
@@ -100,11 +100,6 @@ export default {
 	},
 	ready: function () {
 		this.activityQuery(this.id)
-		this.signListQuery(this.id)
-	},
-	computed: {
-		item: function () {
-		}
 	}
 }
 </script>
