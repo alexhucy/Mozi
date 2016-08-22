@@ -1,5 +1,5 @@
 <template>
-	<dialog :show.sync="showNoScroll" :scroll="false">
+	<dialog :show.sync="showNoScroll" :scroll="false" class="mz-dialog-transparent">
 			<div class="mz-award-top">
 				<p class="mz-dialog-title">积分奖励说明</p>
 			</div>
@@ -19,7 +19,8 @@
 
 <style>
 
-.weui_dialog{
+
+.mz-dialog-transparent .weui_dialog{
 	background: transparent;
 	width: 75%;
 }

@@ -16,6 +16,9 @@
 
 
 
+
+
+
  .mz-item h4{
 	 font-size: 1.4rem;
  }
@@ -51,6 +54,8 @@
 	display: block;
 	font-size: 1.6rem;
 }
+
+
 
 
 
@@ -215,6 +220,8 @@
 
 
 
+
+
 .mz-card .mz-photo{
 	height: 141px;
 	background-repeat: no-repeat;
@@ -275,6 +282,9 @@
 .mz-default{
 
 }
+
+
+
 
 
 
@@ -545,6 +555,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 .mz-item-cover{
 	padding: 10px 13px 0 13px;
 	background: #fff;
@@ -578,6 +597,7 @@
 	padding: 10px 13px;
 	background: #fff;
 }
+
 
 
 
@@ -767,6 +787,8 @@
 
 
 
+
+
 .mz-container{
 	padding: 0 10px;
 }
@@ -901,7 +923,10 @@
 
 
 
-.weui_dialog{
+
+
+
+.mz-dialog-transparent .weui_dialog{
 	background: transparent;
 	width: 75%;
 }
@@ -1006,6 +1031,7 @@ textarea{
 	resize: none;
 	font-size: 1.5rem;
 }
+
 
 
 

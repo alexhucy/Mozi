@@ -23,17 +23,23 @@
 </style>
 
 <script>
-	import Group from '../../../node_modules/vux/dist/components/group/index'
-	import GroupTitle from '../../components/group/group-title.vue'
-	import Cell from '../../../node_modules/vux/dist/components/cell/index'
-	import Panel from '../../../node_modules/vux/dist/components/panel/index'
+import Group from '../../../node_modules/vux/dist/components/group/index'
+import GroupTitle from '../../components/group/group-title.vue'
+import Cell from '../../../node_modules/vux/dist/components/cell/index'
+import Panel from '../../../node_modules/vux/dist/components/panel/index'
+import {getUserInfo} from '../../vuex/getters/userGetter'
 
-	export default{
-		components: {
-			GroupTitle,
-			Group,
-			Cell,
-			Panel
+export default{
+	components: {
+		GroupTitle,
+		Group,
+		Cell,
+		Panel
+	},
+	vuex: {
+		getters: {
+			user: getUserInfo
 		}
 	}
+}
 </script>

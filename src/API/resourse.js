@@ -8,6 +8,7 @@ var VueResource = require('vue-resource')
 Vue.use(VueResource)
 Vue.http.options.timeout = 10000
 
+Vue.http.options.emulateJSON = true;
 // 添加token
 Vue.http.interceptors.push({
 	request (request) {
@@ -21,8 +22,17 @@ Vue.http.interceptors.push({
 	}
 });
 
-export const activityListResource = Vue.resource('/api/activity/list')//近期活动列表
-export const activityResource = Vue.resource('/activity/{id}')//单个活动信息
-export const signListResource = Vue.resource('/activity/{id}/signin_list')//签到信息列表
-export const signUpResource = Vue.resource('/activity/{id}/signup')//报名
-export const signResource = Vue.resource('/activity/{id}/signin')//签到
+var API_ROOT = ''
+
+
+export const activityListResource = Vue.resource(API_ROOT + '/api/signin/activity/list')//近期活动列表
+export const activityResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}')//单个活动信息
+export const signListResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/signin_list')//签到信息列表
+export const signUpResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/signup')//报名
+export const signResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/signin')//签到
+export const agreeResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/{signin_id}/agree')//点赞
+export const messageResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/{signin_id}/message')//发表留言
+export const messageListResource = Vue.resource(API_ROOT + '/api/signin/activity/{activity_id}/{signin_id}/message/list')//获取留言列表
+
+export const userResource = Vue.resource(API_ROOT + '/api/self-info/')// 获取个人信息
+export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')

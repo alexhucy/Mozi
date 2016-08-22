@@ -29,15 +29,16 @@
 							head-img-url="http://static.youku.com/user/img/avatar/310/39.jpg"
 							cover="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png"
 							:zan="2"
-							:comments="12">
-
+							:comments="12"
+							:sign-id="2"
+							:activity-id="2">
 			</card>
+
 		</div>
 	</scroller>
 
 	<f-button type="glass"
 						action="今日已打卡">
-
 	</f-button>
 </template>
 
@@ -55,6 +56,8 @@ import iconItem from '../../components/item/iconItem.vue'
 import card from '../../components/card/cardWithAvatar.vue'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import fButton from '../../components/button/footerButton.vue'
+import alert from '../../../node_modules/vux/dist/components/alert/index'
+import activity from '../../service/activityService'
 
 export default {
 	components: {
@@ -63,7 +66,24 @@ export default {
 		iconItem,
 		card,
 		scroller,
-		fButton
+		fButton,
+		alert
+	},
+	data: function () {
+		return {
+			showMessage: false,
+			message: ''
+		}
+	},
+	route: {
+		data ({to: { params: { id }}}){
+			this.id = id;
+		}
+	},
+	events: {
+		DO: function () {
+			this.$router.go({name: 'upload'})
+		}
 	}
 }
 </script>

@@ -18,7 +18,7 @@ module.exports = function (router) {
 			name: 'index',
 			component: index,
 			subRoutes: {
-				'/dynamics': {
+				'/': {
 					name: 'dynamics',
 					component: dynamic
 				},
@@ -48,13 +48,13 @@ module.exports = function (router) {
 			name: 'info',
 			component: info
 		},
-		'/upload': {
+		'/item/:id/signup': {
 			name: 'upload',
 			component: upload
 		},
 	})
 
 	router.redirect({
-		'*': '/dynamics',
+		'*': '/',
 	})
 }

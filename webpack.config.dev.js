@@ -9,6 +9,7 @@ var path = require('path');
 
 module.exports = {
 	entry: {
+		vendor:['vue','vuex','vue-router'],
 		home:path.join(__dirname,'./src/index.js')
 	},
 	// where to place the compiled bundle

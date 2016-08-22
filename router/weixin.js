@@ -9,23 +9,17 @@ var wechat = require('wechat'),
 	  wechatAPI = require('wechat-api'),
 		API = new wechatAPI(config.appid, config.appsecret);
 
-router.use('/wechat/',wechat(config, function (req, res, next) {
+router.use('/wechat/$',wechat(config, function (req, res, next) {
 	
 }));
 
-/**
- * 获取个人信息
- */
-router.use('/api/wechat/self', function (req,res,next) {
-	
-});
 
 /**
  * 获取微信jssdk配置
  * @param {Boolean} debug   jssdk是否调试
  * @param {Array} jsApiList 需要注册使用的方法
  */
-router.post('/api/wechat/jsconfig',function (req,res) {
+router.use('/wechat/jsconfig/',function (req,res) {
 	var data = req.body;
 	var param = {
 		debug: data.debug,

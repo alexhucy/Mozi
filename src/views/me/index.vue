@@ -38,7 +38,9 @@
 				:comments="12"
 				title="连续12天打卡"
 				content="连续12天打卡"
-				cover="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png">
+				cover="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png"
+				:activity-id="2"
+				:sign-id="2">
 
 	</card>
 

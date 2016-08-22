@@ -5,7 +5,9 @@
 		<div class="mz-photo"  :style="{backgroundImage:'url('+ cover +')'}"></div>
 
 		<comment :zan="zan"
-		         :comments="comments">
+		         :comments="comments"
+		         :activity-id="activityId"
+		         :sign-id="signId">
 
 		</comment>
 	</box>
@@ -39,6 +41,12 @@ export default {
 		},
 		cover: {
 			type: String
+		},
+		activityId: {
+			type: Number
+		},
+		signId: {
+			type: Number
 		}
 
 	}

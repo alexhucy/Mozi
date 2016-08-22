@@ -13,7 +13,7 @@
 				我要打卡
 			</m-button>
 
-			<m-button type="success" large>
+			<m-button type="success" large @click="hidden">
 				随便看看
 			</m-button>
 		</div>
@@ -68,13 +68,16 @@ export default {
 		type: String
 	},
 	methods: {
-		confirm : function () {
+		hidden: function () {
 			this.showNoScroll = !this.showNoScroll;
+		},
+		confirm(){
+			this.$dispatch('confirm')
 		}
 	},
 	events: {
 		'showDialog': function () {
-			this.confirm()
+			this.hidden()
 		}
 	}
 }

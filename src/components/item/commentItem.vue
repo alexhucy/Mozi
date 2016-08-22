@@ -5,8 +5,11 @@
 			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15" @click="toggle">{{zan}}</i>
 		</div>
 		<div class="mz-commit-box" v-if="showCommit">
-			<textarea class="mz-commit" ></textarea>
-			<t-button min type="ready">提交</t-button>
+			<div>
+				<p v-for="item in commits">{{item.user_name}}:{{item.text}}</p>
+			</div>
+			<textarea class="mz-commit" placeholder="我想说两句" v-model="content"></textarea>
+			<t-button min type="ready" @click="submit">提交</t-button>
 		</div>
 	</div>
 </template>
@@ -53,6 +56,9 @@
 
 <script>
 import TButton from '../button/button.vue'
+import activity from '../../service/activityService'
+import {activityMessageQuery} from '../../vuex/actions/activityAction'
+import {getMessageList} from '../../vuex/getters/activityGetter'
 
 export default{
 	components: {
@@ -60,7 +66,8 @@ export default{
 	},
 	data: function () {
 		return {
-			showCommit: false
+			showCommit: false,
+			content: ''
 		}
 	},
 	props: {
@@ -69,14 +76,35 @@ export default{
 		},
 		comments: {
 			type: Number
+		},
+		activityId: {
+			type: Number
+		},
+		signId: {
+			type: Number
 		}
 	},
 	methods: {
 		toggle: function () {
-
+			activity.ZAN(this.activityId, this.signId)
 		},
 		commitToggle: function () {
 			this.showCommit = !this.showCommit;
+			if(this.showCommit){
+				this.activityMessageQuery(this.activityId, this.signId)
+			}
+		},
+		submit: function () {
+			console.log(this.content)
+			activity.commit(this.activityId, this.signId, this.content)
+		}
+	},
+	vuex:{
+		actions: {
+			activityMessageQuery
+		},
+		getters: {
+			commits: getMessageList
 		}
 	}
 }

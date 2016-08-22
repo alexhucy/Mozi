@@ -15,7 +15,9 @@
 		</div>
 
 		<comment :zan="zan"
-					   :comments="comments">
+					   :comments="comments"
+		         :activity-id="activityId"
+		         :sign-id="signId">
 		</comment>
 	</card>
 </template>
@@ -47,7 +49,9 @@ export default{
 		zan: Number,
 		comments: Number,
 		url: String,
-		state: String
+		state: String,
+		activityId: Number,
+		signId: Number
 	}
 }
 </script>

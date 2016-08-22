@@ -7,8 +7,9 @@
 		</avatar-item>
 
 		<comment :zan="zan"
-		         :comments="comments">
-
+		         :comments="comments"
+		         :activity-id="activityId"
+		         :sign-id="signId">
 		</comment>
 	</box>
 </template>
@@ -46,6 +47,12 @@ export default {
 		},
 		cover: {
 			type: String
+		},
+		activityId: {
+			type: Number
+		},
+		signId: {
+			type: Number
 		}
 	}
 }
