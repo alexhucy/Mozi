@@ -30,9 +30,8 @@ export const childUpdateQuery = function ( { dispatch }, nickname, gender, birth
 	})
 }
 
-export const alterChildInfoQuery = function ({ dispatch }, id) {
-	return user.API_POST_ALTER_CHILD_INFO(id).then(function (data) {
-		console.log(id)
+export const alterChildInfoQuery = function ({ dispatch }, id, nickname, gender, birthday, avatar) {
+	return user.API_POST_ALTER_CHILD_INFO(id, nickname, gender, birthday, avatar).then(function (data) {
 		dispatch(types.POST_ALTER_CHILD_INFO, data)
 	})
 }

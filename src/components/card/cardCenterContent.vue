@@ -47,6 +47,10 @@
         display: flex;
         flex-flow: column wrap;
     }
+    .infoicon{
+        display: flex;
+        flex-flow:row nowrap;
+    }
     .infoicon span{
         margin:5px;
     }

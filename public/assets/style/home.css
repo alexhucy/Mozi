@@ -984,6 +984,7 @@
 
 
 
+
 .mz_cells_title{
 	color: #fff;
 	padding: 10px 15px;
@@ -1046,6 +1047,13 @@
     display: flex;
     -ms-flex-flow: column wrap;
         flex-flow: column wrap;
+}
+.infoicon{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow:row nowrap;
+        flex-flow:row nowrap;
 }
 .infoicon span{
     margin:5px;

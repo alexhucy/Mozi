@@ -9,7 +9,7 @@
         <date-time :value.sync="value2" placeholder="请选择日期" :max-year=2016 format="YYYY-MM-DD" @on-change="changebirth" title="选择日期" year-row="{value}年" month-row="{value}月" day-row="{value}日" confirm-text="完成" cancel-text="取消"></date-time>
     </group>
     <group>
-        <x-button type="primary" @click="updateInfo">确认添加</x-button>
+        <x-button type="primary" @click="updateInfo">确认{{showmess}}</x-button>
     </group>
 </template>
 <style>
@@ -34,7 +34,8 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
                 value2: '',
                 value3: '',
                 name: '',
-                id: ''
+                id: '',
+                showmess: ''
             }
         },
         vuex: {
@@ -65,14 +66,13 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
             },
             updateInfo: function () {
                 var _sefl = this
-                if(this.id != 0){
-                    console.log(this.id)
-                    this.alterChildInfoQuery(this.id).then(function () {
-                        _sefl.$router.go({name: 'info'})
+                if(this.id != undefined && this.id != null){
+                    this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birth).then(function () {
+                        _sefl.$router.go({name: 'info',replace: true})
                     })
                 }else {
                     this.childUpdateQuery(this.name, this.sex, this.birth).then(function () {
-                        _sefl.$router.go({name: 'info'})
+                        _sefl.$router.go({name: 'info',replace: true})
                     })
                 }
             },
@@ -83,6 +83,14 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
                 this.name = value
             }
         },
+        ready: function () {
+            console.log(this.id)
+            if (this.id != null && this.id != undefined){
+                this.showmess = '修改'
+            }else {
+                this.showmess = '添加'
+            }
+        }
 
     }
 </script>

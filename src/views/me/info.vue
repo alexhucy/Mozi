@@ -1,5 +1,5 @@
 <template>
-	<scroller lock-x height="auto" style="position:relative;right:0px;left:0px;">
+	<scroller lock-x height="auto" style="position:absolute;right:0px;left:0px;">
 	<group style="margin: 0">
 		<group-title type="success">个人信息</group-title>
 		<cell title="头像">
@@ -12,6 +12,7 @@
 		<cell title="居住地" is-link></cell>
 		<cell title="手机号" is-link></cell>
 	</group>
+
 	<group>
 		<group-title type="glass">孩子信息</group-title>
 		<card-center type="2" v-for="item in child" :nickname="item.nickname" :birth="item.birthday" :id="item.id" :gender="item.gender" :avatar="avatar"></card-center>
@@ -57,16 +58,20 @@ export default{
 		}
 	},
 	ready: function () {
-		this.childInfoQuery()
-	},
-	methods: {
-		updateInfo: function () {
-
-		}
+		this.childInfoQuery().then(function () {
+		})
 	},
 	events: {
 		update: function () {
-			this.childInfoQuery()
+			this.childInfoQuery().then(function () {
+			})
+		}
+	},
+	watch: {
+		'child': function () {
+			var uuid = this.$children[0].uuid
+			this.$broadcast('scroller:reset', uuid)
+			console.log(uuid)
 		}
 	}
 }
