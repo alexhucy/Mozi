@@ -8,7 +8,7 @@ var VueResource = require('vue-resource')
 Vue.use(VueResource)
 Vue.http.options.timeout = 10000
 
-Vue.http.options.emulateJSON = true;
+// Vue.http.options.emulateJSON = true;
 // 添加token
 console.log(typeof Vue.http.interceptors)
 Vue.http.interceptors.push({
@@ -40,5 +40,6 @@ export const userResource = Vue.resource(API_ROOT + '/api/self-info/')// 获取�
 export const userupResource = Vue.resource(API_ROOT + '/api/signin/user/selfinfo')//个人中心信息
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
 export const childResource = Vue.resource(API_ROOT + '/api/child')//获取孩子信息
-export const childUpdateResource = Vue.resource(API_ROOT + '/api/child')//获取孩子信息
-
+export const childUpdateResource = Vue.resource(API_ROOT + '/api/child')//添加孩子信息
+export const deleteChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}')//删除孩子信息
+export const alterChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}')//修改孩子信息

@@ -16,3 +16,11 @@ export function getChildInfo() {
 export function getUserUpInfo() {
 	return store.state.user.userUpInfo
 }
+
+export function postChildUpdate() {
+	return store.state.user.childUpdate
+}
+
+export function postAlterChildInfo() {
+	return store.state.user.alterChildInfo
+}

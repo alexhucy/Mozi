@@ -984,11 +984,23 @@
 
 
 
-
 .mz_cells_title{
 	color: #fff;
 	padding: 10px 15px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1021,6 +1033,22 @@
 .mz-icon-addChild:before{
     content: '\E911';
     padding-right:6px;
+}
+.mz-icon-delete{
+    color: #FE7F85;
+}
+.mz-icon-delete:before{
+    content: '\E907';
+}
+.selfinfo{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column wrap;
+        flex-flow: column wrap;
+}
+.infoicon span{
+    margin:5px;
 }
 
 

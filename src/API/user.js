@@ -7,7 +7,9 @@ import {
 	weixinJSSDKResource,
 	childResource,
 	userupResource,
-	childUpdateResource
+	childUpdateResource,
+	deleteChildInfoResource,
+	alterChildInfoResource
 }
 from './resourse'
 
@@ -24,7 +26,14 @@ export default{
 	API_GET_USER_UP: function () {
 		return userupResource.get()
 	},
-	API_POST_USER_UPDATE: function () {
-		return childUpdateResource.save()
+	API_POST_USER_UPDATE: function (nickname,gender,birthday,avatar) {
+		return childUpdateResource.save({nickname: nickname,gender: gender,birthday: birthday,avatar: avatar})
+	},
+	API_POST_ALTER_CHILD_INFO: function (id) {
+		console.log(id)
+		return alterChildInfoResource.save({id: id},{})
+	},
+	API_DELETE_CHILD_INFO: function (id) {
+		return deleteChildInfoResource.delete({id: id})
 	}
 }
