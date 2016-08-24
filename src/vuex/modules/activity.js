@@ -10,13 +10,19 @@ import {
   SIGN_ACTIVITY,
   GET_ACTIVITY_MESSAGE_LIST,
   COMMIT_ACTIVITY_MESSAGE,
+	GET_ONGOING_ACTIVITY_LIST,
+	GET_COMPLETED_ACTIVITY_INFO,
+	GET_COMPLETED_ACTIVITY_TIMELINE
 } from '../mutation-types'
 
 const state = {
 	activityList: [],
 	activity: {},
 	signList: [],
-	messageList: []
+	messageList: [],
+	onGoingActivityList: [],
+	completedActivity: {},
+	timeline: [] 
 }
 
 const mutations = {
@@ -44,6 +50,15 @@ const mutations = {
 	},
 	[COMMIT_ACTIVITY_MESSAGE](state){
 		
+	},
+	[GET_ONGOING_ACTIVITY_LIST](state, list){
+		state.onGoingActivityList = list.data.list
+	},
+	[GET_COMPLETED_ACTIVITY_INFO](state, list){
+		state.completedActivity = list.data
+	},
+	[GET_COMPLETED_ACTIVITY_TIMELINE](state, list){
+		state.timeline = list.data.list
 	}
 }
 

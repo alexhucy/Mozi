@@ -6,13 +6,11 @@
 	</tab>
 
 
-	<scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
-		<div>
+
 			<router-view>
 
 			</router-view>
-		</div>
-	</scroller>
+
 
 
 	<foot></foot>
@@ -28,14 +26,13 @@
 import tab from '../../../node_modules/vux/dist/components/tab/index'
 import tabItem from '../../../node_modules/vux/dist/components/tab-item/index'
 import foot from './footer.vue'
-import scroller from '../../../node_modules/vux/dist/components/scroller/index'
+
 
 export default{
 	components:{
 		tab,
 		tabItem,
-		foot,
-		scroller
+		foot
 	}
 }
 </script>

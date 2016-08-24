@@ -8,7 +8,6 @@ var VueResource = require('vue-resource')
 Vue.use(VueResource)
 Vue.http.options.timeout = 10000
 
-Vue.http.options.emulateJSON = true;
 // 添加token
 Vue.http.interceptors.push({
 	request (request) {
@@ -36,4 +35,11 @@ export const messageListResource = Vue.resource(API_ROOT + '/api/signin/activity
 
 export const userResource = Vue.resource(API_ROOT + '/api/self-info/')// 获取个人信息
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
+
+export const ongoingActivityResource = Vue.resource(API_ROOT + '/api/signin/user/signin_list')//我的进行中的活动
+export const completedActivityInfoResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}')//活动信息
+export const completedActivityTimelineResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}/signin_list')//活动打卡时间轴
+
+export const getUrlByServerIdResource = Vue.resource(API_ROOT + '/wechat/getMedia')//根据serverId获取url
+
 

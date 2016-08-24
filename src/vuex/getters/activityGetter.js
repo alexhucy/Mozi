@@ -16,3 +16,15 @@ export function getSignList() {
 export function getMessageList() {
 	return store.state.activity.messageList
 }
+
+export function getOngoingActivityList() {
+	return store.state.activity.onGoingActivityList
+}
+
+export function getCompltedActivity(){
+	return store.state.activity.completedActivity
+}
+
+export function getTimeline() {
+	return store.state.activity.timeline
+}

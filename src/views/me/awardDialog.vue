@@ -6,9 +6,10 @@
 
 			<div class="mz-award-box">
 				<div style="padding-bottom: 10px">
-					<p>参加活动+1分</p>
-					<p>每日打卡+1分</p>
-					<p>完成一个活动+5分</p>
+					<p>参加活动+5分</p>
+					<p>每日打卡+2分</p>
+					<p>参与评论+1分(每日最多20分)</p>
+					<p>完成一个活动+10分</p>
 				</div>
 				<m-button type="success" large @click="awardIntroduce">
 					了解了

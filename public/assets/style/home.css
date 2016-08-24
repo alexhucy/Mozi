@@ -17,8 +17,6 @@
 
 
 
-
-
  .mz-item h4{
 	 font-size: 1.4rem;
  }
@@ -97,11 +95,23 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 .mz-card {
 	border-radius: 4px;
 	border: 1px solid #e3e3e3;
 	margin: 10px 13px 0;
-	padding: 15px 15px 0;
+	/*padding: 15px 15px 0;*/
 	position: relative;
 	background: #fff;
 }
@@ -134,7 +144,7 @@
 	min-height:72px ;
 	padding:10px 0 15px 60px;
 }
-.mz-item.mz-item-avatar img{
+.mz-avatar{
 	position:absolute;
 	top:4px;
 	left: 0;
@@ -211,6 +221,10 @@
 
 
 
+.mz-loading{
+	margin: 40px 0;
+	text-align: center;
+}
 
 
 
@@ -222,10 +236,25 @@
 
 
 
-.mz-card .mz-photo{
-	height: 141px;
-	background-repeat: no-repeat;
-	background-size: cover;
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mz-photo{
+		max-width: 200px;
+		max-height: 200px;
+}
+.mz-text-center{
+	text-align: center;
 }
 
 
@@ -282,6 +311,12 @@
 .mz-default{
 
 }
+
+
+
+
+
+
 
 
 
@@ -374,6 +409,20 @@
 }
 .mz-button-full{
 	width: 100%;
+}
+
+
+
+
+
+
+
+.mz-photo{
+	max-width: 200px;
+	max-height: 200px;
+}
+.mz-photo-preview{
+	margin-top:10px;
 }
 
 
@@ -564,10 +613,18 @@
 
 
 
+
+
+
+
+
 .mz-item-cover{
 	padding: 10px 13px 0 13px;
 	background: #fff;
 }
+
+
+
 
 
 
@@ -592,11 +649,15 @@
 	width: 87px ;
 	display: inline-block;
 	color:#fff;
+	height: 100%;
+	line-height: 20px;
 }
 .mz-content-container{
 	padding: 10px 13px;
 	background: #fff;
 }
+
+
 
 
 
@@ -739,6 +800,58 @@
 	color: #fe7f85;
 	font-size: 1.6rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.td-half-box{
+	float: left;
+	width: 33%;
+	padding-right: 15px;
+	box-sizing: border-box;
+}
+.td-scroll-item-cover{
+	width: 100%;
+	height: 40px;
+	background-repeat:no-repeat;
+	background-size:140px;
+}
+
+.clearfix{overflow:auto;_height:1%}
+
+.td-box-scroll-wrap .td-box-item{
+	width: 140px;
+	display:block;
+	margin-left: 15px;
+	float: left;
+	padding-bottom: 12px;
+}
+.td-scroll-item-cover{
+	width: 100%;
+	height: 40px;
+	background-repeat:no-repeat;
+	background-size:100%;
+}
+.td-half-box p{
+	display: -webkit-box;
+	-webkit-box-orient:vertical;
+	overflow: hidden;
+	word-break: break-all;
+	text-overflow:ellipsis;
+	-webkit-line-clamp:2;
+}
+
+
+
+
 
 
 
@@ -926,6 +1039,8 @@
 
 
 
+
+
 .mz-dialog-transparent .weui_dialog{
 	background: transparent;
 	width: 75%;
@@ -1007,6 +1122,10 @@
 
 
 
+
+
+
+
 .mz-box-upload{
 	background: #fff;
 	border:1px solid #72e4dc;
@@ -1014,6 +1133,10 @@
 }
 .mz-wrap{
 	margin: 10px;
+}
+.mz-preview-img{
+	width: 60px;
+	height:60px;
 }
 .mz-icon-add:before{
 	content: '\E910';
@@ -1076,10 +1199,176 @@ textarea{
 
 
 
+
+
+
+
+
+
+
+
+
 .mz-item-cover{
 	padding: 10px 13px 0 13px;
 	background: #fff;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mz-tab-item-header{
+	background: #72e4dc;
+	height: 40px;
+	padding: 0  10px;
+	line-height: 40px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack:justify;
+	    -ms-flex-pack:justify;
+	        justify-content:space-between;
+}
+.mz-tab-item-title{
+	color: #fff;
+	font-size: 1.4rem;
+	max-width: 70%;
+	display: -webkit-box;
+	-webkit-box-orient:vertical;
+	overflow: hidden;
+	word-break: break-all;
+	text-overflow:ellipsis;
+	-webkit-line-clamp:1;
+}
+.mz-arrow{
+	position: relative;
+	padding-right: 5px;
+	margin-right:10px;
+}
+.mz-arrow-top:before{
+	content:' ';
+	position: absolute;
+	top: 18px;
+	left :100%;
+	display: block;
+	height: 5px;
+	width: 5px;
+	color:#333;
+	border-bottom: 1px solid #333;
+	border-right: 1px solid #333;
+	-webkit-transform: rotate(-135deg);
+	        transform: rotate(-135deg);
+}
+.mz-arrow-down:before{
+	content:' ';
+	position: absolute;
+	top: 15px;
+	left:100%;
+	display: block;
+	height: 5px;
+	width: 5px;
+	color:#333;
+	border-bottom: 1px solid #333;
+	border-right: 1px solid #333;
+	-webkit-transform: rotate(45deg);
+	        transform: rotate(45deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mz-timeline-box{
+	background: #fff;
+	position:relative;
+	padding: 0 10px ;
+}
+.mz-timeline-card{
+	padding-left: 80px;
+}
+.mz-timeline-box:before{
+	content: '';
+	position: absolute;
+	top:  0;
+	bottom: 0;
+	left: 40px;
+	width: 1px;
+	background: #72e4dc;
+}
+.mz-timeline-box span{
+	position: absolute;
+	z-index:99;
+	background: #fff;
+	width: 80px;
+	top:0;
+}
+.mz-timeline-card h4{
+	font-size: 1.6rem;
+}
+
 
 
 

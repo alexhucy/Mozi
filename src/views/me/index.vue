@@ -1,4 +1,6 @@
 <template>
+	<scroller v-ref:scroller lock-x>
+
 	<div class="mz-center-cover">
 		<div class="mz-center-name">
 			张三
@@ -34,15 +36,17 @@
 		</div>
 	</div>
 
-	<card :zan="123"
-				:comments="12"
-				title="连续12天打卡"
+	<card v-for="item in items"
+					:zan="item.agree_count"
+				:comments="item.comment_count"
+				:title="item.activity_title"
 				content="连续12天打卡"
-				cover="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png"
-				:activity-id="2"
-				:sign-id="2">
-
+				:cover="item.image_url"
+				:activity-id="item.activity_id"
+				:sign-id="item.signin_id">
 	</card>
+
+	</scroller>
 
 	<dialog></dialog>
 </template>
@@ -141,15 +145,38 @@
 <script>
 import card from '../../components/card/cardWithoutAvatar.vue'
 import dialog from './awardDialog.vue'
+import {activityOngoingListQuery} from '../../vuex/actions/activityAction'
+import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
+import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 
 export default {
 	components: {
 		card,
-		dialog
+		dialog,
+		scroller
 	},
 	methods: {
 		awardIntroduce: function () {
 			this.$broadcast('showDialog')
+		}
+	},
+	vuex: {
+		actions: {
+			activityOngoingListQuery
+		},
+		getters: {
+			items: getOngoingActivityList
+		}
+	},
+	ready: function () {
+		this.activityOngoingListQuery()
+	},
+	watch:{
+		items: function () {
+			console.log('1')
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
+			})
 		}
 	}
 }

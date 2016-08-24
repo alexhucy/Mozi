@@ -9,7 +9,7 @@
 	border-radius: 4px;
 	border: 1px solid #e3e3e3;
 	margin: 10px 13px 0;
-	padding: 15px 15px 0;
+	/*padding: 15px 15px 0;*/
 	position: relative;
 	background: #fff;
 }

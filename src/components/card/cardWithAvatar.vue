@@ -1,16 +1,18 @@
 <template>
 	<box type = "success">
-		<avatar-item :avatar-url="headImgUrl">
-			<h4>{{title}}</h4>
-			<p>{{content}}</p>
-			<div class="mz-photo" :style="{backgroundImage:'url('+ cover +')'}"></div>
-		</avatar-item>
+		<div style="padding: 15px 15px 0">
+			<avatar-item :avatar-url="headImgUrl">
+				<h4>{{title}}</h4>
+				<p>{{content}}</p>
+				<image-item :src="cover"></image-item>
+			</avatar-item>
 
-		<comment :zan="zan"
-		         :comments="comments"
-		         :activity-id="activityId"
-		         :sign-id="signId">
-		</comment>
+			<comment :zan="zan"
+			         :comments="comments"
+			         :activity-id="activityId"
+			         :sign-id="signId">
+			</comment>
+		</div>
 	</box>
 </template>
 
@@ -22,12 +24,14 @@
 import box from '../container/boxWithBorder.vue'
 import avatarItem from '../item/avatarItem.vue'
 import comment from '../item/commentItem.vue'
+import imageItem from '../../components/Image/Image.vue'
 
 export default {
 	components: {
 		box,
 		avatarItem,
-		comment
+		comment,
+		imageItem
 	},
 	props: {
 		title: {

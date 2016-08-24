@@ -1,5 +1,5 @@
 <template>
-	<scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
+	<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
 		<div class="mz-sign">
 			<div class="mz-item-cover">
 				<avatar-item :avatar-url="activityInfo.info.sponsor_avatar" v-if="activityInfo.info">
@@ -16,7 +16,11 @@
 			</wrap>
 
 			<wrap title="相关课程:" type="warn" v-if="activityInfo.info">
-
+				<half-item
+								v-for="course in activityInfo.info.resource_list"
+								:url="course.image_url"
+								:title="course.link_text">
+				</half-item>
 			</wrap>
 
 			<div class="mz-content-container" style="margin-top: 10px">
@@ -31,25 +35,26 @@
 						:zan="item.agree_count"
 						:comments="item.comment_count"
 						:content="item.text"
-						:activity-id="12"
-						:sign-id="12">
+						:activity-id="item.activity_id"
+						:sign-id="item.signin_id">
 			</card>
 
 		</div>
 	</scroller>
 
 	<f-button type="success"
-						action="我要报名">
+						:action="activityInfo.signup===1?'已报名':'我要报名'"
+						:disable="activityInfo.signup===1?true:false">
 
 	</f-button>
 
 	<dialog></dialog>
 
-	<confirm :show.sync="show" title="活动报名" @on-confirm="onConfirm">
+	<confirm :show.sync="show" title="活动报名" @on-confirm="onConfirm" cancel-text="取消" confirm-text="确定">
 		<p style="text-align:center;" v-if="activityInfo.info">确定参加{{activityInfo.info.title}}</p>
 	</confirm>
 
-	<alert :show.sync="showError" title="报名失败">{{errorMessage}}</alert>
+	<alert :show.sync="showError" title="活动报名" button-text="确定">{{errorMessage}}</alert>
 
 </template>
 
@@ -73,11 +78,12 @@ import {getActivity, getSignList} from '../../vuex/getters/activityGetter'
 import confirm from '../../../node_modules/vux/dist/components/confirm/index'
 import alert from '../../../node_modules/vux/dist/components/alert/index'
 import activity from '../../service/activityService'
+import halfItem from '../../components/item/HalfItem.vue'
 
 export default {
 	data (){
 		return {
-			id: Number,
+			id: 0,
 			show: false,
 			showError: false,
 			errorMessage: ''
@@ -92,13 +98,12 @@ export default {
 		fButton,
 		confirm,
 		dialog,
-		alert
+		alert,
+		halfItem,
 	},
 	route: {
 		data ({to: { params: { id }}}){
 			this.id = id;
-			this.activityQuery(id)
-			this.activitySignListQuery(id)
 
 		}
 	},
@@ -109,24 +114,12 @@ export default {
 		},
 		getters: {
 			activityInfo: getActivity,
-			signList: getSignList,
-		}
-	},
-	route: {
-		data ({to: { params: { id }}}){
-			this.id = id
-		}
-	},
-	vuex: {
-		actions: {
-			activityQuery
-		},
-		getters: {
-			activityInfo:getActivity
+			signList: getSignList
 		}
 	},
 	ready: function () {
-		this.activityQuery(id)
+		this.activityQuery(this.id)
+		this.activitySignListQuery(this.id)
 	},
 	events: {
 		DO: function () {
@@ -140,11 +133,30 @@ export default {
 		onConfirm: function () {
 			var _self = this
 			activity.book(this.id).then(function (data) {
-					_self.$broadcast('showDialog')
+				 if(data.data.result === 0){
+					 _self.$broadcast('showDialog')
+				 }
+				else{
+					 _self.errorMessage = '报名失败!';
+					 _self.showError = true
+				 }
 			}).catch(function (err) {
 				_self.errorMessage = '内部错误, 请重试!';
 				_self.showError = true
 			})
+		},
+		fresh: function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
+			})
+		}
+	},
+	watch:{
+		activityInfo: function () {
+			this.fresh()
+		},
+		signList: function () {
+			this.fresh()
 		}
 	}
 }

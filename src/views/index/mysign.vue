@@ -1,42 +1,69 @@
 <template>
-	<card label="今日已打卡"
-				type="ready"
-				title="任务一:连续12天打卡计划"
-				content="坚持阅读12天,今天收获满满的,非常充实的一天!"
-				:zan="12"
-				:comments="123"
-				url="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png"
-				:activity-id="1"
-				:sign-id="2">
-	</card>
+	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
+		<div>
+			<loading @on-loading="query">
 
-	<card label="任务失败"
-	      type="failed"
-	      title="任务一:连续12天打卡计划"
-	      content="坚持阅读12天,今天收获满满的,非常充实的一天!"
-	      :zan="12"
-	      :comments="123"
-	      url="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png">
-	</card>
+			</loading>
 
-	<card label="任务完成"
-	      type="complete"
-	      title="任务一:连续12天打卡计划"
-	      content="坚持阅读12天,今天收获满满的,非常充实的一天!"
-	      :zan="12"
-	      :comments="123"
-	      url="http://img6.cache.netease.com/photo/0001/2016-08-05/BTMRH6L600AO0001.png"
-				:activity-id="1"
-				:sign-id="2">
-	</card>
+			<card v-for="item in items"
+						:label="item.signin_status===1?'今日已打卡':'我要打卡'"
+						:type="item.signin_status===1?'ready':'glass'"
+						:title="item.activity_title"
+						:content="item.text"
+						:zan="item.agree_count"
+						:comments="item.comment_count"
+						:url="item.image_url"
+						:activity-id="item.activity_id"
+						:sign-id="item.signin_id">
+			</card>
+		</div>
+	</scroller>
 </template>
 
 <script>
 import card from './signCard.vue'
+import {activityOngoingListQuery} from '../../vuex/actions/activityAction'
+import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
+import loading from '../../components/load/loading.vue'
+import {isEmptyObject} from '../../common'
+import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 
 export default {
 	components: {
-		card
+		card,
+		loading,
+		scroller
+	},
+	vuex: {
+		actions: {
+			activityOngoingListQuery
+		},
+		getters: {
+			items:getOngoingActivityList
+		}
+	},
+	methods: {
+		query: function () {
+			var _self = this;
+			this.activityOngoingListQuery().then(function (data) {
+				if(isEmptyObject(_self.items)){
+					_self.$broadcast('empty')
+				}
+				else{
+					_self.$broadcast('hide')
+				}
+			}).catch(function (err) {
+				console.log(err)
+				_self.$broadcast('error')
+			})
+		}
+	},
+	watch:{
+		items:function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
+			})
+		}
 	}
 }
 </script>

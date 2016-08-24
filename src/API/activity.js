@@ -10,7 +10,11 @@ import {
 	signUpResource,
 	agreeResource,
 	messageListResource,
-	messageResource
+	messageResource,
+  ongoingActivityResource,
+	completedActivityInfoResource,
+	completedActivityTimelineResource,
+	getUrlByServerIdResource
 } from './resourse'
 
 
@@ -45,6 +49,21 @@ export default {
 
 	API_COMMIT_MESSAGE: function (activity_id, signin_id, content) {
 	    return messageResource.save({activity_id: activity_id,signin_id: signin_id},{text:content})
-	}
+	},
+	
+	API_GET_ONGOING_ACTIVITY_LIST: function () {
+		return ongoingActivityResource.get()
+	},
 
+	API_GET_COMPLETED_ACTIVITY: function (id) {
+		return completedActivityInfoResource.get({activity_id: id})
+	},
+
+	API_GET_COMPLETED_ACTIVITY_TIMELINE: function (id) {
+		return completedActivityTimelineResource.get({activity_id: id})
+	},
+	
+	API_GET_URL_BY_SERVERID: function (id) {
+		return getUrlByServerIdResource.get({id: id})
+	}
 }

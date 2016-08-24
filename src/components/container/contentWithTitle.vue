@@ -1,12 +1,15 @@
 <template>
-	<div class="mz-content-wrap">
+	<div class="mz-content-wrap" >
 		<div class="mz-content-header" :class="classesLight">
 			<div class="mz-content-title" :class="classes">
 				{{title}}
 			</div>
+			<div class="mz-pull-right mz-content-toggle" >
+				{{detail}}
+			</div>
 		</div>
 
-		<div class="mz-content-container">
+		<div class="mz-content-container clearfix">
 			<slot></slot>
 		</div>
 	</div>
@@ -22,6 +25,8 @@
 		width: 87px ;
 		display: inline-block;
 		color:#fff;
+		height: 100%;
+		line-height: 20px;
 	}
 	.mz-content-container{
 		padding: 10px 13px;
@@ -38,6 +43,11 @@ export default {
 		type: {
 			type: String,
 			default: 'default'
+		}
+	},
+	data: function () {
+		return {
+			show: true
 		}
 	},
 	computed: {

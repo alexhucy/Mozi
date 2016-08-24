@@ -1,10 +1,11 @@
 <template>
-	<div style="padding: 8px 0">
+	<div style="padding: 8px 15px">
 		<div class="mz-item-comment clear-fix">
 			<i class="mz-icon mz-icon-comment mz-pull-right"  @click="commitToggle">{{comments}}</i>
-			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15" @click="toggle">{{zan}}</i>
+			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  @click="toggle">{{zan}}</i>
 		</div>
 		<div class="mz-commit-box" v-if="showCommit">
+			<loading @on-loading="query"></loading>
 			<div>
 				<p v-for="item in commits">{{item.user_name}}:{{item.text}}</p>
 			</div>
@@ -12,6 +13,11 @@
 			<t-button min type="ready" @click="submit">提交</t-button>
 		</div>
 	</div>
+
+
+	<toast :show.sync="showToast" :type="type">{{message}}</toast>
+
+	<load :show="showLoading" text="提交中"></load>
 </template>
 
 <style>
@@ -57,17 +63,29 @@
 <script>
 import TButton from '../button/button.vue'
 import activity from '../../service/activityService'
-import {activityMessageQuery} from '../../vuex/actions/activityAction'
-import {getMessageList} from '../../vuex/getters/activityGetter'
+import toast from '../../../node_modules/vux/dist/components/toast/index'
+import spinner from '../../../node_modules/vux/dist/components/spinner/index'
+import loading from '../../components/load/loading.vue'
+import {isEmptyObject} from '../../common'
+import load from '../../../node_modules/vux/dist/components/loading/index'
 
 export default{
 	components: {
-		TButton
+		TButton,
+		toast,
+		spinner,
+		loading,
+		load
 	},
 	data: function () {
 		return {
 			showCommit: false,
-			content: ''
+			showToast: false,
+			content: '',
+			commits: [],
+			message: '',
+			type: '',
+			showLoading: false,
 		}
 	},
 	props: {
@@ -82,29 +100,71 @@ export default{
 		},
 		signId: {
 			type: Number
+		},
+		checked: {
+			type: String
 		}
 	},
 	methods: {
+		//点赞
 		toggle: function () {
 			activity.ZAN(this.activityId, this.signId)
+			this.zan++
 		},
-		commitToggle: function () {
-			this.showCommit = !this.showCommit;
+
+		//查看评论
+		query: function() {
+			var _self = this
 			if(this.showCommit){
-				this.activityMessageQuery(this.activityId, this.signId)
+				activity.getMessageList(this.activityId, this.signId).then(function (data) {
+					if(data.data.list.length === 0){
+						_self.$broadcast('empty')
+					}
+					else{
+						_self.commits = data.data.list
+						_self.$broadcast('hide')
+					}
+				}).catch(function () {
+					_self.$broadcast('error')
+				})
+			}
+			else{
+				_self.$broadcast('hide')
 			}
 		},
-		submit: function () {
-			console.log(this.content)
-			activity.commit(this.activityId, this.signId, this.content)
-		}
-	},
-	vuex:{
-		actions: {
-			activityMessageQuery
+
+		//评论
+		commitToggle: function () {
+			this.showCommit = !this.showCommit;
 		},
-		getters: {
-			commits: getMessageList
+
+		//提交评论
+		submit: function () {
+			var _self = this
+			if(this.content.length > 0){
+				this.showLoading = true
+				activity.commit(this.activityId, this.signId, this.content).then(function (data) {
+					_self.showLoading = false
+					if(data.data.result === 0){
+						_self.showToast = true
+						_self.commits.push({'user_name': data.data.user_name,'text': data.data.text})
+						_self.comments++
+						_self.message = '评论成功!'
+						if(_self.commits.length === 1)_self.$broadcast('hide')
+						_self.content = ''
+					}
+					else {
+						self.showToast = true
+						_self.message = '评论失败!'
+						_self.type = ''
+					}
+				}).catch(function (err) {
+					_self.showLoading = false
+					_self.showToast = true
+					_self.message = '评论失败!'
+					_self.type = ''
+				})
+			}
 		}
 	}
 }

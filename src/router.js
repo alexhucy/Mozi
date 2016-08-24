@@ -11,6 +11,7 @@ import center from './views/me/index.vue'
 import info from './views/me/info.vue'
 import upload from './views/sign/upload.vue'
 import sign from './views/sign/sign.vue'
+import timeline from './views/me/activityTimeline.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -52,9 +53,13 @@ module.exports = function (router) {
 			name: 'upload',
 			component: upload
 		},
+		'/item/:id/timeline': {
+			name:'timeline',
+			component: timeline
+		}
 	})
 
 	router.redirect({
-		'*': '/',
+		'*': '/'
 	})
 }

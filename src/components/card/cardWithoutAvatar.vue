@@ -1,9 +1,10 @@
 <template>
 	<box type = "success">
-		<h4>{{title}}</h4>
-		<p>{{content}}</p>
-		<div class="mz-photo"  :style="{backgroundImage:'url('+ cover +')'}"></div>
-
+		<div v-link="{name:'timeline',params:{id:activityId}}" style="padding: 15px 15px 0">
+			<h4>{{title}}</h4>
+			<p>{{content}}</p>
+			<image-item :src="cover"></image-item>
+		</div>
 		<comment :zan="zan"
 		         :comments="comments"
 		         :activity-id="activityId"
@@ -20,11 +21,13 @@
 <script>
 import box from '../container/boxWithBorder.vue'
 import comment from '../item/commentItem.vue'
+import imageItem from '../Image/Image.vue'
 
 export default {
 	components: {
 		box,
-		comment
+		comment,
+		imageItem
 	},
 	props: {
 		zan: {

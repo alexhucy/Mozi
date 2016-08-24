@@ -11,4 +11,12 @@ proxy.on('error',function (err,req,res) {
 	});
 });
 
+proxy.on('proxyReq', function(proxyReq, req, res, options) {
+	if(req.method == "POST" && req.body){
+		proxyReq.write(req.body);
+		proxyReq.end();
+	}
+});
+
+
 module.exports = proxy;

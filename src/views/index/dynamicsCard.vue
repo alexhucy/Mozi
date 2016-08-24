@@ -1,21 +1,23 @@
 <template>
 	<card type="success">
-		<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" v-link="{name:'book',params:{id:id}}">
-			<h4>{{title}}</h4>
-			<icon-item>活动时间: {{timeRange}}</icon-item>
-			<icon-item>每人交保证金: {{money}}</icon-item>
-			<icon-item>报名截至时间: {{lastTime}}</icon-item>
-			<icon-item>已报名人数: {{number}}人</icon-item>
-		</avatar-item>
+		<div style="padding: 15px 15px 0">
+			<avatar-item :avatar-url="headImgUrl" v-link="{name:'book',params:{id:id}}">
+				<h4>{{title}}</h4>
+				<icon-item>活动时间: {{timeRange}}</icon-item>
+				<!--<icon-item>每人交保证金: {{money}}</icon-item>-->
+				<icon-item>报名截至时间: {{lastTime}}</icon-item>
+				<icon-item>已报名人数: {{number}}人</icon-item>
+			</avatar-item>
 
-		<recommend-item>
-			<div slot="title">
-				相关教程:
-			</div>
-			<div slot="container">
-				<a href="#">{{course}}</a>
-			</div>
-		</recommend-item>
+			<recommend-item v-if="course">
+				<div slot="title">
+					相关教程:
+				</div>
+				<div slot="container">
+					<span v-html="course"></span>
+				</div>
+			</recommend-item>
+		</div>
 	</card>
 </template>
 
@@ -37,9 +39,10 @@ export default {
 		recommendItem
 	},
 	props: {
+		headImgUrl: String,
 		title: String,
 		timeRange: String,
-		lastTime: Number,
+		lastTime: String,
 		number: Number,
 		money: Number,
 		course: String,

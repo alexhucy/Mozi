@@ -14,7 +14,16 @@ router.get('/api/*',function (req,res) {
 
 router.post('/api/*',function (req,res) {
 	delete req.headers.host;
-	proxy.web(req,res,{ target:config.proxy.Host});
+	var headers = {}
+	if (req.body){
+		var data = JSON.stringify(req.body);
+		req.body = data;
+		headers = {
+			'Content-type': 'application/json',
+			'Content-Length': Buffer.byteLength(data,'utf8')
+		}
+	}
+	proxy.web(req,res,{ target: config.proxy.Host, headers: headers});
 });
 
 module.exports = router;

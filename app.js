@@ -20,6 +20,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname + ''));
 app.set('view engine', 'html'); //替换文件扩展名ejs为html;;
 app.use(express.static(path.join(__dirname, './public/assets')));
+app.use(express.static(path.join(__dirname, './media')))
 app.use(express.query());
 
 app.use('/',routes);
@@ -31,7 +32,6 @@ app.use('/$',function (req,res) {
 			res.cookie('Authorization',token)
 			res.sendFile(path.resolve('./public/views/index.html'))
 		}).catch(function (error) {
-			console.log(error)
 			res.setHeader('content-type','text/html; charset=UTF-8');
 			res.writeHead(403)
 			res.end('服务器错误,请重新登陆')

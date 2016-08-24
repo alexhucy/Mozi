@@ -19,5 +19,13 @@ module.exports = {
 	
 	commit: function (activityId, signId, content) {
 		return API.API_COMMIT_MESSAGE(activityId, signId, content)
+	},
+	
+	getMessageList: function (activityId, signId) {
+		return API.API_GET_MESSAGE_LIST(activityId, signId)
+	},
+	
+	getUrlByServerId: function (id) {
+		return API.API_GET_URL_BY_SERVERID(id)
 	}
 };

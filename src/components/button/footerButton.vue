@@ -52,7 +52,7 @@ export default {
 	props: {
 		disable: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		action:{
 			type: String
@@ -70,7 +70,9 @@ export default {
 	},
 	methods: {
 		do: function () {
-			this.$dispatch('DO')
+			if (!this.disable){
+				this.$dispatch('DO')
+			}
 		},
 		back: function () {
 			window.history.back()

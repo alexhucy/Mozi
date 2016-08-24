@@ -1,17 +1,16 @@
 <template>
 	<card :type="type" >
-		<cl top right :type="type"
-		    :height="25"
-		    :width="73">
-			{{label}}
-		</cl>
 
-		<div v-link="{name:'sign',params:{id:1}}">
+		<div v-link="{name:'sign',params:{id:activityId}}" style="padding: 25px 30px 0;">
+			<cl top right :type="type"
+			    :height="25"
+			    :width="73">
+				{{label}}
+			</cl>
 			<h4>{{title}}</h4>
 			<p>{{state}}</p>
 			<p>{{content}}</p>
-			<div class="mz-photo" :style="{backgroundImage:'url('+ url +')' }">
-			</div>
+			<image-item :src="url"></image-item>
 		</div>
 
 		<comment :zan="zan"
@@ -23,23 +22,27 @@
 </template>
 
 <style>
-	.mz-card .mz-photo{
-		height: 141px;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
+.mz-photo{
+		max-width: 200px;
+		max-height: 200px;
+}
+.mz-text-center{
+	text-align: center;
+}
 </style>
 
 <script>
 import card from '../../components/container/boxWithBottomShadow.vue'
 import cl from '../../components/label/cardLabel.vue'
 import comment from '../../components/item/commentItem.vue'
+import imageItem from '../../components/Image/Image.vue'
 
 export default{
 	components: {
 		card,
 		cl,
-		comment
+		comment,
+		imageItem
 	},
 	props: {
 		label: String,

@@ -1,6 +1,6 @@
 <template>
 	<div class="mz-item mz-item-avatar">
-		<img :src="avatarUrl">
+		<img :src="avatarUrl" class="mz-avatar">
 		<slot></slot>
 	</div>
 </template>
@@ -13,7 +13,7 @@
 		min-height:72px ;
 		padding:10px 0 15px 60px;
 	}
-	.mz-item.mz-item-avatar img{
+	.mz-avatar{
 		position:absolute;
 		top:4px;
 		left: 0;

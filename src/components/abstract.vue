@@ -41,7 +41,7 @@ export default{
 	},
 	ready: function () {
 		this.userInfoQuery()
-		jssdkConfigInit(false,['uploadImage','chooseImage'])
+		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
 	}
 }
 </script>

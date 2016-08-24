@@ -6,7 +6,7 @@
 				<div class="mz-dialog-tip">
 
 				</div>
-				<h4>支付成功</h4>
+				<h4>报名成功</h4>
 			</div>
 
 			<m-button type="glass" large @click="confirm">
