@@ -11,6 +11,8 @@
     <group>
         <x-button type="primary" @click="updateInfo">确认{{showmess}}</x-button>
     </group>
+    <loading :show="show1"></loading>
+    <toast :show="show" :time="1000" type="text" width="15em">请求超时</toast>
 </template>
 <style>
     .weui_btn_primary{
@@ -20,6 +22,8 @@
 <script>
 import Group from '../../../node_modules/vux/dist/components/group/index'
 import xInput from '../../../node_modules/vux/dist/components/x-input/index'
+import toast from '../../../node_modules/vux/dist/components/toast/index'
+import loading from '../../../node_modules/vux/dist/components/loading/index'
 import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import DateTime from '../../../node_modules/vux/dist/components/datetime/index'
 import xButton from '../../../node_modules/vux/dist/components/x-button/index'
@@ -35,7 +39,9 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
                 value3: '',
                 name: '',
                 id: '',
-                showmess: ''
+                showmess: '',
+                show1: false,
+                show: false
             }
         },
         vuex: {
@@ -50,7 +56,9 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
             xInput,
             xButton,
             Radio,
-            DateTime
+            DateTime,
+            toast,
+            loading
         },
         route:{
             data({to: {query: {nickname,birth,avatar,gender,id}}}){
@@ -65,14 +73,18 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
                 this.sex = value == '男' ? '1' : '0'
             },
             updateInfo: function () {
-                var _sefl = this
+                var _self = this
+                _self.show1 = true
                 if(this.id != undefined && this.id != null){
-                    this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birth).then(function () {
-                        _sefl.$router.go({name: 'info',replace: true})
+                    this.alterChildInfoQuery(this.id,this.name,this.sex,this.birth).then(function () {
+                        _self.$router.go({name: 'info',replace: true})
+                    },function () {
+                        _self.show1 = false
+                        _self.show = true
                     })
                 }else {
                     this.childUpdateQuery(this.name, this.sex, this.birth).then(function () {
-                        _sefl.$router.go({name: 'info',replace: true})
+                        _self.$router.go({name: 'info',replace: true})
                     })
                 }
             },
@@ -84,7 +96,6 @@ import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userActio
             }
         },
         ready: function () {
-            console.log(this.id)
             if (this.id != null && this.id != undefined){
                 this.showmess = '修改'
             }else {

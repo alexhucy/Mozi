@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="margin:15px;padding:5px;border:1px solid #b0d160;" class="vux-center" v-if="type == 1">
+        <div v-link="{name:'update'}" style="margin:15px;padding:5px;border:1px solid #b0d160;" class="vux-center" v-if="type == 1">
             <div style="text-align:center;" class="mz-icon mz-icon-addChild">{{content}}</div>
         </div>
         <div style="margin:15px;padding:5px;border:1px solid #b0d160;display:flex;align-items:center;justify-content:space-between" v-if="type == 2">
@@ -17,6 +17,7 @@
             </div>
         </div>
     </div>
+    <loading :show="show"></loading>
 </template>
 <style>
     .vux-center-v, .vux-center-h, .vux-center {
@@ -58,12 +59,17 @@
 
 <script>
     import {deleteChildInfoQuery} from '../../vuex/actions/userAction'
+    import loading from '../../../node_modules/vux/dist/components/loading/index'
     export default {
         data: function () {
             return {
                 content: '添加孩子信息',
-                birth1: ''
+                birth1: '',
+                show: false
             }
+        },
+        components: {
+            loading
         },
         props: {
             type: {
@@ -88,6 +94,7 @@
         methods: {
             delete: function () {
                 var _self = this
+                _self.show = true
                 this.deleteChildInfoQuery(this.id).then(function () {
                     _self.$dispatch('update')
                 })

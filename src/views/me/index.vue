@@ -11,7 +11,7 @@
 					</div>
 			</div>
 			<div class="mz-center-avatar mz-item">
-				<div class="mz-center-crown">小白</div>
+				<div class="mz-center-crown">{{level}}</div>
 				<img :src="user.info.user_avatar" class="mz-center-img-avatar"><!--
 			--></div>
 			<div class="mz-flex">
@@ -145,6 +145,11 @@ import {childInfoQuery,userUpInfoQuery} from '../../vuex/actions/userAction'
 import {getUserUpInfo} from '../../vuex/getters/userGetter'
 
 export default {
+	data(){
+		return {
+			level: String
+		}
+	},
 	components: {
 		card,
 		dialog
@@ -166,6 +171,29 @@ export default {
 	ready: function(){
 		this.userUpInfoQuery()
 		this.childInfoQuery()
+		switch (this.user.info.score_level){
+			case 0:
+				this.level = '小白'
+			break
+			case 1:
+				this.level = '幼儿园'
+			break
+			case 2:
+				this.level = '小学'
+			break
+			case 3:
+				this.level = '初中'
+			break
+			case 4:
+				this.level = '高中'
+			break
+			case 5:
+				this.level = '大学'
+			break
+			default:
+				this.level = '小白'
+			break
+		}
 	}
 }
 </script>

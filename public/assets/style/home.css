@@ -1010,6 +1010,7 @@
 
 
 
+
 .vux-center-v, .vux-center-h, .vux-center {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1151,6 +1152,8 @@ textarea{
 	padding: 10px 13px 0 13px;
 	background: #fff;
 }
+
+
 
 
 

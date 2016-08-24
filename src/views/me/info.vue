@@ -16,7 +16,7 @@
 	<group>
 		<group-title type="glass">孩子信息</group-title>
 		<card-center type="2" v-for="item in child" :nickname="item.nickname" :birth="item.birthday" :id="item.id" :gender="item.gender" :avatar="avatar"></card-center>
-		<card-center v-link="{name: 'update'}"></card-center>
+		<card-center></card-center>
 	</group>
 	</scroller>
 </template>
@@ -64,6 +64,7 @@ export default{
 	events: {
 		update: function () {
 			this.childInfoQuery().then(function () {
+
 			})
 		}
 	},
