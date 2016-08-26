@@ -27,7 +27,7 @@ const mutations = {
 		state.childInfo = data.data
 	},
 	[GET_USER_UP] (state, data) {
-		state.userUpInfo = data.data
+		state.userUpInfo = data.data.info
 	},
 	[POST_CHILD_UPDATE] (state, data) {
 		state.childUpdate = data.data

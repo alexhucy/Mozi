@@ -1207,6 +1207,26 @@ textarea{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .mz_cells_title{
 	color: #fff;
 	padding: 10px 15px;
@@ -1543,22 +1563,177 @@ textarea{
 
 
 
-html,body{
-	font-size: 10px;
-	height: 100%;
-	position: relative;
-	margin: 0;
-	padding: 0;
-	background: #fff7e6;
-	overflow: hidden;
-}
-@font-face {
-	font-family: 'MOZI';
-	src: url('/font/icomoon.eot');
-	src: url('/font/icomoon.eot?#iefix') format('embedded-opentype'),
-	url('/font/icomoon.woff') format('woff'),
-	url('/font/icomoon.ttf') format('truetype'),
-	url('/font/icomoon.svg#Taidii') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	html,body{
+		font-size: 10px;
+		height: 100%;
+		position: relative;
+		margin: 0;
+		padding: 0;
+		background: #fff7e6;
+		overflow: hidden;
+	}
+	@font-face {
+		font-family: 'MOZI';
+		src: url('/font/icomoon.eot');
+		src: url('/font/icomoon.eot?#iefix') format('embedded-opentype'),
+		url('/font/icomoon.woff') format('woff'),
+		url('/font/icomoon.ttf') format('truetype'),
+		url('/font/icomoon.svg#Taidii') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	/**
+* vue-router transition
+*/
+	.vux-pop-out-transition,
+	.vux-pop-in-transition {
+		width: 100%;
+		-webkit-animation-duration: 0.5s;
+		        animation-duration: 0.5s;
+		-webkit-animation-fill-mode: both;
+		        animation-fill-mode: both;
+		-webkit-backface-visibility: hidden;
+		        backface-visibility: hidden;
+	}
+	.vux-pop-out-enter,
+	.vux-pop-out-leave,
+	.vux-pop-in-enter,
+	.vux-pop-in-leave {
+		will-change: transform;
+		height: 100%;
+		position: absolute;
+		left: 0;
+	}
+	.vux-pop-out-enter {
+		-webkit-animation-name: popInLeft;
+		        animation-name: popInLeft;
+	}
+	.vux-pop-out-leave {
+		-webkit-animation-name: popOutRight;
+		        animation-name: popOutRight;
+	}
+	.vux-pop-in-enter {
+		-webkit-perspective: 1000;
+		        perspective: 1000;
+		-webkit-animation-name: popInRight;
+		        animation-name: popInRight;
+	}
+	.vux-pop-in-leave {
+		-webkit-animation-name: popOutLeft;
+		        animation-name: popOutLeft;
+	}
+	@-webkit-keyframes popInLeft {
+		from {
+			-webkit-transform: translate3d(-100%, 0, 0);
+			        transform: translate3d(-100%, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+	}
+	@keyframes popInLeft {
+		from {
+			-webkit-transform: translate3d(-100%, 0, 0);
+			        transform: translate3d(-100%, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+	}
+	@-webkit-keyframes popOutLeft {
+		from {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(-100%, 0, 0);
+			        transform: translate3d(-100%, 0, 0);
+		}
+	}
+	@keyframes popOutLeft {
+		from {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(-100%, 0, 0);
+			        transform: translate3d(-100%, 0, 0);
+		}
+	}
+	@-webkit-keyframes popInRight {
+		from {
+			-webkit-transform: translate3d(100%, 0, 0);
+			        transform: translate3d(100%, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+	}
+	@keyframes popInRight {
+		from {
+			-webkit-transform: translate3d(100%, 0, 0);
+			        transform: translate3d(100%, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+	}
+	@-webkit-keyframes popOutRight {
+		from {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(100%, 0, 0);
+			        transform: translate3d(100%, 0, 0);
+		}
+	}
+	@keyframes popOutRight {
+		from {
+			-webkit-transform: translate3d(0, 0, 0);
+			        transform: translate3d(0, 0, 0);
+		}
+		to {
+			-webkit-transform: translate3d(100%, 0, 0);
+			        transform: translate3d(100%, 0, 0);
+		}
+	}

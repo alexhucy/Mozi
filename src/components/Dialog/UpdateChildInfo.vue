@@ -69,8 +69,8 @@ export default {
     loading,
 	  popup
   },
-  route:{
-    data({to: {query: {nickname,birth,avatar,gender,id}}}){
+  route: {
+    data ({to: {query: {nickname,birth,avatar,gender,id}}}) {
       this.name = nickname
       this.value3 = gender == 'male' ? '男' : '女'
       this.value2 = birth

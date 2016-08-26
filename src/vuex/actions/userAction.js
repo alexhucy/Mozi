@@ -41,3 +41,13 @@ export const deleteChildInfoQuery = function ({ dispatch }, id) {
 
 	})
 }
+
+export const alterUserInfoFirstQuery = function ({ dispatch }, data) {
+	return user.API_PATCH_ALTER_USER_INFO_FIRST(data).then(function (data) {
+	})
+}
+
+export const alterUserInfoSecondQuery = function (location, gender) {
+	return user.API_PATCH_ALTER_USER_INFO_SECOND(location, gender).then(function (data) {
+	})
+}

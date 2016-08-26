@@ -12,6 +12,7 @@ import info from './views/me/info.vue'
 import sign from './views/sign/sign.vue'
 import timeline from './views/me/activityTimeline.vue'
 import update from './components/Dialog/UpdateChildInfo.vue'
+import userUpdate from './components/alterInfo/userInfoModify.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -52,6 +53,10 @@ module.exports = function (router) {
 		'/info/updateInfo': {
 			name: 'update',
 			component: update
+		},
+		'/info/updateuserInfo': {
+			name: 'userUpdate',
+			component: userUpdate
 		},
 		'/item/:id/timeline': {
 			name:'timeline',

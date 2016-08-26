@@ -3,8 +3,8 @@
  * Created by Alex on 16/8/8.
  */
 module.exports = {
-	appid: 'wxc3378269c5fd45a7',
-	appsecret: '5019a6f743905ac296df161fba2a7c4a',
+	appid: 'wxd84a057c5ec212c9',
+	appsecret: '83ab4fc43b334594d8124ab6439f9ff7',
 	mchid: ' ',
 	token: 'Taidii',
 	proxy: {
