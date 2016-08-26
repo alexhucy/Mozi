@@ -46,3 +46,8 @@ export const activityCompletedTimeLineQuery = function ({dispatch}, id) {
 	})
 }
 
+export const recordQuery = function ({ dispatch }, activity_id) {
+	return activity.API_RECORD(activity_id).then(function (data) {
+		dispatch(types.GET_RECORD, data)
+	})
+}

@@ -1,7 +1,10 @@
 <template>
 		<scroller v-ref:scroller lock-x height="auto"  style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
+
 			<div>
-				<loading @on-loading="query">
+
+				<loading v-ref:loading
+				         @on-refresh="query">
 
 				</loading>
 
@@ -14,7 +17,9 @@
 				      :course="item.course_desc"
 				      :id="item.activity_id">
 				</card>
+
 			</div>
+
 		</scroller>
 
 </template>
@@ -47,17 +52,17 @@ export default{
 	},
 	methods: {
 		query: function () {
-			var _self = this;
-
-			this.activityListQuery().then(function (data) {
+			var _self = this
+			this.$refs.loading.OnLoading()
+			this.activityListQuery().then(function () {
 				if(isEmptyObject(_self.items)){
-					_self.$broadcast('empty')
+					_self.$refs.loading.OnEmpty()
 				}
 				else{
-					_self.$broadcast('hide')
+					_self.$refs.loading.OnHide()
 				}
-			}).catch(function (err) {
-				_self.$broadcast('error')
+			}).catch(function () {
+				_self.$refs.loading.OnError()
 			})
 		}
 	},
@@ -66,6 +71,11 @@ export default{
 			this.$nextTick(() => {
 				this.$refs.scroller.reset()
 			})
+		}
+	},
+	ready: function () {
+		if (this.items.length === 0){
+			this.query()
 		}
 	}
 }

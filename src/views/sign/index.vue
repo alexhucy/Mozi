@@ -1,61 +1,70 @@
 <template>
-	<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
-		<div class="mz-sign">
-			<div class="mz-item-cover">
-				<avatar-item :avatar-url="activityInfo.info.sponsor_avatar" v-if="activityInfo.info">
-					<h4>{{activityInfo.info.sponsor_name}}</h4>
-					<p>发起了活动: {{activityInfo.info.title}}</p>
-					<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
-					<p>报名截至时间:{{activityInfo.info.start_time}}</p>
-					<!--<p>每人保证金: {{activityInfo.deposit}}元</p>-->
-				</avatar-item>
+	<loading v-ref:loading @on-refresh="query"></loading>
+
+	<div v-if="activityInfo.info && items">
+		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
+			<div class="mz-sign">
+				<div class="mz-item-cover">
+					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar" v-if="activityInfo.info">
+						<h4>{{activityInfo.info.sponsor_name}}</h4>
+						<p>发起了活动: {{activityInfo.info.title}}</p>
+						<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
+						<p>报名截至时间:{{activityInfo.info.start_time}}</p>
+					</avatar-item>
+				</div>
+
+				<wrap title="活动介绍:" type="success">
+					<p v-if="activityInfo.info">{{activityInfo.info.desc}}</p>
+				</wrap>
+
+				<wrap title="相关课程:" type="warn" v-if="activityInfo.info">
+					<half-item
+									v-for="course in activityInfo.info.resource_list"
+									:url="course.image_url"
+									:title="course.link_text"
+									:href="course.link_url">
+					</half-item>
+				</wrap>
+
+				<div class="mz-content-container" style="margin-top: 10px">
+					<icon-item type="people">已报名人数:<span v-if="activityInfo.info">{{activityInfo.info.signup_number}}</span></icon-item>
+					<!--<icon-item type="money">每人保证金</icon-item>-->
+					<!--<icon-item type="gift">剩余2人在坚持,每人可获得100元</icon-item>-->
+				</div>
+
+				<card v-for="item in items"
+				      :head-img-url="item.user_avatar"
+							:cover="item.image_url"
+							:zan="item.agree_count"
+							:comments="item.comment_count"
+							:content="item.text"
+							:activity-id="item.activity_id"
+							:sign-id="item.signin_id"
+							:checked="item.my_agree === 1 ? true: false "
+							@on-loaded="fresh">
+				</card>
+
 			</div>
+		</scroller>
 
-			<wrap title="活动介绍:" type="success">
-				<p v-if="activityInfo.info">{{activityInfo.info.desc}}</p>
-			</wrap>
+		<f-button type="success"
+							:action="activityInfo.signup===1?'已报名':'我要报名'"
+							:disable="activityInfo.signup===1?true:false">
 
-			<wrap title="相关课程:" type="warn" v-if="activityInfo.info">
-				<half-item
-								v-for="course in activityInfo.info.resource_list"
-								:url="course.image_url"
-								:title="course.link_text">
-				</half-item>
-			</wrap>
+		</f-button>
 
-			<div class="mz-content-container" style="margin-top: 10px">
-				<icon-item type="people">已报名人数:{{activityInfo.signup}}</icon-item>
-				<!--<icon-item type="money">每人保证金</icon-item>-->
-				<!--<icon-item type="gift">剩余2人在坚持,每人可获得100元</icon-item>-->
-			</div>
+		<dialog v-ref:dialog></dialog>
 
-			<card v-for="item in signList"
-			      :head-img-url="item.user_avatar"
-						:cover="item.image_url"
-						:zan="item.agree_count"
-						:comments="item.comment_count"
-						:content="item.text"
-						:activity-id="item.activity_id"
-						:sign-id="item.signin_id">
-			</card>
+		<confirm :show.sync="show" title="活动报名" @on-confirm="onConfirm" cancel-text="取消" confirm-text="确定">
+			<p style="text-align:center;" v-if="activityInfo.info">确定参加{{activityInfo.info.title}}</p>
+		</confirm>
 
-		</div>
-	</scroller>
+		<alert :show.sync="showError" title="活动报名" button-text="确定">{{errorMessage}}</alert>
 
-	<f-button type="success"
-						:action="activityInfo.signup===1?'已报名':'我要报名'"
-						:disable="activityInfo.signup===1?true:false">
+		<upload :show-pop.sync="showUpload" :id="$route.params.id"></upload>
 
-	</f-button>
-
-	<dialog></dialog>
-
-	<confirm :show.sync="show" title="活动报名" @on-confirm="onConfirm" cancel-text="取消" confirm-text="确定">
-		<p style="text-align:center;" v-if="activityInfo.info">确定参加{{activityInfo.info.title}}</p>
-	</confirm>
-
-	<alert :show.sync="showError" title="活动报名" button-text="确定">{{errorMessage}}</alert>
-
+		<load :show="showLoading" text="提交中"></load>
+	</div>
 </template>
 
 <style>
@@ -73,12 +82,15 @@ import card from '../../components/card/cardWithAvatar.vue'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import fButton from '../../components/button/footerButton.vue'
 import dialog from '../../components/Dialog/confirm.vue'
-import {activityQuery, activitySignListQuery} from '../../vuex/actions/activityAction'
-import {getActivity, getSignList} from '../../vuex/getters/activityGetter'
 import confirm from '../../../node_modules/vux/dist/components/confirm/index'
 import alert from '../../../node_modules/vux/dist/components/alert/index'
-import activity from '../../service/activityService'
+import activityService from '../../service/activityService'
 import halfItem from '../../components/item/HalfItem.vue'
+import promise from '../../../node_modules/vue-resource/src/promise'
+import loading from '../../components/load/loading.vue'
+import upload from './upload.vue'
+import load from '../../../node_modules/vux/dist/components/loading/index'
+
 
 export default {
 	data (){
@@ -86,7 +98,11 @@ export default {
 			id: 0,
 			show: false,
 			showError: false,
-			errorMessage: ''
+			errorMessage: '',
+			activityInfo: {},
+			items: [],
+			showUpload: false,
+			showLoading: false
 		}
 	},
 	components: {
@@ -100,63 +116,67 @@ export default {
 		dialog,
 		alert,
 		halfItem,
+		loading,
+		upload,
+		load
 	},
 	route: {
 		data ({to: { params: { id }}}){
 			this.id = id;
-
-		}
-	},
-	vuex: {
-		actions: {
-			activityQuery,
-			activitySignListQuery
-		},
-		getters: {
-			activityInfo: getActivity,
-			signList: getSignList
 		}
 	},
 	ready: function () {
-		this.activityQuery(this.id)
-		this.activitySignListQuery(this.id)
+		this.query()
 	},
 	events: {
 		DO: function () {
 			this.show = true
 		},
 		confirm: function () {
-			this.$router.go({name:'upload'})
+			this.showUpload = true
+			this.$refs.dialog.hidden()
 		}
 	},
 	methods: {
 		onConfirm: function () {
 			var _self = this
-			activity.book(this.id).then(function (data) {
+			this.showLoading = true
+			activityService.book(this.id).then(function (data) {
 				 if(data.data.result === 0){
-					 _self.$broadcast('showDialog')
+					 _self.activityInfo.signup = 1
+					 _self.$refs.dialog.hidden()
+					 _self.showLoading =false
+					 //_self.$broadcast('showDialog')
 				 }
 				else{
 					 _self.errorMessage = '报名失败!';
 					 _self.showError = true
+					 _self.showLoading = false
 				 }
 			}).catch(function (err) {
 				_self.errorMessage = '内部错误, 请重试!';
 				_self.showError = true
+				_self.showLoading =false
 			})
 		},
+
 		fresh: function () {
 			this.$nextTick(() => {
 				this.$refs.scroller.reset()
 			})
-		}
-	},
-	watch:{
-		activityInfo: function () {
-			this.fresh()
 		},
-		signList: function () {
-			this.fresh()
+
+		query: function () {
+			var _self = this
+			this.$refs.loading.OnLoading()
+			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id)]).then(function (data) {
+				_self.activityInfo = data[0].data
+				_self.items = data[1].data.list
+				_self.$refs.loading.OnHide()
+				_self.fresh()
+			}).catch(function (err) {
+				_self.$refs.loading.OnError()
+			})
 		}
 	}
 }

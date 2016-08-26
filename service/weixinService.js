@@ -92,5 +92,9 @@ module.exports={
 			delay.reject(e)
 		});
 		return delay.promise
+	},
+
+	getAuthorizeURL: function (redirect, state, scope) {
+		return client.getAuthorizeURL(redirect, state, scope)
 	}
 }

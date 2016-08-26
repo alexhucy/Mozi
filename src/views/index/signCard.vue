@@ -16,7 +16,9 @@
 		<comment :zan="zan"
 					   :comments="comments"
 		         :activity-id="activityId"
-		         :sign-id="signId">
+		         :sign-id="signId"
+					   :checked="checked"
+							@on-loaded="loaded">
 		</comment>
 	</card>
 </template>
@@ -54,7 +56,13 @@ export default{
 		url: String,
 		state: String,
 		activityId: Number,
-		signId: Number
+		signId: Number,
+		checked: Boolean
+	},
+	methods: {
+		loaded: function () {
+			this.$emit('on-loaded')
+		}
 	}
 }
 </script>

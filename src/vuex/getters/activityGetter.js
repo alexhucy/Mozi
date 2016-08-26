@@ -28,3 +28,7 @@ export function getCompltedActivity(){
 export function getTimeline() {
 	return store.state.activity.timeline
 }
+
+export function getRecord() {
+	return store.state.activity.record
+}

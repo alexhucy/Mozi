@@ -8,7 +8,9 @@
 		<comment :zan="zan"
 		         :comments="comments"
 		         :activity-id="activityId"
-		         :sign-id="signId">
+		         :sign-id="signId"
+		         :checked="checked"
+							@on-loaded="loaded">
 
 		</comment>
 	</box>
@@ -50,8 +52,15 @@ export default {
 		},
 		signId: {
 			type: Number
+		},
+		checked: {
+			type: Boolean
 		}
-
+	},
+	methods: {
+		loaded: function () {
+			this.$emit('on-loaded')
+		}
 	}
 }
 </script>

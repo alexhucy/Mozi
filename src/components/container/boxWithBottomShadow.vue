@@ -25,6 +25,9 @@
 .mz-shadow-complete{
 	border-bottom: 3px solid #ffba27;
 }
+.mz-shadow-glass{
+	border-bottom: 3px solid #b0d160;
+}
 .mz-shadow-default{
 }
 </style>

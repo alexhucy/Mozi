@@ -27,5 +27,21 @@ module.exports = {
 	
 	getUrlByServerId: function (id) {
 		return API.API_GET_URL_BY_SERVERID(id)
+	},
+
+	getActivityInfo: function (id) {
+		return API.API_GET_ACTIVITY(id)
+	},
+	
+	getActivitySignList: function (id) {
+		return API.API_GET_SIGN_LIST(id)
+	},
+
+	getActivityCompletedInfo: function (id) {
+		return API.API_GET_COMPLETED_ACTIVITY(id)
+	},
+
+	getActivityTimeLine: function (id) {
+		return API.API_GET_COMPLETED_ACTIVITY_TIMELINE(id)
 	}
 };

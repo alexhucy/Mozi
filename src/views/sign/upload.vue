@@ -1,24 +1,26 @@
 <template>
-	<div class="mz-box-upload mz-wrap mz-container">
-		<textarea placeholder="这一刻的想法..." v-model="content"></textarea>
-		<div class="mz-flex">
-			<i class="mz-icon mz-icon-add"  @click="upload"></i>
-			<img :src="previewImg" v-if="previewImg" class="mz-preview-img">
-			<div style="flex: 1;margin-left: 10px">
-				<span style="color:#eca409;font-size: 1.6rem">上传图证</span>
-				<p>每位用户每次打卡限制上传一张图片</p>
+	<popup :show.sync="showPOP" height="100%">
+		<div class="mz-box-upload mz-wrap mz-container">
+			<textarea placeholder="这一刻的想法..." v-model="content"></textarea>
+			<div class="mz-flex">
+				<i class="mz-icon mz-icon-add"  @click="upload"></i>
+				<img :src="previewImg" v-if="previewImg" class="mz-preview-img">
+				<div style="flex: 1;margin-left: 10px">
+					<span style="color:#eca409;font-size: 1.6rem">上传图证</span>
+					<p>每位用户每次打卡限制上传一张图片</p>
+				</div>
+
 			</div>
-
 		</div>
-	</div>
 
-	<div style="margin-top: 30px">
-		<m-button type="success" large @click="submit">确认</m-button>
-	</div>
+		<div style="margin-top: 30px">
+			<m-button type="success" large @click="submit">确认</m-button>
+		</div>
+	</popup>
 
 	<loading :show="showLoading" text="提交中"></loading>
 
-	<toast :show.sync="showToast" >{{message}}</toast>
+	<toast :show.sync="showToast" :type="type">{{message}}</toast>
 </template>
 
 <style>
@@ -57,6 +59,7 @@ import mButton from '../../components/button/button.vue'
 import activity from '../../service/activityService'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
 import toast from '../../../node_modules/vux/dist/components/toast/index'
+import Popup from '../../../node_modules/vux/dist/components/popup/index'
 
 export default{
 	data: function () {
@@ -66,17 +69,23 @@ export default{
 			url: '',
 			showToast: false,
 			previewImg: '',
-			message: ''
+			message: '',
+			type: ''
 		}
 	},
 	components: {
 		mButton,
 		loading,
-		toast
+		toast,
+		Popup
 	},
-	route: {
-		data ({to: { params: { id }}}){
-			this.id = id;
+	props:{
+		showPOP: {
+			type: Boolean,
+			default: false
+		},
+		id: {
+			type: String
 		}
 	},
 	methods: {
@@ -100,6 +109,10 @@ export default{
 									_self.showToast = true
 									_self.previewImg = _self.url
 								}
+								else{
+									_self.message = '图片上传失败'
+									_self.showToast = true
+								}
 							})
 						}
 					});
@@ -108,15 +121,30 @@ export default{
 		},
 
 		submit: function () {
-			this.showLoading = true
 			var _self = this
+			if(!this.url){
+				_self.message = '请先上传图片'
+				_self.type = 'text'
+				_self.showToast = true
+				return false
+			}
+			else if(this. content.length <= 0){
+				_self.message = '留言内容不能为空'
+				_self.type = 'text'
+				_self.showToast = true
+				return false
+			}
+			this.showLoading = true
 			activity.sign(this.id, this.url,this.content).then(function () {
 				_self.showLoading = false
 				_self.showToast = true
 				_self.message = '打卡成功'
-			}, function () {
+				_self.$emit('on-success')
+				_self.showPOP = false
+			}, function (err) {
 				_self.showLoading = false
 				_self.showToast = true
+				_self.type = 'warn'
 				_self.message = '打卡失败'
 			})
 		}

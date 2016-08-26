@@ -16,9 +16,10 @@
 		padding-right: 15px;
 		box-sizing: border-box;
 	}
+
 	.td-scroll-item-cover{
 		width: 100%;
-		height: 40px;
+		height: 70px;
 		background-repeat:no-repeat;
 		background-size:140px;
 	}
@@ -34,7 +35,7 @@
 	}
 	.td-scroll-item-cover{
 		width: 100%;
-		height: 40px;
+		height: 70px;
 		background-repeat:no-repeat;
 		background-size:100%;
 	}
@@ -59,6 +60,9 @@
 				type: String
 			},
 			link: {
+				type: String
+			},
+			href:{
 				type: String
 			}
 		}

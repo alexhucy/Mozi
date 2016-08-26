@@ -18,5 +18,4 @@ proxy.on('proxyReq', function(proxyReq, req, res, options) {
 	}
 });
 
-
 module.exports = proxy;

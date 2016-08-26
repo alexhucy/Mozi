@@ -49,7 +49,7 @@ router.use('/wechat/getMedia', function (req, response) {
 				var filename = getFileName(res.headers['content-disposition']);
 				fs.writeFile(path.join(__dirname, '../media',filename), result, function (err) {
 					 if(!err){
-						 response.json({'state':'10000', 'url': path.join('http://edu.ngrok.chainz.net/', filename)})
+						 response.json({'state':'10000', 'url': 'http://edu.ngrok.chainz.net/' + filename})
 					 }
 					 else{
 						 response.json({'state':'11010', 'message': '文件保存失败'})

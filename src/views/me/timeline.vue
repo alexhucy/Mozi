@@ -6,7 +6,9 @@
 			<comment :zan="zan"
 			         :comments="comments"
 			         :activity-id="activityId"
-			         :sign-id="signId">
+			         :sign-id="signId"
+							 :checked="checked"
+								@on-loaded="loaded">
 			</comment>
 		</div>
 
@@ -61,7 +63,13 @@ export default{
 		zan: Number,
 		comments: Number,
 		signId: Number,
-		activityId: Number
+		activityId: Number,
+		checked: Boolean
+	},
+	methods: {
+		loaded: function () {
+			this.$emit('on-loaded')
+		}
 	}
 }
 </script>

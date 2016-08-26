@@ -7,12 +7,15 @@
 				<image-item :src="cover"></image-item>
 			</avatar-item>
 
-			<comment :zan="zan"
-			         :comments="comments"
-			         :activity-id="activityId"
-			         :sign-id="signId">
-			</comment>
 		</div>
+
+		<comment :zan="zan"
+		         :comments="comments"
+		         :activity-id="activityId"
+		         :sign-id="signId"
+		         :checked="checked"
+		         @on-loaded="loaded">
+		</comment>
 	</box>
 </template>
 
@@ -57,6 +60,15 @@ export default {
 		},
 		signId: {
 			type: Number
+		},
+		checked: {
+			type: Boolean
+		}
+	},
+
+	methods: {
+		loaded: function () {
+			this.$emit('on-loaded')
 		}
 	}
 }

@@ -1,11 +1,11 @@
 <template>
 	<div style="padding: 8px 15px">
 		<div class="mz-item-comment clear-fix">
-			<i class="mz-icon mz-icon-comment mz-pull-right"  @click="commitToggle">{{comments}}</i>
-			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  @click="toggle">{{zan}}</i>
+			<i class="mz-icon mz-icon-comment mz-pull-right mz-space-15"  @click="commitToggle">{{comments}}</i>
+			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  :class="{'mz-checked': checked}"  @click="toggle">{{zan}}</i>
 		</div>
 		<div class="mz-commit-box" v-if="showCommit">
-			<loading @on-loading="query"></loading>
+			<loading v-ref:loading @on-refresh="query"></loading>
 			<div>
 				<p v-for="item in commits">{{item.user_name}}:{{item.text}}</p>
 			</div>
@@ -58,6 +58,9 @@
 		overflow:auto;
 		_height:1%
 	}
+	.mz-checked.mz-icon{
+		color: #FE7F85;
+	}
 </style>
 
 <script>
@@ -102,40 +105,49 @@ export default{
 			type: Number
 		},
 		checked: {
-			type: String
+			type: Boolean,
+			default: false
 		}
 	},
 	methods: {
 		//点赞
 		toggle: function () {
-			activity.ZAN(this.activityId, this.signId)
-			this.zan++
+			if(!this.checked){
+				activity.ZAN(this.activityId, this.signId)
+				this.zan++
+				this.checked = true
+			}
 		},
 
 		//查看评论
 		query: function() {
 			var _self = this
-			if(this.showCommit){
+			if(this.showCommit && this.commits.length === 0){
+				this.$refs.loading.OnLoading()
 				activity.getMessageList(this.activityId, this.signId).then(function (data) {
 					if(data.data.list.length === 0){
-						_self.$broadcast('empty')
+						_self.$refs.loading.OnEmpty()
+						_self.$emit('on-loaded')
 					}
 					else{
 						_self.commits = data.data.list
-						_self.$broadcast('hide')
+						_self.$refs.loading.OnHide()
+						_self.$emit('on-loaded')
 					}
-				}).catch(function () {
-					_self.$broadcast('error')
+				}).catch(function (err) {
+					_self.$refs.loading.OnError()
+					_self.$emit('on-loaded')
 				})
-			}
-			else{
-				_self.$broadcast('hide')
 			}
 		},
 
 		//评论
 		commitToggle: function () {
 			this.showCommit = !this.showCommit;
+			this.$nextTick(() => {
+				this.query()
+
+			})
 		},
 
 		//提交评论
@@ -150,8 +162,9 @@ export default{
 						_self.commits.push({'user_name': data.data.user_name,'text': data.data.text})
 						_self.comments++
 						_self.message = '评论成功!'
-						if(_self.commits.length === 1)_self.$broadcast('hide')
+						if(_self.commits.length === 1)_self.$refs.loading.OnHide()
 						_self.content = ''
+						_self.$emit('on-loaded')
 					}
 					else {
 						self.showToast = true

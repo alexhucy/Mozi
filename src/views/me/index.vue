@@ -1,9 +1,10 @@
 <template>
-	<scroller v-ref:scroller lock-x>
+	<scroller v-ref:scroller lock-x >
 
-	<div class="mz-center-cover">
+	<div class="mz-center-cover" v-if="items">
+
 		<div class="mz-center-name">
-			张三
+			{{user.user_name}}
 		</div>
 
 		<div class="mz-flex mz-container">
@@ -13,8 +14,8 @@
 					</div>
 			</div>
 			<div class="mz-center-avatar mz-item">
-				<div class="mz-center-crown">小白</div>
-				<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-center-img-avatar"><!--
+				<div class="mz-center-crown"></div>
+				<img :src="user.info.user_avatar" class="mz-center-img-avatar"><!--
 			--></div>
 			<div class="mz-flex">
 				<div class="mz-center-billboard mz-pop" v-link="{name:'billboard'}">
@@ -24,26 +25,31 @@
 		</div>
 
 		<div class="mz-signature mz-center-item">
-			个人战绩: 坚持打卡<span class="mz-bold">10</span>天
+			个人战绩: 坚持打卡<span class="mz-bold">{{user.info.duration}}</span>天
 		</div>
 
 		<div class="mz-center-point mz-center-item">
-			1234积分
+			{{user.info.score}}积分
 		</div>
+
 
 		<div class="mz-center-item">
 			<a href="javascript:;" class="mz-href" @click="awardIntroduce"> 积分奖励说明</a>
 		</div>
+
 	</div>
 
 	<card v-for="item in items"
-					:zan="item.agree_count"
+				:zan="item.agree_count"
 				:comments="item.comment_count"
 				:title="item.activity_title"
-				content="连续12天打卡"
+				:content="item.text"
 				:cover="item.image_url"
 				:activity-id="item.activity_id"
-				:sign-id="item.signin_id">
+				:sign-id="item.signin_id"
+				:checked="item.my_agree === 1 ? true: false"
+				@on-loaded="fresh"
+	>
 	</card>
 
 	</scroller>
@@ -148,8 +154,15 @@ import dialog from './awardDialog.vue'
 import {activityOngoingListQuery} from '../../vuex/actions/activityAction'
 import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
+import {childInfoQuery, userUpInfoQuery} from '../../vuex/actions/userAction'
+import {getUserUpInfo} from '../../vuex/getters/userGetter'
 
 export default {
+	data(){
+		return {
+			level: String
+		}
+	},
 	components: {
 		card,
 		dialog,
@@ -158,25 +171,56 @@ export default {
 	methods: {
 		awardIntroduce: function () {
 			this.$broadcast('showDialog')
+		},
+		fresh :function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
+			})
 		}
 	},
 	vuex: {
 		actions: {
-			activityOngoingListQuery
+			activityOngoingListQuery,
+			childInfoQuery,
+			userUpInfoQuery
 		},
 		getters: {
-			items: getOngoingActivityList
+			items: getOngoingActivityList,
+			user: getUserUpInfo
 		}
 	},
-	ready: function () {
+	ready: function(){
+		var _self = this
 		this.activityOngoingListQuery()
+		this.userUpInfoQuery()
+		this.childInfoQuery()
+		switch (this.user.info.score_level){
+			case 0:
+				this.level = '小白'
+				break
+			case 1:
+				this.level = '幼儿园'
+				break
+			case 2:
+				this.level = '小学'
+				break
+			case 3:
+				this.level = '初中'
+				break
+			case 4:
+				this.level = '高中'
+				break
+			case 5:
+				this.level = '大学'
+				break
+			default:
+				this.level = '小白'
+				break
+		}
 	},
-	watch:{
+	watch: {
 		items: function () {
-			console.log('1')
-			this.$nextTick(() => {
-				this.$refs.scroller.reset()
-			})
+			this.fresh()
 		}
 	}
 }

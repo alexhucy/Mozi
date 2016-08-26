@@ -16,6 +16,13 @@
 	margin: 40px 0;
 	text-align: center;
 }
+.mz-error-line{
+	text-align: center;
+	margin: 10px 0;
+}
+.mz-error-line a{
+	color: #333;
+}
 </style>
 
 <script>
@@ -33,12 +40,6 @@ export default{
 		}
 	},
 	methods: {
-		OnRefresh: function () {
-			this.error = false
-			this.empty = false
-			this.loading = true
-			this.$emit('on-loading')
-		},
 		OnError: function () {
 			this.error = true
 			this.empty = false
@@ -53,13 +54,15 @@ export default{
 			this.error = false
 			this.empty = false
 			this.loading = false
+		},
+		OnLoading: function () {
+			this.error = false
+			this.empty = false
+			this.loading = true
+		},
+		OnRefresh: function () {
+			this.$emit('on-refresh')
 		}
-	},
-	ready: function () {
-		this.OnRefresh()
-		this.$on('error', this.OnError)
-		this.$on('empty', this.OnEmpty)
-		this.$on('hide', this.OnHide)
 	}
 }
 </script>

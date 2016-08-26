@@ -29,19 +29,23 @@
 
 <script>
 import store from '../vuex/store'
-import {userInfoQuery} from '../vuex/actions/userAction'
+import {userInfoQuery,userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
 import {jssdkConfigInit} from '../service/weixinService'
 
 export default{
 	store: store,
 	vuex: {
 		actions:{
-			userInfoQuery
+			userInfoQuery,
+			userUpInfoQuery,
+			childInfoQuery
 		}
 	},
 	ready: function () {
 		this.userInfoQuery()
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
+		this.childInfoQuery()
+		this.userUpInfoQuery()
 	}
 }
 </script>

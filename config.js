@@ -16,5 +16,6 @@ module.exports = {
 	},
 	API: {
 		createOrUpdateUser:'/api/create-weixin-user/'
-	}
+	},
+	domain: 'http://edu.ngrok.chainz.net'
 }

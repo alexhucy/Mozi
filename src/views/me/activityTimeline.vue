@@ -1,4 +1,6 @@
 <template>
+	<loading v-ref:loading @on-refresh="query"></loading>
+
 	<scroller v-ref:scroller lock-x>
 		<div>
 			<div v-if="activity.info">
@@ -31,7 +33,9 @@
 									:comments="item.comment_count"
 									:sign-id="item.signin_id"
 									:activity-id="item.activity_id"
-									date="2016 08-16 11:10">
+									:checked="item.my_agree===1?true:false"
+									date="2016 08-16 11:10"
+									@on-loaded="fresh">
 
 				</timeline>
 			</div>
@@ -48,10 +52,11 @@ import timeline from './timeline.vue'
 import tab from '../../components/item/tabItem.vue'
 import avatarItem from '../../components/item/avatarItem.vue'
 import wrap from '../../components/container/contentWithTitle.vue'
-import {activityCompletedInfoQuery,activityCompletedTimeLineQuery} from '../../vuex/actions/activityAction'
-import {getCompltedActivity,getTimeline} from '../../vuex/getters/activityGetter'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import halfItem from '../../components/item/HalfItem.vue'
+import loading from '../../components/load/loading.vue'
+import activityService from '../../service/activityService'
+import promise from '../../../node_modules/vue-resource/src/promise'
 
 export default{
 	components: {
@@ -60,23 +65,18 @@ export default{
 		avatarItem,
 		wrap,
 		scroller,
-		halfItem
-	},
-	vuex: {
-		actions: {
-			activityCompletedInfoQuery,
-			activityCompletedTimeLineQuery
-		},
-		getters: {
-			activity: getCompltedActivity,
-			items: getTimeline
-		}
+		halfItem,
+		loading
 	},
 	route: {
 		data ({to: { params: { id }}}){
 			this.id = id;
-			this.activityCompletedInfoQuery(id)
-			this.activityCompletedTimeLineQuery(id)
+		}
+	},
+	data: function () {
+		return {
+			activity: {},
+			items: []
 		}
 	},
 	methods: {
@@ -84,15 +84,21 @@ export default{
 			this.$nextTick(() => {
 				this.$refs.scroller.reset()
 			})
+		},
+		query: function () {
+			var _self = this
+			this.$refs.loading.OnLoading()
+			promise.all([activityService.getActivityCompletedInfo(this.id),activityService.getActivityTimeLine(this.id)]).then(function (data) {
+				_self.$refs.loading.OnHide()
+				_self.activity = data[0].data
+				_self.items = data[1].data.list
+			}).catch(function (err) {
+				_self.$refs.loading.OnError()
+			})
 		}
 	},
-	watch: {
-		activity: function () {
-			this.fresh()
-		},
-		items: function () {
-			this.fresh()
-		}
+	ready: function () {
+		this.query()
 	}
 }
 </script>

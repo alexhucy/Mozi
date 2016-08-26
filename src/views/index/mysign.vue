@@ -1,8 +1,8 @@
 <template>
 	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
 		<div>
-			<loading @on-loading="query">
-
+			<loading v-ref:loading
+			         @on-refresh="query">
 			</loading>
 
 			<card v-for="item in items"
@@ -14,8 +14,11 @@
 						:comments="item.comment_count"
 						:url="item.image_url"
 						:activity-id="item.activity_id"
-						:sign-id="item.signin_id">
+						:sign-id="item.signin_id"
+						:checked="item.my_agree === 1 ? true : false"
+						@on-loaded="loaded">
 			</card>
+
 		</div>
 	</scroller>
 </template>
@@ -45,24 +48,32 @@ export default {
 	methods: {
 		query: function () {
 			var _self = this;
+			this.$refs.loading.OnLoading()
 			this.activityOngoingListQuery().then(function (data) {
 				if(isEmptyObject(_self.items)){
-					_self.$broadcast('empty')
+					_self.$refs.loading.OnEmpty()
 				}
 				else{
-					_self.$broadcast('hide')
+					_self.$refs.loading.OnHide()
 				}
-			}).catch(function (err) {
-				console.log(err)
-				_self.$broadcast('error')
+			}).catch(function () {
+				_self.$refs.loading.OnError()
+			})
+		},
+		loaded: function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
 			})
 		}
 	},
 	watch:{
 		items:function () {
-			this.$nextTick(() => {
-				this.$refs.scroller.reset()
-			})
+			this.loaded()
+		}
+	},
+	ready:function () {
+		if (this.items.length === 0){
+			this.query()
 		}
 	}
 }

@@ -74,11 +74,6 @@ export default {
 		confirm(){
 			this.$dispatch('confirm')
 		}
-	},
-	events: {
-		'showDialog': function () {
-			this.hidden()
-		}
 	}
 }
 </script>

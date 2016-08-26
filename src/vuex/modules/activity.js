@@ -12,7 +12,8 @@ import {
   COMMIT_ACTIVITY_MESSAGE,
 	GET_ONGOING_ACTIVITY_LIST,
 	GET_COMPLETED_ACTIVITY_INFO,
-	GET_COMPLETED_ACTIVITY_TIMELINE
+	GET_COMPLETED_ACTIVITY_TIMELINE,
+	GET_RECORD
 } from '../mutation-types'
 
 const state = {
@@ -22,7 +23,8 @@ const state = {
 	messageList: [],
 	onGoingActivityList: [],
 	completedActivity: {},
-	timeline: [] 
+	timeline: [],
+	record: {}
 }
 
 const mutations = {
@@ -59,6 +61,9 @@ const mutations = {
 	},
 	[GET_COMPLETED_ACTIVITY_TIMELINE](state, list){
 		state.timeline = list.data.list
+	},
+	[GET_RECORD](state, record){
+		state.record = record.data
 	}
 }
 
