@@ -36,7 +36,7 @@ export const messageListResource = Vue.resource(API_ROOT + '/api/signin/activity
 export const recordResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}')//个人中心活动记录
 
 export const userResource = Vue.resource(API_ROOT + '/api/self-info/')// 获取个人信息
-export const userupResource = Vue.resource(API_ROOT + '/api/signin/user/selfinfo')//个人中心信息
+export const userupResource = Vue.resource(API_ROOT + '/api/signin/user/self-info')//个人中心信息
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
 
 export const ongoingActivityResource = Vue.resource(API_ROOT + '/api/signin/user/signin_list')//我的进行中的活动

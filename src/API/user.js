@@ -38,10 +38,10 @@ export default{
 		return deleteChildInfoResource.delete({id: id})
 	},
 	API_PATCH_ALTER_USER_INFO_FIRST: function (data) {
-		return alterUserInfo_first.save({},data)
+		return alterUserInfo_first.save({}, data)
 	},
-	API_PATCH_ALTER_USER_INFO_SECOND: function (location, gender) {
-		return alterUserInfo_second.save({location: location, gender: gender})
+	API_PATCH_ALTER_USER_INFO_SECOND: function (data) {
+		return alterUserInfo_second.save({}, data)
 	}
 
 }

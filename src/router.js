@@ -14,6 +14,7 @@ import timeline from './views/me/activityTimeline.vue'
 import update from './components/Dialog/UpdateChildInfo.vue'
 import userUpdate from './components/alterInfo/userInfoModify.vue'
 
+
 module.exports = function (router) {
 	router.map({
 		'/': {
@@ -67,4 +68,5 @@ module.exports = function (router) {
 	router.redirect({
 		'*': '/'
 	})
+
 }

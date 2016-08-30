@@ -24,8 +24,7 @@ const state = {
 	onGoingActivityList: [],
 	completedActivity: {},
 	timeline: [],
-	record: {},
-	direction: 'forward'
+	record: {}
 }
 
 const mutations = {
@@ -65,9 +64,6 @@ const mutations = {
 	},
 	[GET_RECORD](state, record){
 		state.record = record.data
-	},
-	UPDATE_DIRECTION (state, direction) {
-		state.direction = direction
 	}
 }
 

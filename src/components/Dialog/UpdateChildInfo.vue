@@ -1,19 +1,26 @@
 <template>
 	<popup :show.sync="showPOP" height="100%">
+
     <group title="小名">
         <x-input placeholder="请输入姓名" type="text"  :value.sync="name"></x-input>
     </group>
+
     <group title="性别">
         <radio :options="radio001" :value.sync="value3" @on-change="change"></radio>
     </group>
+
     <group title="生日">
         <date-time :value.sync="value2" placeholder="请选择日期" :max-year=2016 format="YYYY-MM-DD" @on-change="changebirth" title="选择日期" year-row="{value}年" month-row="{value}月" day-row="{value}日" confirm-text="完成" cancel-text="取消"></date-time>
     </group>
+
     <group>
         <x-button type="primary" @click="updateInfo">确认{{showmess}}</x-button>
     </group>
+
     <loading :show="show1"></loading>
+
     <toast :show="show" :time="1000" type="text" width="15em">{{message}}</toast>
+
 	</popup>
 </template>
 <style>

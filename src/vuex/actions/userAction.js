@@ -47,7 +47,7 @@ export const alterUserInfoFirstQuery = function ({ dispatch }, data) {
 	})
 }
 
-export const alterUserInfoSecondQuery = function (location, gender) {
-	return user.API_PATCH_ALTER_USER_INFO_SECOND(location, gender).then(function (data) {
+export const alterUserInfoSecondQuery = function ({ dispatch }, data) {
+	return user.API_PATCH_ALTER_USER_INFO_SECOND(data).then(function (data) {
 	})
 }

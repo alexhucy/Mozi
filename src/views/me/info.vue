@@ -14,19 +14,21 @@
 
 			<cell title="昵称" is-link
 				  :value="user.user_name"
-				  v-link="{name:'userUpdate',query: {title:'昵称',value:user.user_name,type:'1'}}">
+				  v-link="{name:'userUpdate',query: {title:'昵称',value: user.user_name,type: '1'}}">
 
 			</cell>
 
 			<cell title="性别"
 				  is-link
-				  v-link="{name:'userUpdate', query: {title: '性别', value: '男',type:'2'}}">
+				  :value="user.sex == 1 ? '男' : '女'"
+				  v-link="{name:'userUpdate', query: {title: '性别', value: user.sex,type: '2'}}">
 
 			</cell>
 
 			<cell title="居住地"
 				  is-link
-				  v-link="{name: 'userUpdate', query: {title: '居住地', value:'['江苏省','苏州市','吴中区']',type:'3'}}">
+				  :value="user.address"
+				  v-link="{name: 'userUpdate', query: {title: '居住地', value: user.address,type: '3'}}">
 
 			</cell>
 
@@ -71,6 +73,7 @@ export default{
 	data: function () {
 		return {
 			list: [],
+			ac: ['江苏省','苏州市','吴中区'],
 			showPOP: false
 		}
 	},
@@ -91,9 +94,6 @@ export default{
 		actions: {
 			childInfoQuery
 		}
-	},
-	ready: function () {
-		this.childInfoQuery()
 	},
 	events: {
 		update: function () {
