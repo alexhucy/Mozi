@@ -9,7 +9,7 @@
 						<h4>{{activityInfo.info.sponsor_name}}</h4>
 						<p>发起了活动: {{activityInfo.info.title}}</p>
 						<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
-						<p>报名截至时间:{{activityInfo.info.start_time}}</p>
+						<p>报名截至时间:{{activityInfo.info.end_time}}</p>
 					</avatar-item>
 				</div>
 
@@ -41,7 +41,9 @@
 							:activity-id="item.activity_id"
 							:sign-id="item.signin_id"
 							:checked="item.my_agree === 1 ? true: false "
-							@on-loaded="fresh">
+							@on-loaded="fresh"
+							:date="item.signin_time"
+							:name="item.user_name">
 				</card>
 
 			</div>

@@ -18,7 +18,8 @@
 		         :activity-id="activityId"
 		         :sign-id="signId"
 					   :checked="checked"
-							@on-loaded="loaded">
+							@on-loaded="loaded"
+             :date="date">
 		</comment>
 	</card>
 </template>
@@ -57,7 +58,8 @@ export default{
 		state: String,
 		activityId: Number,
 		signId: Number,
-		checked: Boolean
+		checked: Boolean,
+		date: String
 	},
 	methods: {
 		loaded: function () {

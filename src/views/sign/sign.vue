@@ -46,7 +46,9 @@
 								:activity-id="item.activity_id"
 								:sign-id="item.signin_id"
 								:checked="item.my_agree === 1?true:false"
-							  @on-loaded="fresh">
+							  @on-loaded="fresh"
+								:date="item.signin_time"
+								:name="item.user_name">
 				</card>
 
 			</div>

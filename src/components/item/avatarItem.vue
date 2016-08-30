@@ -1,6 +1,9 @@
 <template>
 	<div class="mz-item mz-item-avatar">
-		<img :src="avatarUrl" class="mz-avatar">
+		<div class="mz-avatar">
+			<img :src="avatarUrl" >
+			<span class="mz-text-center">{{name}}</span>
+		</div>
 		<slot></slot>
 	</div>
 </template>
@@ -19,9 +22,16 @@
 		left: 0;
 		max-height: 50px;
 		max-width: 50px;
+	}
+	.mz-avatar img{
+		max-height: 50px;
+		max-width: 50px;
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
+	}
+	.mz-avatar span{
+		display: block;
 	}
 
 </style>
@@ -29,9 +39,8 @@
 <script>
 export default{
 	props:{
-		avatarUrl:{
-			type:String
-		}
+		avatarUrl: String,
+		name: String
 	}
 }
 </script>

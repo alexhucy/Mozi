@@ -1,7 +1,7 @@
 <template>
 	<popup :show.sync="showPOP" height="100%">
 		<div class="mz-box-upload mz-wrap mz-container">
-			<textarea placeholder="这一刻的想法..." v-model="content"></textarea>
+			<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>
 			<div class="mz-flex">
 				<i class="mz-icon mz-icon-add"  @click="upload"></i>
 				<img :src="previewImg" v-if="previewImg" class="mz-preview-img">

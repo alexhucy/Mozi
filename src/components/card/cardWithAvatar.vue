@@ -1,7 +1,7 @@
 <template>
 	<box type = "success">
 		<div style="padding: 15px 15px 0">
-			<avatar-item :avatar-url="headImgUrl">
+			<avatar-item :avatar-url="headImgUrl" :name="name">
 				<h4>{{title}}</h4>
 				<p>{{content}}</p>
 				<image-item :src="cover"></image-item>
@@ -14,7 +14,9 @@
 		         :activity-id="activityId"
 		         :sign-id="signId"
 		         :checked="checked"
-		         @on-loaded="loaded">
+		         @on-loaded="loaded"
+		         :date="date">
+
 		</comment>
 	</box>
 </template>
@@ -63,6 +65,12 @@ export default {
 		},
 		checked: {
 			type: Boolean
+		},
+		date: {
+			type: String
+		},
+		name: {
+			type: String
 		}
 	},
 

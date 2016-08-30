@@ -10,7 +10,8 @@
 		         :activity-id="activityId"
 		         :sign-id="signId"
 		         :checked="checked"
-							@on-loaded="loaded">
+							@on-loaded="loaded"
+							:date="date">
 
 		</comment>
 	</box>
@@ -55,6 +56,9 @@ export default {
 		},
 		checked: {
 			type: Boolean
+		},
+		date: {
+			type: String
 		}
 	},
 	methods: {

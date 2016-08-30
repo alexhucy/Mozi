@@ -5,7 +5,6 @@
 import user from '../../API/user'
 import * as types from '../mutation-types'
 
-
 export const userInfoQuery = function ({ dispatch}) {
 	return user.API_GET_USER_INFO().then(function (data) {
 		dispatch(types.GET_USER_INFO, data)
@@ -37,7 +36,8 @@ export const alterChildInfoQuery = function ({ dispatch }, id, nickname, gender,
 }
 
 export const deleteChildInfoQuery = function ({ dispatch }, id) {
-	return user.API_DELETE_CHILD_INFO(id).then(function (data) {
-
-	})
+	// return user.API_DELETE_CHILD_INFO(id).then(function () {
+		dispatch(types.DELETE_CHILD_INFO, id)
+	// })
 }
+

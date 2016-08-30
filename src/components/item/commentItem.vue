@@ -1,6 +1,7 @@
 <template>
 	<div style="padding: 8px 15px">
 		<div class="mz-item-comment clear-fix">
+			<span>{{date | friendlyTime}}</span>
 			<i class="mz-icon mz-icon-comment mz-pull-right mz-space-15"  @click="commitToggle">{{comments}}</i>
 			<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  :class="{'mz-checked': checked}"  @click="toggle">{{zan}}</i>
 		</div>
@@ -107,6 +108,9 @@ export default{
 		checked: {
 			type: Boolean,
 			default: false
+		},
+		date: {
+			type: String
 		}
 	},
 	methods: {
