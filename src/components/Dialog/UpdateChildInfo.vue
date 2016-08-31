@@ -1,27 +1,32 @@
 <template>
-	<popup :show.sync="showPOP" height="100%">
-
     <group title="小名">
-        <x-input placeholder="请输入姓名" type="text"  :value.sync="name"></x-input>
+        <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
     </group>
 
     <group title="性别">
-        <radio :options="radio001" :value.sync="value3" @on-change="change"></radio>
+        <radio :options="radio001" :value.sync="sexValue" @on-change="change"></radio>
     </group>
 
     <group title="生日">
-        <date-time :value.sync="value2" placeholder="请选择日期" :max-year=2016 format="YYYY-MM-DD" @on-change="changebirth" title="选择日期" year-row="{value}年" month-row="{value}月" day-row="{value}日" confirm-text="完成" cancel-text="取消"></date-time>
+        <date-time :value.sync="birthdayValue | timestamp2date"
+                   placeholder="请选择日期"
+                   format="YYYY-MM-DD"
+                   @on-change="changebirth"
+                   title="选择日期"
+                   year-row="{value}年"
+                   month-row="{value}月"
+                   day-row="{value}日"
+                   confirm-text="完成"
+                   cancel-text="取消">
+
+        </date-time>
     </group>
 
     <group>
-        <x-button type="primary" @click="updateInfo">确认{{showmess}}</x-button>
+        <x-button type="primary" @click="updateInfo">确认</x-button>
+
+	      <x-button type="red" @click="cancel">取消</x-button>
     </group>
-
-    <loading :show="show1"></loading>
-
-    <toast :show="show" :time="1000" type="text" width="15em">{{message}}</toast>
-
-	</popup>
 </template>
 <style>
     .weui_btn_primary{
@@ -45,21 +50,19 @@ export default {
     return {
       radio001: [ '男', '女' ],
       sex: '',
-      birth: '',
-      value2: '',
-      value3: '',
-      name: '',
+      birthday: '',
+      sexValue: '',
+      value: '',
+	    birthdayValue:'',
+      nickname: '',
       id: '',
-      showmess: '',
-      show1: false,
-      show: false,
-	    message: ''
+	    type: ''
     }
   },
   vuex: {
     actions: {
       childUpdateQuery,
-      alterChildInfoQuery
+      alterChildInfoQuery,
     }
   },
 	props: {
@@ -76,56 +79,66 @@ export default {
     loading,
 	  popup
   },
-  route: {
-    data ({to: {query: {nickname,birth,avatar,gender,id}}}) {
-      this.name = nickname
-      this.value3 = gender == 'male' ? '男' : '女'
-      this.value2 = birth
-      this.id = id
-    }
-  },
   methods: {
     change: function (value) {
       this.sex = value == '男' ? '1' : '0'
     },
+	  edit: function () {
+		  var _self = this
+		  this.$dispatch('loading')
+		  this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birthday).then(function () {
+			  _self.reset()
+			  _self.$dispatch('loading')
+			  _self.$dispatch('success', '修改成功')
+			  window.history.back()
+		  },function (err) {
+			  _self.$dispatch('loading')
+			  _self.$dispatch('error', err)
+		  })
+	  },
+	  save: function(){
+		  var _self = this
+		  this.$dispatch('loading')
+		  this.childUpdateQuery(this.nickname, this.sex, this.birthday).then(function () {
+			  _self.$dispatch('loading')
+			  _self.$dispatch('success', '新增成功')
+			  window.history.back()
+		  }, function (err) {
+			  _self.$dispatch('loading')
+			  _self.$dispatch('error', err)
+		  })
+	  },
     updateInfo: function () {
-      var _self = this
-      _self.show1 = true
-      if(this.id != undefined && this.id != null){
-        this.alterChildInfoQuery(this.id,this.name,this.sex,this.birth).then(function () {
-	        _self.message = '添加成功'
-	        _self.show = true
-					_self.show1 = false
-	        _self.showPOP = false
-        },function () {
-	        _self.message = '添加失败'
-          _self.show1 = false
-          _self.show = true
-        })
-      }
-      else {
-        this.childUpdateQuery(this.name, this.sex, this.birth).then(function () {
-          //_self.$router.go({name: 'info',replace: true})
-	        self.message = '修改成功'
-	        _self.show = true
-	        _self.show1 = false
-	        _self.showPOP = false
-        })
-      }
+	    if (this.validate()){
+		    this.type === 'EDIT' ?
+						    this.edit():
+						    this.save()
+	    }
     },
     changebirth: function (value) {
-      this.birth = value
+      this.birthday = value
     },
     changename: function (value) {
-      this.name = value
-    }
-	},
-	ready: function () {
-	    if (this.id != null && this.id != undefined){
-	        this.showmess = '修改'
-	    }else {
-	        this.showmess = '添加'
-	    }
-  }
+      this.nickname = value
+    },
+	  cancel: function () {
+		  window.history.back()
+	  },
+	  validate: function () {
+		  if(!this.nickname){
+			  this.$dispatch('error', '小名不能为空')
+			  return false
+		  }
+		  if(!this.sex){
+			  this.$dispatch('error', '请选择性别')
+			  return false
+		  }
+		  if(!this.birthday){
+			  this.$dispatch('error', '请选择出生日期')
+			  return false
+		  }
+		  return true
+	  }
+	}
 }
 </script>

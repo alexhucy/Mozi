@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<router-view
-		>
+		<router-view>
 		</router-view>
 	</div>
 
+	<tips v-ref:tips></tips>
 </template>
 
 <style>
@@ -32,11 +32,19 @@
 
 <script>
 import store from '../vuex/store'
-import {userUpInfoQuery,childInfoQuery,userInfoQuery} from '../vuex/actions/userAction'
+import {userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
 import {jssdkConfigInit} from '../service/weixinService'
+import loading from '../../node_modules/vux/dist/components/loading/index'
+import alert from '../../node_modules/vux/dist/components/loading/index'
+import toast from '../../node_modules/vux/dist/components/toast/index'
+import confirm from '../../node_modules/vux/dist/components/confirm/index'
+import tips from '../components/tips/tips.vue'
 
 export default{
 	store: store,
+	components: {
+		tips
+	},
 	vuex: {
 		actions:{
 			userUpInfoQuery,
@@ -45,16 +53,26 @@ export default{
 	},
 	ready: function () {
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
-		var _self = this
-		this.childInfoQuery().then(function () {
-		},function () {
-			_self.childInfoQuery()
-		})
+		this.childInfoQuery()
+		this.userUpInfoQuery()
+	},
+	events: {
+		loading: function (message) {
+			this.$refs.tips.toggleLoading(message)
+		},
 
-		this.userUpInfoQuery().then(function () {
-		},function () {
-			_self.userUpInfoQuery()
-		})
+		error: function (message) {
+			this.$refs.tips.toggleAlert(message)
+		},
+
+		success: function (message) {
+			this.$refs.tips.toggleToast(message)
+		},
+
+		confirm: function (title, message, callback) {
+			this.$refs.tips.setTitle(title)
+			this.$refs.tips.toggleConfirm(message, callback)
+		}
 	}
 }
 </script>

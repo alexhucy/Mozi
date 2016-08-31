@@ -1,7 +1,7 @@
 <template>
 	<div class="mz-timeline-box">
 		<div class="mz-timeline-card">
-			<h4>{{title}}</h4>
+			<h4 class="mz-label-time">{{title}}</h4>
 			<image-item :src="url"></image-item>
 			<comment :zan="zan"
 			         :comments="comments"
@@ -34,7 +34,7 @@
 	width: 1px;
 	background: #72e4dc;
 }
-.mz-timeline-box span{
+.mz-label-time{
 	position: absolute;
 	z-index:99;
 	background: #fff;

@@ -1,8 +1,17 @@
 <template>
-	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 0;right:0px;left:0px;" >
+	<scroller v-ref:scroller
+			  lock-x
+			  height="auto"
+			  style="position:absolute;
+			  top: 0;
+			  right:0px;
+			  left:0px;"
+	>
+
 		<loading v-ref:loading
 				 @on-refresh="query">
 		</loading>
+
 	<div class="mz-billboard mz-item">
 
 		<div v-if="$index == 0" class="mz-billboard-top-1" v-for="item in items">
@@ -29,7 +38,7 @@
 
 			<div>
 				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
-				<p class="mz-billboard-point">积分:{{item.signin_count}}</p>
+				<p class="mz-billboard-point">打卡次数:{{item.signin_count}}</p>
 			</div>
 
 		</div>

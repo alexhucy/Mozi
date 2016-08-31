@@ -19,7 +19,6 @@ import {
 	rankListResource
 } from './resourse'
 
-
 export default {
 	API_GET_ACTIVITY_LIST: function () {
 		return activityListResource.get()

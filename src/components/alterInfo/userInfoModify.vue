@@ -19,8 +19,7 @@
                  :value.sync="value"
                  raw-value
                  :list="addressData"
-                 hide-district
-        >
+                 hide-district>
 
         </address>
 
@@ -45,153 +44,118 @@
 
 </style>
 <script>
-    import xButton from '../../../node_modules/vux/dist/components/x-button/index'
-    import xInput from '../../../node_modules/vux/dist/components/x-input/index'
-    import Group from '../../../node_modules/vux/dist/components/group/index'
-    import Loading from '../../../node_modules/vux/dist/components/loading/index'
-    import Radio from '../../../node_modules/vux/dist/components/radio/index'
-    import toast from '../../../node_modules/vux/dist/components/toast/index'
-    import Address from '../../../node_modules/vux/dist/components/address/index'
-    import AddressChinaData from '../../../node_modules/vux/src/components/address/list.json'
-    var value2name = require('../../../node_modules/vux/src/filters/value2name')
-    import {alterUserInfoFirstQuery,alterUserInfoSecondQuery} from '../../vuex/actions/userAction'
-    import {getUserUpInfo} from '../../vuex/getters/userGetter'
+import xButton from '../../../node_modules/vux/dist/components/x-button/index'
+import xInput from '../../../node_modules/vux/dist/components/x-input/index'
+import Group from '../../../node_modules/vux/dist/components/group/index'
+import Loading from '../../../node_modules/vux/dist/components/loading/index'
+import Radio from '../../../node_modules/vux/dist/components/radio/index'
+import toast from '../../../node_modules/vux/dist/components/toast/index'
+import Address from '../../../node_modules/vux/dist/components/address/index'
+import AddressChinaData from '../../../node_modules/vux/src/components/address/list.json'
+import {alterUserInfoFirstQuery,alterUserInfoSecondQuery} from '../../vuex/actions/userAction'
+import {getUserUpInfo} from '../../vuex/getters/userGetter'
+import value2name from '../../filter/value2name'
 
-    export default{
-        data() {
-          return {
-              show: false,
-              show1: false,
-              type: Number,
-              radio001: [ '男', '女' ],
-              title: '',
-              value: '',
-              sex: Number,
-              obj: {},
-              addressData: AddressChinaData
-          }
-        },
-        components: {
-            xButton,
-            Group,
-            xInput,
-            Loading,
-            Radio,
-            Address,
-            toast
-        },
-        route: {
-            data ({to: {query: {title, value, type}}}) {
-                this.title = title
-                this.value = value
-                this.type = type
-                //判断type，进来的是性别，转换为0,1
-                if (type == 2){
-
-                    this.sex = value
-                    this.value = value == 1 ? '男' : '女'
-
-                }else if (type == 3){
-
-                    this.value = value.split(' ')
-
-                }
-            }
-        },
-        vuex: {
-          actions: {
-              alterUserInfoFirstQuery,
-              alterUserInfoSecondQuery
-          },
-          getters: {
-              user: getUserUpInfo
-          }
-        },
-        methods: {
-            update: function () {
-
-                var _self = this
-
-                _self.show = true
-
-                //用于修改头像和昵称
-                if (this.type == 1 || this.type == 4) {
-
-                    if (this.type == 1) {
-
-                        this.obj.nickname = this.value
-
-                    } else {
-
-                        this.obj.headImgUrl = this.value
-
-                    }
-
-                    _self.alterUserInfoFirstQuery(this.obj).then(function () {
-
-                        _self.show = false
-                        //判断类型修改本地数据
-                        if (_self.type == 1){
-
-                            _self.user.user_name = _self.value
-
-                        }else {
-
-                            _self.user.user_avatar = _self.value
-
-                        }
-                        _self.$router.go({name: 'info', replace: true})
-
-                    }, function () {
-
-                        _self.show = false
-                        _self.show1 = true
-
-                    })
-                }
-                //用于修改地址和性别
-                else {
-
-                    if (this.type == 2){
-
-                        this.obj.gender = this.sex
-
-                    }else {
-
-                        this.value1 = value2name(this.value, AddressChinaData)
-                        this.obj.location = this.value1.toString()
-
-                    }
-
-                    _self.alterUserInfoSecondQuery(this.obj).then(function () {
-
-                        _self.show = false
-                        //判断修改本地数据
-                        if (_self.type == 2){
-
-                            _self.user.sex = _self.sex
-
-                        }else {
-
-                            _self.user.address = _self.obj.location
-
-                        }
-                        _self.$router.go({name: 'info',replace: true})
-
-                    },function () {
-
-                        _self.show = false
-                        _self.show1 = true
-
-                    })
-                }
-            },
-
-            change: function (value) {
-
-                this.sex = value == '男' ? '1' : '0'
-
-            }
-        }
+export default{
+  data() {
+    return {
+      show: false,
+      show1: false,
+      type: Number,
+      radio001: [ '男', '女' ],
+      title: '',
+      value: '',
+      sex: Number,
+      obj: {},
+      addressData: AddressChinaData
     }
+  },
+  components: {
+    xButton,
+    Group,
+    xInput,
+    Loading,
+    Radio,
+    Address,
+    toast
+  },
+  route: {
+    data ({to: {query: {title, value, type}}}) {
+      this.title = title
+      this.value = value
+      this.type = type
+      //判断type，进来的是性别，转换为0,1
+      if (type == 2){
+        this.sex = value
+        this.value = value == 1 ? '男' : '女'
+      }
+      else if (type == 3){
+        this.value = value.split(' ')
+      }
+    }
+  },
+  vuex: {
+    actions: {
+      alterUserInfoFirstQuery,
+      alterUserInfoSecondQuery
+    },
+    getters: {
+      user: getUserUpInfo
+    }
+  },
+  methods: {
+    update: function () {
+      var _self = this
+      _self.show = true
+      //用于修改头像和昵称
+      if (this.type == 1 || this.type == 4) {
+        if (this.type == 1) {
+          this.obj.nickname = this.value
+        }
+        else {
+          this.obj.headImgUrl = this.value
+        }
+        _self.alterUserInfoFirstQuery(this.obj).then(function () {
+          _self.show = false
+          //判断类型修改本地数据
+          if (_self.type == 1){
+            _self.user.user_name = _self.value
+          }else {
+            _self.user.user_avatar = _self.value
+          }
+          _self.$router.go({name: 'info', replace: true})
+        }, function () {
+          _self.show = false
+          _self.show1 = true
+        })
+      }
+      //用于修改地址和性别
+      else {
+        if (this.type == 2){
+          this.obj.gender = this.sex
+        }else {
+          this.value1 = value2name(this.value, AddressChinaData)
+          this.obj.location = this.value1.toString()
+        }
+        _self.alterUserInfoSecondQuery(this.obj).then(function () {
+          _self.show = false
+          //判断修改本地数据
+          if (_self.type == 2){
+            _self.user.sex = _self.sex
+          }else {
+            _self.user.address = _self.obj.location
+          }
+          _self.$router.go({name: 'info',replace: true})
+        },function () {
+          _self.show = false
+          _self.show1 = true
+
+        })
+      }
+    },
+    change: function (value) {
+      this.sex = value == '男' ? '1' : '0'
+    }
+  }
+}
 </script>

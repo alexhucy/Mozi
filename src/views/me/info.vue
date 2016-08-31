@@ -1,5 +1,6 @@
 <template>
 	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;right:0px;left:0px;">
+		<!--个人信息 start-->
 		<group style="margin: 0">
 
 			<group-title type="success">个人信息</group-title>
@@ -33,29 +34,38 @@
 			</cell>
 
 		</group>
+		<!--个人信息 end-->
 
+		<!--孩子信息 start-->
 		<group>
 
 			<group-title type="glass">孩子信息</group-title>
 
 			<card-center type="2" v-for="item in child"
 			             :nickname="item.nickname"
-			             :birth="item.birthday"
+			             :birthday="item.birthday"
 			             :id="item.id"
 			             :gender="item.gender"
-			             :avatar="avatar">
+			             :avatar="avatar"
+			             @on-edit="edit(item.id, item.nickname, item.birthday, item.gender)">
+
 			</card-center>
 
-			<card-center @On-add="add"></card-center>
-
+			<div class="mz-center" @click="add">
+				<div  class="mz-icon mz-icon-addChild mz-text-center">添加孩子信息</div>
+			</div>
 		</group>
-
+		<!--孩子信息 end-->
 	</scroller>
-
-	<upload :show-pop.sync="showPOP"></upload>
 </template>
 
 <style>
+.mz-center{
+	margin:15px;
+	padding:5px;
+	border:1px solid #b0d160;
+}
+
 </style>
 
 <script>
@@ -68,6 +78,7 @@ import Scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import {getUserUpInfo,getChildInfo} from '../../vuex/getters/userGetter'
 import {childInfoQuery} from '../../vuex/actions/userAction'
 import upload from '../../components/Dialog/UpdateChildInfo.vue'
+import tips from '../../components/tips/tips.vue'
 
 export default{
 	data: function () {
@@ -84,7 +95,8 @@ export default{
 		Panel,
 		CardCenter,
 		Scroller,
-		upload
+		upload,
+		tips
 	},
 	vuex: {
 		getters: {
@@ -95,23 +107,27 @@ export default{
 			childInfoQuery
 		}
 	},
-	events: {
-		update: function () {
-			this.childInfoQuery().then(function () {
-
-			})
-		}
+	ready: function () {
+		this.childInfoQuery()
 	},
 	methods: {
 		add: function () {
-			this.showPOP = true
-		}
-	},
-	watch: {
-		child: function () {
-			this.$nextTick(() => {
-				this.$refs.scroller.reset()
-			})
+			this.$router.go({name: 'update'})
+		},
+		edit: function (id, nickname, birthday, sex) {
+			this.$router.go({name: 'update', params:{id: id ,nickname: nickname, sex: 'female'? '女': '男', birthday:birthday, edit: true}})
+		},
+		success: function (message) {
+			this.$refs.tips.toggleToast(message)
+		},
+		error: function (err) {
+			this.$refs.tips.toggleAlert(err)
+		},
+		loading: function () {
+			this.$refs.tips.toggleLoading()
+		},
+		confirm: function (message, callback) {
+			this.$refs.tips.toggleConfirm(message, callback)
 		}
 	}
 }

@@ -7,7 +7,7 @@
 			<div class="mz-sign">
 				<tab :title="activity.info.title" @on-fresh="fresh">
 					<div class="mz-item-cover">
-						<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" >
+						<avatar-item :avatar-url="activity.info.sponsor_avatar" >
 							<h4>{{activity.info.sponsor_name}}</h4>
 							<p>发起了活动: {{activity.info.title}}</p>
 							<p>活动时间: {{activity.info.start_time}} - {{activity.info.end_time}}</p>
@@ -46,7 +46,9 @@
 								:activity-id="item.activity_id"
 								:sign-id="item.signin_id"
 								:checked="item.my_agree === 1?true:false"
-							  @on-loaded="fresh">
+							  @on-loaded="fresh"
+								:date="item.signin_time"
+								:name="item.user_name">
 				</card>
 
 			</div>
@@ -54,10 +56,9 @@
 
 		<f-button type="glass"
 							:action="activity.signin===1?'今日已打卡': '我要打卡'"
-							:disable="activity.signin===1?true: false">
+							:disable="activity.signin===1?true: false"
+							@on-confirm="sign">
 		</f-button>
-
-		<upload :show-pop.sync="showUpload" :id="$route.params.id" @on-success="success"></upload>
 
 	</div>
 </template>
@@ -136,15 +137,13 @@ export default {
 		success: function () {
 			this.activity.signin = 1
 			this.activity.signin_count ++
+		},
+		sign: function () {
+			this.$router.go({name: 'upload'})
 		}
 	},
 	ready:function () {
 		this.query()
-	},
-	events: {
-		DO: function () {
-			this.showUpload = true
-		}
 	}
 }
 </script>

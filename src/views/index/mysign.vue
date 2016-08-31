@@ -1,5 +1,9 @@
 <template>
-	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
+	<scroller v-ref:scroller
+	          use-pulldown
+	          @pulldown:loading="reload"
+	          lock-x height="auto"
+	          style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
 		<div>
 			<loading v-ref:loading
 			         @on-refresh="query">
@@ -16,7 +20,8 @@
 						:activity-id="item.activity_id"
 						:sign-id="item.signin_id"
 						:checked="item.my_agree === 1 ? true : false"
-						@on-loaded="loaded">
+						@on-loaded="fresh"
+						:date="item.signin_time">
 			</card>
 
 		</div>
@@ -50,6 +55,7 @@ export default {
 			var _self = this;
 			this.$refs.loading.OnLoading()
 			this.activityOngoingListQuery().then(function (data) {
+				_self.fresh()
 				if(isEmptyObject(_self.items)){
 					_self.$refs.loading.OnEmpty()
 				}
@@ -60,15 +66,16 @@ export default {
 				_self.$refs.loading.OnError()
 			})
 		},
-		loaded: function () {
+		fresh: function () {
 			this.$nextTick(() => {
 				this.$refs.scroller.reset()
 			})
-		}
-	},
-	watch:{
-		items:function () {
-			this.loaded()
+		},
+		reload: function (uuid) {
+			var _self = this
+			this.activityOngoingListQuery().then(function (data) {
+				_self.$broadcast('pulldown:reset', uuid)
+			})
 		}
 	},
 	ready:function () {

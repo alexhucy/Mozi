@@ -7,7 +7,8 @@ import {
 	GET_CHILD_INFO,
 	GET_USER_UP,
 	POST_CHILD_UPDATE,
-	POST_ALTER_CHILD_INFO
+	POST_ALTER_CHILD_INFO,
+	DELETE_CHILD_INFO
 } from '../mutation-types'
 
 const state = {
@@ -31,9 +32,25 @@ const mutations = {
 	},
 	[POST_CHILD_UPDATE] (state, data) {
 		state.childUpdate = data.data
+		state.childInfo.push(data.data)
 	},
 	[POST_ALTER_CHILD_INFO] (state, data) {
 		state.alterChildInfo = data.data
+		state.childInfo.forEach(function (child) {
+			if(child.id === data.data.id){
+				var index = state.childInfo.indexOf(child)
+				state.childInfo.$set(index, data.data)
+			}
+		})
+	},
+
+	[DELETE_CHILD_INFO] (state, id){
+		state.childInfo.forEach(function (child) {
+			if(child.id === id){
+				var index = state.childInfo.indexOf(child)
+				state.childInfo.splice(index, 1)
+			}
+		})
 	}
 }
 

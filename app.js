@@ -25,23 +25,6 @@ app.use(express.query());
 
 app.use('/',routes);
 
-app.use('/$',function (req,res) {
-	var code=req.query.code || '';
-	if (code) {
-		weixinService.codeForToken(code).then(function (token) {
-			res.cookie('Authorization',token)
-			res.sendFile(path.resolve('./public/views/index.html'))
-		}).catch(function (error) {
-			res.setHeader('content-type','text/html; charset=UTF-8');
-			res.writeHead(403)
-			res.end('服务器错误,请重新登陆')
-		})
-	}
-	else {
-		res.sendFile(path.resolve('index.html'))
-	}
-});
-
 app.use('/', proxy);
 
 app.use('/', weixin);

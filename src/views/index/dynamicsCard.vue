@@ -46,7 +46,7 @@ export default {
 		number: Number,
 		money: Number,
 		course: String,
-		id:Number
+		id: Number
 	}
 }
 </script>
