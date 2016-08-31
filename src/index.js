@@ -13,6 +13,7 @@ import abstract from './components/abstract.vue'
 import timestamp2date from './filter/timestamp2date'
 import friendlyTime from './filter/friendlyTime'
 
+
 const FastClick = require('fastclick')
 
 FastClick.attach(document.body)

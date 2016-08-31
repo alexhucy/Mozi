@@ -7161,7 +7161,6 @@ webpackJsonp([0],[
 				childInfoQuery: _userAction.childInfoQuery
 			}
 		},
-
 		ready: function ready() {
 			this.childInfoQuery();
 		},
@@ -7541,7 +7540,6 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// <template>
-	//
 	//     <group title="小名">
 	//         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
 	//     </group>
@@ -7702,7 +7700,7 @@ webpackJsonp([0],[
 /* 201 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n    <group title=\"小名\">\n        <x-input placeholder=\"请输入姓名\" type=\"text\"  :value.sync=\"nickname\"></x-input>\n    </group>\n\n    <group title=\"性别\">\n        <radio :options=\"radio001\" :value.sync=\"sexValue\" @on-change=\"change\"></radio>\n    </group>\n\n    <group title=\"生日\">\n        <date-time :value.sync=\"birthdayValue | timestamp2date\"\n                   placeholder=\"请选择日期\"\n                   format=\"YYYY-MM-DD\"\n                   @on-change=\"changebirth\"\n                   title=\"选择日期\"\n                   year-row=\"{value}年\"\n                   month-row=\"{value}月\"\n                   day-row=\"{value}日\"\n                   confirm-text=\"完成\"\n                   cancel-text=\"取消\">\n\n        </date-time>\n    </group>\n\n    <group>\n        <x-button type=\"primary\" @click=\"updateInfo\">确认</x-button>\n\n\t      <x-button type=\"red\" @click=\"cancel\">取消</x-button>\n    </group>\n";
+	module.exports = "\n    <group title=\"小名\">\n        <x-input placeholder=\"请输入姓名\" type=\"text\"  :value.sync=\"nickname\"></x-input>\n    </group>\n\n    <group title=\"性别\">\n        <radio :options=\"radio001\" :value.sync=\"sexValue\" @on-change=\"change\"></radio>\n    </group>\n\n    <group title=\"生日\">\n        <date-time :value.sync=\"birthdayValue | timestamp2date\"\n                   placeholder=\"请选择日期\"\n                   format=\"YYYY-MM-DD\"\n                   @on-change=\"changebirth\"\n                   title=\"选择日期\"\n                   year-row=\"{value}年\"\n                   month-row=\"{value}月\"\n                   day-row=\"{value}日\"\n                   confirm-text=\"完成\"\n                   cancel-text=\"取消\">\n\n        </date-time>\n    </group>\n\n    <group>\n        <x-button type=\"primary\" @click=\"updateInfo\">确认</x-button>\n\n\t      <x-button type=\"red\" @click=\"cancel\">取消</x-button>\n    </group>\n";
 
 /***/ },
 /* 202 */
@@ -25415,6 +25413,7 @@ webpackJsonp([0],[
 	// 		font-weight: normal;
 	// 		font-style: normal;
 	// 	}
+	//
 	// </style>
 	//
 	// <script>

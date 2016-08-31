@@ -48,3 +48,4 @@ export const alterUserInfoSecondQuery = function ({ dispatch }, data) {
 	return user.API_PATCH_ALTER_USER_INFO_SECOND(data).then(function (data) {
 	})
 }
+

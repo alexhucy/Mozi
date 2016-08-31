@@ -1,5 +1,4 @@
 <template>
-
     <group title="小名">
         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
     </group>

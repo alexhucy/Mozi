@@ -107,7 +107,6 @@ export default{
 			childInfoQuery
 		}
 	},
-
 	ready: function () {
 		this.childInfoQuery()
 	},

@@ -16,6 +16,7 @@ import userUpdate from './components/alterInfo/userInfoModify.vue'
 import upload from './views/sign/upload.vue'
 
 
+
 module.exports = function (router) {
 	router.map({
 		'/': {
