@@ -15,7 +15,7 @@
 			</div>
 			<div class="mz-center-avatar mz-item">
 				<div class="mz-center-crown"></div>
-				<img :src="user.info.user_avatar" class="mz-center-img-avatar"><!--
+				<img :src="user.user_avatar" class="mz-center-img-avatar"><!--
 			--></div>
 			<div class="mz-flex">
 				<div class="mz-center-billboard mz-pop" v-link="{name:'billboard'}">
@@ -25,11 +25,11 @@
 		</div>
 
 		<div class="mz-signature mz-center-item">
-			个人战绩: 坚持打卡<span class="mz-bold">{{user.info.duration}}</span>天
+			个人战绩: 坚持打卡<span class="mz-bold">{{user.duration}}</span>天
 		</div>
 
 		<div class="mz-center-point mz-center-item">
-			{{user.info.score}}积分
+			{{user.score}}积分
 		</div>
 
 
@@ -194,7 +194,7 @@ export default {
 		this.activityOngoingListQuery()
 		this.userUpInfoQuery()
 		this.childInfoQuery()
-		switch (this.user.info.score_level){
+		switch (this.user.score_level){
 			case 0:
 				this.level = '小白'
 				break

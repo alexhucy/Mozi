@@ -1,11 +1,13 @@
 <template>
-	<popup :show.sync="showPOP" height="100%">
+
     <group title="小名">
         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
     </group>
+
     <group title="性别">
         <radio :options="radio001" :value.sync="sexValue" @on-change="change"></radio>
     </group>
+
     <group title="生日">
         <date-time :value.sync="birthdayValue | timestamp2date"
                    placeholder="请选择日期"
@@ -20,12 +22,12 @@
 
         </date-time>
     </group>
+
     <group>
         <x-button type="primary" @click="updateInfo">确认</x-button>
 
 	      <x-button type="red" @click="cancel">取消</x-button>
     </group>
-	</popup>
 </template>
 <style>
     .weui_btn_primary{
@@ -84,28 +86,27 @@ export default {
     },
 	  edit: function () {
 		  var _self = this
-		  this.$emit('on-loading')
+		  this.$dispatch('loading')
 		  this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birthday).then(function () {
 			  _self.reset()
-			  _self.$emit('on-loading')
-			  _self.$emit('on-success', '修改成功')
-			  _self.showPOP = false
+			  _self.$dispatch('loading')
+			  _self.$dispatch('success', '修改成功')
+			  window.history.back()
 		  },function (err) {
-			  _self.$emit('on-loading')
-			  _self.$emit('on-error', err)
+			  _self.$dispatch('loading')
+			  _self.$dispatch('error', err)
 		  })
 	  },
 	  save: function(){
-		  var _self =this
-		  this.$emit('on-loading')
+		  var _self = this
+		  this.$dispatch('loading')
 		  this.childUpdateQuery(this.nickname, this.sex, this.birthday).then(function () {
-			  _self.reset()
-			  _self.$emit('on-loading')
-			  _self.$emit('on-success', '新增成功')
-			  _self.showPOP = false
+			  _self.$dispatch('loading')
+			  _self.$dispatch('success', '新增成功')
+			  window.history.back()
 		  }, function (err) {
-			  _self.$emit('on-loading')
-			  _self.$emit('on-error', err)
+			  _self.$dispatch('loading')
+			  _self.$dispatch('error', err)
 		  })
 	  },
     updateInfo: function () {
@@ -122,28 +123,22 @@ export default {
       this.nickname = value
     },
 	  cancel: function () {
-		  this.reset()
-		  this.showPOP = false;
+		  window.history.back()
 	  },
 	  validate: function () {
 		  if(!this.nickname){
-			  this.$emit('on-error', '小名不能为空')
+			  this.$dispatch('error', '小名不能为空')
 			  return false
 		  }
 		  if(!this.sex){
-			  this.$emit('on-error', '请选择性别')
+			  this.$dispatch('error', '请选择性别')
 			  return false
 		  }
 		  if(!this.birthday){
-			  this.$emit('on-error', '请选择出生日期')
+			  this.$dispatch('error', '请选择出生日期')
 			  return false
 		  }
 		  return true
-	  },
-	  reset: function () {
-		  this.nickname = ''
-		  this.sexValue = ''
-		  this.birthdayValue = ''
 	  }
 	}
 }

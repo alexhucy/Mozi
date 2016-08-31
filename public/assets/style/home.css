@@ -656,13 +656,6 @@
 
 
 
-
-
-
-
-
-
-
 .mz-item-cover{
 	padding: 10px 13px 0 13px;
 	background: #fff;
@@ -899,10 +892,6 @@
 	text-overflow:ellipsis;
 	-webkit-line-clamp:2;
 }
-
-
-
-
 
 
 
@@ -1237,6 +1226,14 @@ textarea{
 
 
 
+
+
+
+
+
+
+
+
 .mz-center{
 	margin:15px;
 	padding:5px;
@@ -1351,10 +1348,11 @@ textarea{
 
 
 
+
+
 .weui_btn_primary{
     background-color:#72e4dc;
 }
-
 
 
 
@@ -1593,7 +1591,7 @@ textarea{
 	width: 1px;
 	background: #72e4dc;
 }
-.mz-timeline-box span{
+.mz-label-time{
 	position: absolute;
 	z-index:99;
 	background: #fff;
@@ -1603,6 +1601,40 @@ textarea{
 .mz-timeline-card h4{
 	font-size: 1.6rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

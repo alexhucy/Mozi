@@ -1,5 +1,4 @@
 <template>
-	<popup :show.sync="showPOP" height="100%">
 		<div class="mz-box-upload mz-wrap mz-container">
 			<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>
 			<div class="mz-flex">
@@ -16,11 +15,8 @@
 		<div style="margin-top: 30px">
 			<m-button type="success" large @click="submit">确认</m-button>
 		</div>
-	</popup>
 
 	<loading :show="showLoading" text="提交中"></loading>
-
-	<toast :show.sync="showToast" :type="type">{{message}}</toast>
 </template>
 
 <style>
@@ -123,29 +119,21 @@ export default{
 		submit: function () {
 			var _self = this
 			if(!this.url){
-				_self.message = '请先上传图片'
-				_self.type = 'text'
-				_self.showToast = true
+				this.$dispatch('error','请先上传图片')
 				return false
 			}
 			else if(this. content.length <= 0){
-				_self.message = '留言内容不能为空'
-				_self.type = 'text'
-				_self.showToast = true
+				this.$dispatch('error','留言内容不能为空')
 				return false
 			}
-			this.showLoading = true
+			this.$dispatch('loading')
 			activity.sign(this.id, this.url,this.content).then(function () {
-				_self.showLoading = false
-				_self.showToast = true
-				_self.message = '打卡成功'
-				_self.$emit('on-success')
-				_self.showPOP = false
+				_self.$dispatch('loading')
+				_self.$dispatch('success', '打卡成功!')
+				window.history.back()
 			}, function (err) {
-				_self.showLoading = false
-				_self.showToast = true
-				_self.type = 'warn'
-				_self.message = '打卡失败'
+				_self.$dispatch('loading')
+				_self.$dispatch('error', err)
 			})
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
 	<div class="mz-text-center mz-photo-preview" v-if="src">
-		<span><img :src="src" @click.stop="preview(src)" class="mz-photo"></span>
+		<img :src="src" @click.stop="preview(src)" class="mz-photo">
 	</div>
 </template>
 

@@ -1,19 +1,10 @@
 <template>
 	<div>
-		<router-view></router-view>
+		<router-view>
+		</router-view>
 	</div>
 
-	<!--&lt;!&ndash;loading&ndash;&gt;-->
-	<!--<loading :show.sync="showLoadingLayer" :text="loadingMessage"></loading>-->
-
-	<!--&lt;!&ndash;操作成功通知&ndash;&gt;-->
-	<!--<toast :show.sync="showToastLayer">{{toastMessage}}</toast>-->
-
-	<!--&lt;!&ndash;确认&ndash;&gt;-->
-	<!--<confirm :show.sync="showConfirmLayer"></confirm>-->
-
-	<!--&lt;!&ndash;主要用户通知失败事件&ndash;&gt;-->
-	<!--<alert :show.sync="showAlertLayer"></alert>-->
+	<tips v-ref:tips></tips>
 </template>
 
 <style>
@@ -40,36 +31,46 @@
 
 <script>
 import store from '../vuex/store'
-import {userInfoQuery,userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
+import {userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
 import {jssdkConfigInit} from '../service/weixinService'
 import loading from '../../node_modules/vux/dist/components/loading/index'
 import alert from '../../node_modules/vux/dist/components/loading/index'
 import toast from '../../node_modules/vux/dist/components/toast/index'
 import confirm from '../../node_modules/vux/dist/components/confirm/index'
+import tips from '../components/tips/tips.vue'
 
 export default{
 	store: store,
+	components: {
+		tips
+	},
 	vuex: {
 		actions:{
-			userInfoQuery,
 			userUpInfoQuery,
 			childInfoQuery
 		}
 	},
 	ready: function () {
-		this.userInfoQuery()
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
 		this.childInfoQuery()
 		this.userUpInfoQuery()
 	},
-	data: function () {
-		return {
-			showLoadingLayer: false,
-			showToastLayer: false,
-			showConfirmLayer: false,
-			showAlertLayer: false,
-			loadingMessage: '',
-			toastMessage: '',
+	events: {
+		loading: function (message) {
+			this.$refs.tips.toggleLoading(message)
+		},
+
+		error: function (message) {
+			this.$refs.tips.toggleAlert(message)
+		},
+
+		success: function (message) {
+			this.$refs.tips.toggleToast(message)
+		},
+
+		confirm: function (title, message, callback) {
+			this.$refs.tips.setTitle(title)
+			this.$refs.tips.toggleConfirm(message, callback)
 		}
 	}
 }

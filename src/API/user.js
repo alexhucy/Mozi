@@ -9,7 +9,9 @@ import {
 	userupResource,
 	childUpdateResource,
 	deleteChildInfoResource,
-	alterChildInfoResource
+	alterChildInfoResource,
+	alterUserInfo_first,
+	alterUserInfo_second
 }
 from './resourse'
 
@@ -34,5 +36,12 @@ export default{
 	},
 	API_DELETE_CHILD_INFO: function (id) {
 		return deleteChildInfoResource.delete({id: id})
+	},
+	API_PATCH_ALTER_USER_INFO_FIRST: function (data) {
+		return alterUserInfo_first.save({}, data)
+	},
+	API_PATCH_ALTER_USER_INFO_SECOND: function (data) {
+		return alterUserInfo_second.save({}, data)
 	}
+
 }

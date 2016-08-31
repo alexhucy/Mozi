@@ -10,17 +10,22 @@ var wechat = require('wechat'),
 	config = require('../config')
 
 router.use('/$',function (req,res) {
+	if(req.headers.cookie){
+		res.sendFile(path.join(__dirname,'../public/views/index.html'))
+		return false
+	}
 	var code = req.query.code || '';
 	if (code) {
 		weixinService.codeForToken(code).then(function (token) {
 			res.cookie('Authorization',token)
 			res.sendFile(path.join(__dirname,'../public/views/index.html'))
 		}).catch(function (error) {
-			res.redirect(weixinService.getAuthorizeURL(config.domain,'','snsapi_userinfo'))
+			console.log(error)
+			res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
 		})
 	}
 	else {
-		res.redirect(weixinService.getAuthorizeURL(config.domain,'','snsapi_userinfo'))
+		res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
 	}
 });
 

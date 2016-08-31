@@ -71,7 +71,7 @@ export default {
 	methods: {
 		do: function () {
 			if (!this.disable){
-				this.$dispatch('DO')
+				this.$emit('on-confirm')
 			}
 		},
 		back: function () {

@@ -36,8 +36,15 @@ export const alterChildInfoQuery = function ({ dispatch }, id, nickname, gender,
 }
 
 export const deleteChildInfoQuery = function ({ dispatch }, id) {
-	// return user.API_DELETE_CHILD_INFO(id).then(function () {
 		dispatch(types.DELETE_CHILD_INFO, id)
-	// })
 }
 
+export const alterUserInfoFirstQuery = function ({ dispatch }, data) {
+	return user.API_PATCH_ALTER_USER_INFO_FIRST(data).then(function (data) {
+	})
+}
+
+export const alterUserInfoSecondQuery = function ({ dispatch }, data) {
+	return user.API_PATCH_ALTER_USER_INFO_SECOND(data).then(function (data) {
+	})
+}

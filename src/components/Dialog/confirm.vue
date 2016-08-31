@@ -13,7 +13,7 @@
 				我要打卡
 			</m-button>
 
-			<m-button type="success" large @click="hidden">
+			<m-button type="success" large @click="toggle">
 				随便看看
 			</m-button>
 		</div>
@@ -68,11 +68,11 @@ export default {
 		type: String
 	},
 	methods: {
-		hidden: function () {
+		toggle: function () {
 			this.showNoScroll = !this.showNoScroll;
 		},
 		confirm(){
-			this.$dispatch('confirm')
+			this.$emit('on-confirm')
 		}
 	}
 }

@@ -73,22 +73,19 @@ export default {
   },
   methods: {
     delete: function () {
-			this.$emit('on-confirm' , '确认删除' + this.nickname + '的信息么', this.confirm)
+			this.$dispatch('confirm' , '个人信息','确认删除' + this.nickname + '的信息么', this.confirm)
     },
 	  confirm: function () {
 		  var _self = this
-		  this.$emit('on-loading')
+		  this.$dispatch('loading')
 		  userService.deleteChildInfo(this.id).then(function () {
 			    _self.deleteChildInfoQuery(_self.id)
-			    _self.$emit('on-loading')
-			    _self.$emit('on-success', '删除成功')
+			    _self.$dispatch('loading')
+			    _self.$dispatch('success', '删除成功')
 		  }).catch(function (err) {
-				  _self.$emit('on-loading')
-			    _self.$emit('on-error', err)
+				  _self.$dispatch('loading')
+			    _self.$dispatch('error', err)
 		  })
-	  },
-	  add: function () {
-		  this.$emit('on-edit')
 	  },
 	  edit: function () {
 		  this.$emit('on-edit')

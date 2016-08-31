@@ -51,21 +51,14 @@
 
 		<f-button type="success"
 							:action="activityInfo.signup===1?'已报名':'我要报名'"
-							:disable="activityInfo.signup===1?true:false">
+							:disable="activityInfo.signup===1?true:false"
+							@on-confirm="confirm">
 
 		</f-button>
 
-		<dialog v-ref:dialog></dialog>
-
-		<confirm :show.sync="show" title="活动报名" @on-confirm="onConfirm" cancel-text="取消" confirm-text="确定">
-			<p style="text-align:center;" v-if="activityInfo.info">确定参加{{activityInfo.info.title}}</p>
-		</confirm>
-
-		<alert :show.sync="showError" title="活动报名" button-text="确定">{{errorMessage}}</alert>
-
-		<upload :show-pop.sync="showUpload" :id="$route.params.id"></upload>
-
-		<load :show="showLoading" text="提交中"></load>
+		<dialog v-ref:dialog
+						@on-confirm="upload">
+		</dialog>
 	</div>
 </template>
 
@@ -84,27 +77,18 @@ import card from '../../components/card/cardWithAvatar.vue'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import fButton from '../../components/button/footerButton.vue'
 import dialog from '../../components/Dialog/confirm.vue'
-import confirm from '../../../node_modules/vux/dist/components/confirm/index'
-import alert from '../../../node_modules/vux/dist/components/alert/index'
 import activityService from '../../service/activityService'
 import halfItem from '../../components/item/HalfItem.vue'
 import promise from '../../../node_modules/vue-resource/src/promise'
-import loading from '../../components/load/loading.vue'
 import upload from './upload.vue'
-import load from '../../../node_modules/vux/dist/components/loading/index'
-
+import loading from '../../components/load/loading.vue'
 
 export default {
 	data (){
 		return {
-			id: 0,
-			show: false,
-			showError: false,
-			errorMessage: '',
 			activityInfo: {},
 			items: [],
-			showUpload: false,
-			showLoading: false
+			showUpload: false
 		}
 	},
 	components: {
@@ -114,13 +98,10 @@ export default {
 		card,
 		scroller,
 		fButton,
-		confirm,
 		dialog,
-		alert,
 		halfItem,
 		loading,
-		upload,
-		load
+		upload
 	},
 	route: {
 		data ({to: { params: { id }}}){
@@ -130,36 +111,29 @@ export default {
 	ready: function () {
 		this.query()
 	},
-	events: {
-		DO: function () {
-			this.show = true
-		},
-		confirm: function () {
-			this.showUpload = true
-			this.$refs.dialog.hidden()
-		}
-	},
 	methods: {
 		onConfirm: function () {
 			var _self = this
-			this.showLoading = true
+			this.$dispatch('loading')
 			activityService.book(this.id).then(function (data) {
 				 if(data.data.result === 0){
 					 _self.activityInfo.signup = 1
-					 _self.$refs.dialog.hidden()
-					 _self.showLoading =false
-					 //_self.$broadcast('showDialog')
+					 _self.$refs.dialog.toggle()
+					 _self.$dispatch('loading')
+
 				 }
 				else{
-					 _self.errorMessage = '报名失败!';
-					 _self.showError = true
-					 _self.showLoading = false
+				  _self.$dispatch('error','报名失败')
+					_self.$dispatch('loading')
 				 }
 			}).catch(function (err) {
-				_self.errorMessage = '内部错误, 请重试!';
-				_self.showError = true
-				_self.showLoading =false
+				_self.$dispatch('error',err)
+				_self.$dispatch('loading')
 			})
+		},
+
+		confirm: function () {
+			this.$dispatch('confirm','活动信息','确定参加活动?', this.onConfirm)
 		},
 
 		fresh: function () {
@@ -179,6 +153,10 @@ export default {
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
 			})
+		},
+		
+		upload: function () {
+			this.$router.go({name:'upload'})
 		}
 	}
 }
