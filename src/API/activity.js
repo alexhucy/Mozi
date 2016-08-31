@@ -15,7 +15,8 @@ import {
 	completedActivityInfoResource,
 	completedActivityTimelineResource,
 	getUrlByServerIdResource,
-	recordResource
+	recordResource,
+	rankListResource
 } from './resourse'
 
 
@@ -70,5 +71,9 @@ export default {
 	
 	API_GET_URL_BY_SERVERID: function (id) {
 		return getUrlByServerIdResource.get({id: id})
+	},
+
+	API_GET_RANK_LIST: function () {
+		return rankListResource.get()
 	}
 }

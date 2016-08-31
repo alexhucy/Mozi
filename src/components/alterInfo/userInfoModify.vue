@@ -29,7 +29,8 @@
     <group>
 
         <x-button type="primary"
-                  @click="update">
+                  @click="update"
+        >
             确认修改
         </x-button>
 

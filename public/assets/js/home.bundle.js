@@ -1000,6 +1000,7 @@ webpackJsonp([0],[
 	exports.getCompltedActivity = getCompltedActivity;
 	exports.getTimeline = getTimeline;
 	exports.getRecord = getRecord;
+	exports.getRankList = getRankList;
 
 	var _store = __webpack_require__(39);
 
@@ -1037,6 +1038,10 @@ webpackJsonp([0],[
 
 	function getRecord() {
 		return _store2.default.state.activity.record;
+	}
+
+	function getRankList() {
+		return _store2.default.state.activity.rankList;
 	}
 
 /***/ },
@@ -1112,7 +1117,8 @@ webpackJsonp([0],[
 		onGoingActivityList: [],
 		completedActivity: {},
 		timeline: [],
-		record: {}
+		record: {},
+		rankList: []
 	};
 
 	var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.GET_ACTIVITY_LIST, function (state, list) {
@@ -1131,6 +1137,8 @@ webpackJsonp([0],[
 		state.timeline = list.data.list;
 	}), (0, _defineProperty3.default)(_mutations, _mutationTypes.GET_RECORD, function (state, record) {
 		state.record = record.data;
+	}), (0, _defineProperty3.default)(_mutations, _mutationTypes.GET_RANK_LIST, function (state, rankList) {
+		state.rankList = rankList.data.list;
 	}), _mutations);
 
 	exports.default = {
@@ -1465,6 +1473,8 @@ webpackJsonp([0],[
 	var POST_ALTER_CHILD_INFO = exports.POST_ALTER_CHILD_INFO = 'POST_ALTER_CHILD_INFO';
 	var DELETE_CHILD_INFO = exports.DELETE_CHILD_INFO = 'DELETE_CHILD_INFO';
 
+	var GET_RANK_LIST = exports.GET_RANK_LIST = 'GET_RANK_LIST';
+
 /***/ },
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
@@ -1521,7 +1531,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.recordQuery = exports.activityCompletedTimeLineQuery = exports.activityCompletedInfoQuery = exports.activityOngoingListQuery = exports.activityMessageQuery = exports.activitySignListQuery = exports.activityQuery = exports.activityListQuery = undefined;
+	exports.rankListQuery = exports.recordQuery = exports.activityCompletedTimeLineQuery = exports.activityCompletedInfoQuery = exports.activityOngoingListQuery = exports.activityMessageQuery = exports.activitySignListQuery = exports.activityQuery = exports.activityListQuery = undefined;
 
 	var _activity = __webpack_require__(64);
 
@@ -1602,6 +1612,14 @@ webpackJsonp([0],[
 		});
 	};
 
+	var rankListQuery = exports.rankListQuery = function rankListQuery(_ref9) {
+		var dispatch = _ref9.dispatch;
+
+		return _activity2.default.API_GET_RANK_LIST().then(function (data) {
+			dispatch(types.GET_RANK_LIST, data);
+		});
+	};
+
 /***/ },
 /* 64 */
 /***/ function(module, exports, __webpack_require__) {
@@ -1665,6 +1683,10 @@ webpackJsonp([0],[
 
 		API_GET_URL_BY_SERVERID: function API_GET_URL_BY_SERVERID(id) {
 			return _resourse.getUrlByServerIdResource.get({ id: id });
+		},
+
+		API_GET_RANK_LIST: function API_GET_RANK_LIST() {
+			return _resourse.rankListResource.get();
 		}
 	}; /**
 	    * Created by tao on 2016/8/19.
@@ -1679,7 +1701,7 @@ webpackJsonp([0],[
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.alterUserInfo_second = exports.alterUserInfo_first = exports.alterChildInfoResource = exports.deleteChildInfoResource = exports.childUpdateResource = exports.childResource = exports.getUrlByServerIdResource = exports.completedActivityTimelineResource = exports.completedActivityInfoResource = exports.ongoingActivityResource = exports.weixinJSSDKResource = exports.userupResource = exports.userResource = exports.recordResource = exports.messageListResource = exports.messageResource = exports.agreeResource = exports.signResource = exports.signUpResource = exports.signListResource = exports.activityResource = exports.activityListResource = undefined;
+	exports.rankListResource = exports.alterUserInfo_second = exports.alterUserInfo_first = exports.alterChildInfoResource = exports.deleteChildInfoResource = exports.childUpdateResource = exports.childResource = exports.getUrlByServerIdResource = exports.completedActivityTimelineResource = exports.completedActivityInfoResource = exports.ongoingActivityResource = exports.weixinJSSDKResource = exports.userupResource = exports.userResource = exports.recordResource = exports.messageListResource = exports.messageResource = exports.agreeResource = exports.signResource = exports.signUpResource = exports.signListResource = exports.activityResource = exports.activityListResource = undefined;
 
 	var _vue = __webpack_require__(1);
 
@@ -1741,6 +1763,8 @@ webpackJsonp([0],[
 	var alterChildInfoResource = exports.alterChildInfoResource = _vue2.default.resource(API_ROOT + '/api/child/{id}'); //修改孩子信息
 	var alterUserInfo_first = exports.alterUserInfo_first = _vue2.default.resource(API_ROOT + '/api/user/partial-update'); // 修改头像和昵称
 	var alterUserInfo_second = exports.alterUserInfo_second = _vue2.default.resource(API_ROOT + '/api/profile/partial-update'); //修改地址和性别
+
+	var rankListResource = exports.rankListResource = _vue2.default.resource(API_ROOT + '/api/signin/ranklist'); //排行榜
 
 /***/ },
 /* 66 */
@@ -4855,44 +4879,66 @@ webpackJsonp([0],[
 
 /***/ },
 /* 128 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
+
+	var _activityGetter = __webpack_require__(38);
+
+	var _activityAction = __webpack_require__(63);
+
+	var _loading = __webpack_require__(92);
+
+	var _loading2 = _interopRequireDefault(_loading);
+
+	var _index = __webpack_require__(98);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	// <template>
+	// 	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 0;right:0px;left:0px;" >
+	// 		<loading v-ref:loading
+	// 				 @on-refresh="query">
+	// 		</loading>
 	// 	<div class="mz-billboard mz-item">
-	// 		<div class="mz-billboard-top-1">
-	// 			<i class="mz-billboard-rank">NO.1</i>
+	//
+	// 		<div v-if="$index == 0" class="mz-billboard-top-1" v-for="item in items">
+	//
+	// 			<i class="mz-billboard-rank">NO.{{$index+1}}</i>
+	//
 	// 			<div class="mz-billboard-avatar">
+	//
 	// 					<img src="/images/crown.png" class="mz-billboard-top-1-crown">
-	// 					<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
+	// 					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
+	//
 	// 				  <div class="mz-billboard-top-1-decorate">
-	// 					  sunShine
+	// 					  {{item.user_name}}
 	// 				  </div>
+	//
 	// 			</div>
+	//
 	// 		</div>
 	//
-	// 		<div class="mz-billboard-item mz-item-odds">
-	// 			<span class="mz-billboard-item-rank-number">NO.2</span>
-	// 			<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
+	// 		<div v-if="$index > 0" class="mz-billboard-item" :class="[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']" v-for="item in items">
+	//
+	// 			<span class="mz-billboard-item-rank-number">NO.{{$index+1}}</span>
+	// 			<img :src="item.user_avatar" class="mz-billboard-img-avatar">
+	//
 	// 			<div>
-	// 				<p class="mz-billboard-name">张三v4</p>
-	// 				<p class="mz-billboard-point">积分:23000</p>
+	// 				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
+	// 				<p class="mz-billboard-point">积分:{{item.signin_count}}</p>
 	// 			</div>
+	//
 	// 		</div>
 	//
-	// 		<div class="mz-billboard-item mz-item-even">
-	// 			<span class="mz-billboard-item-rank-number">NO.3</span>
-	// 			<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
-	// 			<div>
-	// 				<p class="mz-billboard-name">张三v4</p>
-	// 				<p class="mz-billboard-point">积分:23000</p>
-	// 			</div>
-	// 		</div>
 	// 	</div>
+	// 	</scroller>
 	// </template>
 	//
 	// <style>
@@ -4978,17 +5024,75 @@ webpackJsonp([0],[
 	// 	justify-content: center;
 	// 	align-items: flex-end;
 	// }
+	// .mz-billboard-level{
+	// 	display: inline-block;
+	// 	border:2px solid #FBDF86;
+	// 	border-radius:50%;
+	// 	background-color: #F7BE32;
+	// 	font-size:10px;
+	// 	color: #FFFFFF;
+	// 	text-align: center;
+	// 	vertical-align: middle;
+	// 	width:15px;
+	// 	height:15px;
+	// }
 	// </style>
 	//
 	// <script>
-	exports.default = {};
+	exports.default = {
+		vuex: {
+			getters: {
+				items: _activityGetter.getRankList
+			},
+			actions: {
+				rankListQuery: _activityAction.rankListQuery
+			}
+		},
+		components: {
+			Scroller: _index2.default,
+			loading: _loading2.default
+		},
+		methods: {
+			query: function query() {
+				var _self = this;
+				this.$refs.loading.OnLoading();
+				this.rankListQuery().then(function (data) {
+					//				if(isEmptyObject(_self.items)){
+					//					_self.$refs.loading.OnEmpty()
+					//				}
+					//				else{
+					_self.$refs.loading.OnHide();
+					//				}
+				}).catch(function () {
+					_self.$refs.loading.OnError();
+				});
+			},
+			loaded: function loaded() {
+				var _this = this;
+
+				this.$nextTick(function () {
+					_this.$refs.scroller.reset();
+				});
+			}
+		},
+		watch: {
+			items: function items() {
+				this.loaded();
+			}
+		},
+		ready: function ready() {
+			if (this.items.length === 0) {
+				this.query();
+			}
+		}
+	};
 	// </script>
 
 /***/ },
 /* 129 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"mz-billboard mz-item\">\n\t<div class=\"mz-billboard-top-1\">\n\t\t<i class=\"mz-billboard-rank\">NO.1</i>\n\t\t<div class=\"mz-billboard-avatar\">\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img src=\"http://static.youku.com/user/img/avatar/310/39.jpg\" class=\"mz-billboard-img-avatar\">\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  sunShine\n\t\t\t  </div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"mz-billboard-item mz-item-odds\">\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.2</span>\n\t\t<img src=\"http://static.youku.com/user/img/avatar/310/39.jpg\" class=\"mz-billboard-img-avatar\">\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">张三v4</p>\n\t\t\t<p class=\"mz-billboard-point\">积分:23000</p>\n\t\t</div>\n\t</div>\n\n\t<div class=\"mz-billboard-item mz-item-even\">\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.3</span>\n\t\t<img src=\"http://static.youku.com/user/img/avatar/310/39.jpg\" class=\"mz-billboard-img-avatar\">\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">张三v4</p>\n\t\t\t<p class=\"mz-billboard-point\">积分:23000</p>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "\n<scroller v-ref:scroller lock-x height=\"auto\" style=\"position:absolute;top: 0;right:0px;left:0px;\" >\n\t<loading v-ref:loading\n\t\t\t @on-refresh=\"query\">\n\t</loading>\n<div class=\"mz-billboard mz-item\">\n\n\t<div v-if=\"$index == 0\" class=\"mz-billboard-top-1\" v-for=\"item in items\">\n\n\t\t<i class=\"mz-billboard-rank\">NO.{{$index+1}}</i>\n\n\t\t<div class=\"mz-billboard-avatar\">\n\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  {{item.user_name}}\n\t\t\t  </div>\n\n\t\t</div>\n\n\t</div>\n\n\t<div v-if=\"$index > 0\" class=\"mz-billboard-item\" :class=\"[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']\" v-for=\"item in items\">\n\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.{{$index+1}}</span>\n\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">{{item.user_name}} <span class=\"mz-billboard-level\">v{{item.score_level}}</span></p>\n\t\t\t<p class=\"mz-billboard-point\">积分:{{item.signin_count}}</p>\n\t\t</div>\n\n\t</div>\n\n</div>\n</scroller>\n";
 
 /***/ },
 /* 130 */
@@ -6353,8 +6457,7 @@ webpackJsonp([0],[
 		vuex: {
 			actions: {
 				activityOngoingListQuery: _activityAction.activityOngoingListQuery,
-				childInfoQuery: _userAction.childInfoQuery,
-				userUpInfoQuery: _userAction.userUpInfoQuery
+				childInfoQuery: _userAction.childInfoQuery
 			},
 			getters: {
 				items: _activityGetter.getOngoingActivityList,
@@ -6364,7 +6467,6 @@ webpackJsonp([0],[
 		ready: function ready() {
 			var _self = this;
 			this.activityOngoingListQuery();
-			this.userUpInfoQuery();
 			this.childInfoQuery();
 			switch (this.user.score_level) {
 				case 0:
@@ -8544,7 +8646,8 @@ webpackJsonp([0],[
 	//     <group>
 	//
 	//         <x-button type="primary"
-	//                   @click="update">
+	//                   @click="update"
+	//         >
 	//             确认修改
 	//         </x-button>
 	//
@@ -25198,7 +25301,7 @@ webpackJsonp([0],[
 /* 228 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district\n    >\n\n    </address>\n\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\">\n        确认修改\n    </x-button>\n\n</group>\n\n<loading :show=\"show\"></loading>\n\n<toast type=\"text\" :show.sync=\"show1\" width=\"20em\">请求失败，请重试</toast>\n\n";
+	module.exports = "\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district\n    >\n\n    </address>\n\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\"\n    >\n        确认修改\n    </x-button>\n\n</group>\n\n<loading :show=\"show\"></loading>\n\n<toast type=\"text\" :show.sync=\"show1\" width=\"20em\">请求失败，请重试</toast>\n\n";
 
 /***/ },
 /* 229 */

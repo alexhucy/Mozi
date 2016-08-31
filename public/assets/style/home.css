@@ -478,6 +478,13 @@
 
 
 
+
+
+
+
+
+
+
 .mz-billboard-top-1{
 	height: 133px;
 	background: #72e4dc;
@@ -576,6 +583,18 @@
 	-webkit-box-align: end;
 	    -ms-flex-align: end;
 	        align-items: flex-end;
+}
+.mz-billboard-level{
+	display: inline-block;
+	border:2px solid #FBDF86;
+	border-radius:50%;
+	background-color: #F7BE32;
+	font-size:10px;
+	color: #FFFFFF;
+	text-align: center;
+	vertical-align: middle;
+	width:15px;
+	height:15px;
 }
 
 
@@ -1563,6 +1582,7 @@ textarea{
 .mz-timeline-card h4{
 	font-size: 1.6rem;
 }
+
 
 
 

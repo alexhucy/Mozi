@@ -151,7 +151,7 @@
 <script>
 import card from '../../components/card/cardWithoutAvatar.vue'
 import dialog from './awardDialog.vue'
-import {activityOngoingListQuery} from '../../vuex/actions/activityAction'
+import {activityOngoingListQuery,rankListQuery} from '../../vuex/actions/activityAction'
 import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import {childInfoQuery, userUpInfoQuery} from '../../vuex/actions/userAction'
@@ -181,8 +181,7 @@ export default {
 	vuex: {
 		actions: {
 			activityOngoingListQuery,
-			childInfoQuery,
-			userUpInfoQuery
+			childInfoQuery
 		},
 		getters: {
 			items: getOngoingActivityList,
@@ -192,7 +191,6 @@ export default {
 	ready: function(){
 		var _self = this
 		this.activityOngoingListQuery()
-		this.userUpInfoQuery()
 		this.childInfoQuery()
 		switch (this.user.score_level){
 			case 0:

@@ -52,3 +52,5 @@ export const deleteChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}'
 export const alterChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}')//修改孩子信息
 export const alterUserInfo_first = Vue.resource(API_ROOT + '/api/user/partial-update') // 修改头像和昵称
 export const alterUserInfo_second = Vue.resource(API_ROOT + '/api/profile/partial-update')//修改地址和性别
+
+export const rankListResource = Vue.resource(API_ROOT + '/api/signin/ranklist') //排行榜

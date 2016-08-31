@@ -51,3 +51,9 @@ export const recordQuery = function ({ dispatch }, activity_id) {
 		dispatch(types.GET_RECORD, data)
 	})
 }
+
+export const rankListQuery = function ({ dispatch }) {
+	return activity.API_GET_RANK_LIST().then(function (data) {
+		dispatch(types.GET_RANK_LIST, data)
+	})
+}

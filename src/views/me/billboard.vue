@@ -1,34 +1,41 @@
 <template>
+	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;top: 0;right:0px;left:0px;" >
+		<loading v-ref:loading
+				 @on-refresh="query">
+		</loading>
 	<div class="mz-billboard mz-item">
-		<div class="mz-billboard-top-1">
-			<i class="mz-billboard-rank">NO.1</i>
+
+		<div v-if="$index == 0" class="mz-billboard-top-1" v-for="item in items">
+
+			<i class="mz-billboard-rank">NO.{{$index+1}}</i>
+
 			<div class="mz-billboard-avatar">
+
 					<img src="/images/crown.png" class="mz-billboard-top-1-crown">
-					<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
+					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
+
 				  <div class="mz-billboard-top-1-decorate">
-					  sunShine
+					  {{item.user_name}}
 				  </div>
+
 			</div>
+
 		</div>
 
-		<div class="mz-billboard-item mz-item-odds">
-			<span class="mz-billboard-item-rank-number">NO.2</span>
-			<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
+		<div v-if="$index > 0" class="mz-billboard-item" :class="[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']" v-for="item in items">
+
+			<span class="mz-billboard-item-rank-number">NO.{{$index+1}}</span>
+			<img :src="item.user_avatar" class="mz-billboard-img-avatar">
+
 			<div>
-				<p class="mz-billboard-name">张三v4</p>
-				<p class="mz-billboard-point">积分:23000</p>
+				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
+				<p class="mz-billboard-point">积分:{{item.signin_count}}</p>
 			</div>
+
 		</div>
 
-		<div class="mz-billboard-item mz-item-even">
-			<span class="mz-billboard-item-rank-number">NO.3</span>
-			<img src="http://static.youku.com/user/img/avatar/310/39.jpg" class="mz-billboard-img-avatar">
-			<div>
-				<p class="mz-billboard-name">张三v4</p>
-				<p class="mz-billboard-point">积分:23000</p>
-			</div>
-		</div>
 	</div>
+	</scroller>
 </template>
 
 <style>
@@ -114,10 +121,68 @@
 	justify-content: center;
 	align-items: flex-end;
 }
+.mz-billboard-level{
+	display: inline-block;
+	border:2px solid #FBDF86;
+	border-radius:50%;
+	background-color: #F7BE32;
+	font-size:10px;
+	color: #FFFFFF;
+	text-align: center;
+	vertical-align: middle;
+	width:15px;
+	height:15px;
+}
 </style>
 
 <script>
+import {getRankList} from '../../vuex/getters/activityGetter'
+import {rankListQuery} from '../../vuex/actions/activityAction'
+import loading from '../../components/load/loading.vue'
+import Scroller from '../../../node_modules/vux/dist/components/scroller/index'
 export default{
-
+	vuex: {
+		getters: {
+			items: getRankList
+		},
+		actions: {
+			rankListQuery
+		}
+	},
+	components: {
+		Scroller,
+		loading
+	},
+	methods: {
+		query: function () {
+			var _self = this;
+			this.$refs.loading.OnLoading()
+			this.rankListQuery().then(function (data) {
+//				if(isEmptyObject(_self.items)){
+//					_self.$refs.loading.OnEmpty()
+//				}
+//				else{
+					_self.$refs.loading.OnHide()
+//				}
+			}).catch(function () {
+				_self.$refs.loading.OnError()
+			})
+		},
+		loaded: function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
+			})
+		}
+	},
+	watch:{
+		items:function () {
+			this.loaded()
+		}
+	},
+	ready:function () {
+		if (this.items.length === 0){
+			this.query()
+		}
+	}
 }
 </script>

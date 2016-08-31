@@ -32,3 +32,7 @@ export function getTimeline() {
 export function getRecord() {
 	return store.state.activity.record
 }
+
+export function getRankList() {
+	return store.state.activity.rankList
+}

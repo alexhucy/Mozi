@@ -13,7 +13,8 @@ import {
 	GET_ONGOING_ACTIVITY_LIST,
 	GET_COMPLETED_ACTIVITY_INFO,
 	GET_COMPLETED_ACTIVITY_TIMELINE,
-	GET_RECORD
+	GET_RECORD,
+	GET_RANK_LIST
 } from '../mutation-types'
 
 const state = {
@@ -24,7 +25,8 @@ const state = {
 	onGoingActivityList: [],
 	completedActivity: {},
 	timeline: [],
-	record: {}
+	record: {},
+	rankList: []
 }
 
 const mutations = {
@@ -64,6 +66,9 @@ const mutations = {
 	},
 	[GET_RECORD](state, record){
 		state.record = record.data
+	},
+	[GET_RANK_LIST](state, rankList){
+		state.rankList = rankList.data.list
 	}
 }
 
