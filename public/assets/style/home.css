@@ -104,9 +104,10 @@
 
 
 
-
-
-
+.mz-font-12{
+	font-size: 1.2rem;
+	color: #666;
+}
 
 
 
@@ -155,7 +156,7 @@
 }
 .mz-item.mz-item-avatar{
 	min-height:72px ;
-	padding:10px 0 15px 60px;
+	padding:10px 0 15px 70px;
 }
 .mz-avatar{
 	position:absolute;
@@ -174,7 +175,6 @@
 .mz-avatar span{
 	display: block;
 }
-
 
 
 
@@ -225,7 +225,7 @@
 	left: 0;
 	width: 60px;
 	text-align: right;
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 }
 
 
@@ -242,16 +242,49 @@
 
 
 .mz-loading{
-	margin: 40px 0;
+	padding: 40px 0;
 	text-align: center;
 }
 .mz-error-line{
 	text-align: center;
-	margin: 10px 0;
+	padding: 10px 0;
 }
 .mz-error-line a{
 	color: #333;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -286,6 +319,13 @@
 .mz-text-center{
 	text-align: center;
 }
+h4{
+	font-size: 1.6rem;
+}
+.mz-card-content{
+	color:#666;
+	font-size: 1.4rem;
+}
 
 
 
@@ -298,6 +338,7 @@
 	position: absolute;
 	text-align: center;
 	color:#fff;
+	font-size: 1.4rem;
 }
 .mz-top{
 	top:0;
@@ -356,20 +397,23 @@
 
 
 
-
-
-
-
-
-
-
-
-
 .mz-pull-right{
 	float: right;
 }
 .mz-item-comment{
 	padding: 3px 0;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.mz-comment-footer{
+	padding: 8px 15px 8px 30px;
 }
 .mz-commit{
 	border:1px solid #e3e3e3;
@@ -395,7 +439,7 @@
 	padding-right: 6px;
 }
 .mz-icon-good:before{
-	content: "\E913";.
+	content: "\E913";
 	padding-right:6px;
 }
 .clear-fix{
@@ -457,6 +501,7 @@
 }
 .mz-photo-preview{
 	margin-top:10px;
+	height: 200px;
 }
 
 
@@ -914,6 +959,8 @@
 
 
 
+
+
 .mz-box-upload{
 	background: #fff;
 	border:1px solid #72e4dc;
@@ -942,6 +989,12 @@ textarea{
 	resize: none;
 	font-size: 1.5rem;
 }
+
+
+
+
+
+
 
 
 
@@ -1144,6 +1197,10 @@ textarea{
 
 
 
+
+.mz-award-supply{
+	color: #FE7F85;
+}
 .mz-dialog-transparent .weui_dialog{
 	background: transparent;
 	width: 75%;
@@ -1172,6 +1229,11 @@ textarea{
 	position: absolute;
 	z-index:99999
 }
+
+
+
+
+
 
 
 
@@ -1348,25 +1410,9 @@ textarea{
 
 
 
-
 .weui_btn_primary{
     background-color:#72e4dc;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1573,13 +1619,20 @@ textarea{
 
 
 
+
+
 .mz-timeline-box{
 	background: #fff;
 	position:relative;
 	padding: 0 10px ;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 }
 .mz-timeline-card{
-	padding-left: 80px;
+	-webkit-box-flex:1;
+	    -ms-flex:1;
+	        flex:1;
 }
 .mz-timeline-box:before{
 	content: '';
@@ -1591,7 +1644,6 @@ textarea{
 	background: #72e4dc;
 }
 .mz-label-time{
-	position: absolute;
 	z-index:99;
 	background: #fff;
 	width: 80px;
@@ -1654,6 +1706,123 @@ textarea{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mz-comment-title-bar{
+	margin-top: 10px;
+	padding: 12px;
+	background: #fff;
+	font-size: 1.4rem;
+	font-weight: 400;
+}
+.mz-state{
+	background: #fff;
+	padding: 0 13px;
+	border-top:1px solid #e3e3e3;
+}
+.mz-comment-title-bar{
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	border-bottom: 1px solid #e3e3e3;
+}
+.mz-icon-write:before{
+	content:'\E906';
+	padding-right: 6px;
+}
+.mz-icon-large{
+	font-family: "MOZI";
+	display: inline-block;
+	font-style: normal;
+	font-size: 1.4rem;
+	color: #666;
+}
+.mz-checked.mz-icon-large{
+	color:#FE7F85;
+}
+
+
+
+
+
+
+
+
+
+
+
+.mz-comment-list{
+	position: relative;
+	padding: 10px 12px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	background: #fff;
+	border-bottom:1px solid #e3e3e3;
+}
+.mz-comment-list img{
+	display: block;
+	width: 34px;
+	height: 34px;
+	margin-right: 12px;
+
+}
+.mz-comment-item{
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+}
+.mz-comment-name{
+	font-weight: 400px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 html,body{
 	font-size: 10px;
 	height: 100%;
@@ -1673,4 +1842,20 @@ html,body{
 	font-weight: normal;
 	font-style: normal;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

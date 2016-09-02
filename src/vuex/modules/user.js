@@ -8,7 +8,9 @@ import {
 	GET_USER_UP,
 	POST_CHILD_UPDATE,
 	POST_ALTER_CHILD_INFO,
-	DELETE_CHILD_INFO
+	DELETE_CHILD_INFO,
+	SET_EDIT_CHILD_INFO,
+	REMOVE_EDIT_CHILD_INFO
 } from '../mutation-types'
 
 const state = {
@@ -16,7 +18,9 @@ const state = {
 	childInfo: [],
 	userUpInfo: {},
 	childUpdate: {},
-	alterChildInfo: {}
+	alterChildInfo: {},
+	child: {},
+	status: 'SAVE'
 }
 
 const mutations = {
@@ -51,6 +55,16 @@ const mutations = {
 				state.childInfo.splice(index, 1)
 			}
 		})
+	},
+	
+	[SET_EDIT_CHILD_INFO] (state, child){
+		state.child = child
+		state.status = 'EDIT'
+	},
+
+	[REMOVE_EDIT_CHILD_INFO](state){
+		state.child = {}
+		state.status = 'SAVE'
 	}
 }
 

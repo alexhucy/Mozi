@@ -4,7 +4,8 @@
 	<div v-if="activity.info && items">
 
 		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto" >
-			<div class="mz-sign">
+			<div class="mz-sign" style="padding-bottom: 10px">
+
 				<tab :title="activity.info.title" @on-fresh="fresh">
 					<div class="mz-item-cover">
 						<avatar-item :avatar-url="activity.info.sponsor_avatar" >
@@ -17,7 +18,7 @@
 					</div>
 
 					<wrap title="活动介绍:" type="success"  >
-						<p>{{activity.info.desc}}</p>
+						<p>{{activity.info.desc || '无活动介绍'}}</p>
 					</wrap>
 
 					<wrap title="相关课程:" type="warn">
@@ -46,7 +47,7 @@
 								:activity-id="item.activity_id"
 								:sign-id="item.signin_id"
 								:checked="item.my_agree === 1?true:false"
-							  @on-loaded="fresh"
+							  @on-loaded="pass(item)"
 								:date="item.signin_time"
 								:name="item.user_name">
 				</card>
@@ -85,6 +86,7 @@ import upload from './upload.vue'
 import activityService from '../../service/activityService'
 import promise from '../../../node_modules/vue-resource/src/promise'
 import loading from '../../components/load/loading.vue'
+import {setSignInfo} from '../../vuex/actions/activityAction'
 
 export default {
 	components: {
@@ -107,6 +109,11 @@ export default {
 			showUpload: false,
 			items : [],
 			activity: {}
+		}
+	},
+	vuex: {
+		actions: {
+			setSignInfo
 		}
 	},
 	route: {
@@ -140,6 +147,9 @@ export default {
 		},
 		sign: function () {
 			this.$router.go({name: 'upload'})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
 		}
 	},
 	ready:function () {

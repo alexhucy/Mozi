@@ -14,7 +14,7 @@
 					相关教程:
 				</div>
 				<div slot="container">
-					<span v-html="course"></span>
+					<span class="mz-font-12" v-html="course | newLine"></span>
 				</div>
 			</recommend-item>
 		</div>
@@ -22,7 +22,10 @@
 </template>
 
 <style>
-
+	.mz-font-12{
+		font-size: 1.2rem;
+		color: #666;
+	}
 </style>
 
 <script>

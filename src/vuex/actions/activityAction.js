@@ -51,3 +51,29 @@ export const recordQuery = function ({ dispatch }, activity_id) {
 		dispatch(types.GET_RECORD, data)
 	})
 }
+
+
+export const setSignInfo = function ({dispatch}, info) {
+	dispatch(types.SET_SIGN_INFO, info)
+}
+
+export const unshiftSigninfo = function ({dispatch},signInfo) {
+	dispatch(types.UNSHIFT_SIGN_INFO, signInfo)
+}
+
+export const setLastActivityBookInfo = function ({dispatch}, activity, signList) {
+	dispatch(types.SET_LAST_ACTIVITY_BOOK_INFO, activity, signList)
+}
+
+export const setLastActivitySignInfo = function ({dispatch}, activity, signList) {
+	dispatch(types.SET_LAST_ACTIVITY_SIGN_INFO, activity, signList)
+}
+
+export const setLastCommentInfo = function ({dispatch},sign, commentList, activityId, signId) {
+	dispatch(types.SET_LAST_COMMENT_INFO, sign, commentList, activityId, signId)
+}
+
+
+export const pushLastCommentSign = function ({dispatch}, info) {
+	dispatch(types.PUSH_LAST_COMMENT_SIGN_INFO, info)
+}

@@ -1,8 +1,8 @@
 <template>
 	<box type = "success">
-		<div v-link="{name:'timeline',params:{id:activityId}}" style="padding: 15px 15px 0">
+		<div v-link="{name:'timeline',params:{id:activityId}}" style="padding: 15px 30px 0">
 			<h4>{{title}}</h4>
-			<p>{{content}}</p>
+			<p v-html="content|newLine"></p>
 			<image-item :src="cover"></image-item>
 		</div>
 		<comment :zan="zan"

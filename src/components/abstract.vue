@@ -33,6 +33,7 @@
 <script>
 import store from '../vuex/store'
 import {userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
+
 import {jssdkConfigInit} from '../service/weixinService'
 import loading from '../../node_modules/vux/dist/components/loading/index'
 import alert from '../../node_modules/vux/dist/components/loading/index'

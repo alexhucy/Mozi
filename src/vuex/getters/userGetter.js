@@ -24,3 +24,11 @@ export function postChildUpdate() {
 export function postAlterChildInfo() {
 	return store.state.user.alterChildInfo
 }
+
+export function getEditChildInfo() {
+	return store.state.user.child
+}
+
+export function getOpreationStatus() {
+	return store.state.user.status
+}

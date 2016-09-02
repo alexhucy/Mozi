@@ -12,18 +12,25 @@ import routes from './router'
 import abstract from './components/abstract.vue'
 import timestamp2date from './filter/timestamp2date'
 import friendlyTime from './filter/friendlyTime'
-
+import newLine from './filter/newLine'
 
 const FastClick = require('fastclick')
 
 FastClick.attach(document.body)
 
 Vue.use(VueRouter)
-var router = new VueRouter()
+
+var router = new VueRouter({
+	history: false,
+	saveScrollPosition: true,
+})
+
 
 Vue.filter('timestamp2date', timestamp2date)
 
 Vue.filter('friendlyTime', friendlyTime)
+
+Vue.filter('newLine', newLine)
 
 routes(router)
 

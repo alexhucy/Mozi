@@ -1,6 +1,4 @@
 <template>
-
-
 	<scroller v-ref:scroller lock-x height="auto"
 	          use-pulldown
 	          @pulldown:loading="reload"
@@ -9,7 +7,7 @@
 		<loading v-ref:loading @on-refresh="query">
 		</loading>
 
-		<div>
+		<div style="padding-bottom: 20px">
 
 			<card v-for="item in items" :title="item.title"
 			      :head-img-url="item.sponsor_avatar"
@@ -70,6 +68,8 @@ export default{
 		reload: function (uuid) {
 			var _self = this
 			this.activityListQuery().then(function () {
+				_self.$broadcast('pulldown:reset', uuid)
+			}).catch(function () {
 				_self.$broadcast('pulldown:reset', uuid)
 			})
 		}

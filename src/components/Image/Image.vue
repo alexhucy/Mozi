@@ -1,5 +1,5 @@
 <template>
-	<div class="mz-text-center mz-photo-preview" v-if="src">
+	<div class="mz-photo-preview" v-if="src">
 		<img :src="src" @click.stop="preview(src)" class="mz-photo">
 	</div>
 </template>
@@ -11,6 +11,7 @@
 }
 .mz-photo-preview{
 	margin-top:10px;
+	height: 200px;
 }
 </style>
 

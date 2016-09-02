@@ -49,3 +49,11 @@ export const alterUserInfoSecondQuery = function ({ dispatch }, data) {
 	})
 }
 
+export const setChildInfo = function ({ dispatch }, child) {
+	dispatch(types.SET_EDIT_CHILD_INFO, child)
+}
+
+export const removeChildInfo = function ({dispatch}) {
+	dispatch(types.REMOVE_EDIT_CHILD_INFO)
+}
+

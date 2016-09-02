@@ -3,9 +3,9 @@
 
 	<div v-if="activityInfo.info && items">
 		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
-			<div class="mz-sign">
+			<div class="mz-sign" style="padding-bottom: 10px">
 				<div class="mz-item-cover">
-					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar" v-if="activityInfo.info">
+					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar">
 						<h4>{{activityInfo.info.sponsor_name}}</h4>
 						<p>发起了活动: {{activityInfo.info.title}}</p>
 						<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
@@ -14,10 +14,10 @@
 				</div>
 
 				<wrap title="活动介绍:" type="success">
-					<p v-if="activityInfo.info">{{activityInfo.info.desc}}</p>
+					<p v-html="activityInfo.info.desc | newLine "></p>
 				</wrap>
 
-				<wrap title="相关课程:" type="warn" v-if="activityInfo.info">
+				<wrap title="相关课程:" type="warn">
 					<half-item
 									v-for="course in activityInfo.info.resource_list"
 									:url="course.image_url"
@@ -27,7 +27,7 @@
 				</wrap>
 
 				<div class="mz-content-container" style="margin-top: 10px">
-					<icon-item type="people">已报名人数:<span v-if="activityInfo.info">{{activityInfo.info.signup_number}}</span></icon-item>
+					<icon-item type="people">已报名人数:<span>{{activityInfo.info.signup_number}}</span></icon-item>
 					<!--<icon-item type="money">每人保证金</icon-item>-->
 					<!--<icon-item type="gift">剩余2人在坚持,每人可获得100元</icon-item>-->
 				</div>
@@ -37,11 +37,11 @@
 							:cover="item.image_url"
 							:zan="item.agree_count"
 							:comments="item.comment_count"
-							:content="item.text"
+							:content="item.text | newLine"
 							:activity-id="item.activity_id"
 							:sign-id="item.signin_id"
 							:checked="item.my_agree === 1 ? true: false "
-							@on-loaded="fresh"
+							@on-loaded="pass(item)"
 							:date="item.signin_time"
 							:name="item.user_name">
 				</card>
@@ -82,6 +82,7 @@ import halfItem from '../../components/item/HalfItem.vue'
 import promise from '../../../node_modules/vue-resource/src/promise'
 import upload from './upload.vue'
 import loading from '../../components/load/loading.vue'
+import {setSignInfo} from '../../vuex/actions/activityAction'
 
 export default {
 	data (){
@@ -89,6 +90,11 @@ export default {
 			activityInfo: {},
 			items: [],
 			showUpload: false
+		}
+	},
+	vuex:{
+		actions: {
+			setSignInfo
 		}
 	},
 	components: {
@@ -157,6 +163,9 @@ export default {
 		
 		upload: function () {
 			this.$router.go({name:'upload'})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
 		}
 	}
 }

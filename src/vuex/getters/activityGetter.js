@@ -32,3 +32,11 @@ export function getTimeline() {
 export function getRecord() {
 	return store.state.activity.record
 }
+
+export function getSignInfo() {
+	return store.state.activity.sign
+}
+
+export  function getLastCommentInfo() {
+	return store.state.activity.lastCommentSignInfo
+}

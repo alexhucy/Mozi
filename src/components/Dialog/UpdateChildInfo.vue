@@ -8,7 +8,7 @@
     </group>
 
     <group title="生日">
-        <date-time :value.sync="birthdayValue | timestamp2date"
+        <date-time :value.sync="birthdayValue"
                    placeholder="请选择日期"
                    format="YYYY-MM-DD"
                    @on-change="changebirth"
@@ -18,7 +18,6 @@
                    day-row="{value}日"
                    confirm-text="完成"
                    cancel-text="取消">
-
         </date-time>
     </group>
 
@@ -42,28 +41,33 @@ import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import DateTime from '../../../node_modules/vux/dist/components/datetime/index'
 import xButton from '../../../node_modules/vux/dist/components/x-button/index'
 import Cell from '../../../node_modules/vux/dist/components/group/index'
-import {childUpdateQuery,alterChildInfoQuery} from '../../vuex/actions/userAction'
+import {childUpdateQuery,alterChildInfoQuery,removeChildInfo} from '../../vuex/actions/userAction'
 import popup from '../../../node_modules/vux/dist/components/popup/index'
-
+import {getEditChildInfo,getOpreationStatus} from '../../vuex/getters/userGetter'
+import timestamp2date from '../../filter/timestamp2date'
 export default {
   data() {
     return {
       radio001: [ '男', '女' ],
-      sex: '',
-      birthday: '',
-      sexValue: '',
+      sex: this.child.gender === 'female'?'0':'1',
+      birthday: this.child.birthday,
+      sexValue: this.child.gender === 'female'?'女':'男',
       value: '',
-	    birthdayValue:'',
-      nickname: '',
-      id: '',
-	    type: ''
+	    birthdayValue: timestamp2date(this.child.birthday),
+      nickname: this.child.nickname,
+      id: this.child.id,
     }
   },
   vuex: {
     actions: {
       childUpdateQuery,
       alterChildInfoQuery,
-    }
+	    removeChildInfo
+    },
+	  getters: {
+		  child: getEditChildInfo,
+		  type: getOpreationStatus
+	  }
   },
 	props: {
 		showPOP: Boolean
@@ -79,6 +83,12 @@ export default {
     loading,
 	  popup
   },
+	route: {
+		deactivate: function (transition) {
+			this.removeChildInfo()
+			transition.next()
+		}
+	},
   methods: {
     change: function (value) {
       this.sex = value == '男' ? '1' : '0'
@@ -87,7 +97,6 @@ export default {
 		  var _self = this
 		  this.$dispatch('loading')
 		  this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birthday).then(function () {
-			  _self.reset()
 			  _self.$dispatch('loading')
 			  _self.$dispatch('success', '修改成功')
 			  window.history.back()

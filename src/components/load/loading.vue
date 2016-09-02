@@ -13,12 +13,12 @@
 
 <style>
 .mz-loading{
-	margin: 40px 0;
+	padding: 40px 0;
 	text-align: center;
 }
 .mz-error-line{
 	text-align: center;
-	margin: 10px 0;
+	padding: 10px 0;
 }
 .mz-error-line a{
 	color: #333;

@@ -1,15 +1,17 @@
 <template>
 	<dialog :show.sync="showNoScroll" :scroll="false" class="mz-dialog-transparent">
 			<div class="mz-award-top">
-				<p class="mz-dialog-title">积分奖励说明</p>
+				<p class="mz-dialog-title">积分说明</p>
 			</div>
 
 			<div class="mz-award-box">
 				<div style="padding-bottom: 10px">
-					<p>参加活动+5分</p>
+					<p>原始积分100分</p>
+					<p>报名活动-30分</p>
+					<p class="mz-award-supply">(坚持完成该活动全部打卡,返还积分)</p>
 					<p>每日打卡+2分</p>
-					<p>参与评论+1分(每日最多20分)</p>
-					<p>完成一个活动+10分</p>
+					<p>评论+1分</p>
+					<p class="mz-award-supply">(评论次数不限定,封顶20分)</p>
 				</div>
 				<m-button type="success" large @click="awardIntroduce">
 					了解了
@@ -20,7 +22,9 @@
 
 <style>
 
-
+.mz-award-supply{
+	color: #FE7F85;
+}
 .mz-dialog-transparent .weui_dialog{
 	background: transparent;
 	width: 75%;

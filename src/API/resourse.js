@@ -15,6 +15,7 @@ Vue.http.interceptors.push({
 		// 这里对请求体进行处理
 		var cookies = Cookie.load('Authorization')
 		request.headers = request.headers || {}
+		request.headers.contentType = 'application/json'
 		if (cookies) {
 			request.headers.Authorization = cookies
 		}

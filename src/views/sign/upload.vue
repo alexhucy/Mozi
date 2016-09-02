@@ -1,7 +1,9 @@
 <template>
-		<div class="mz-box-upload mz-wrap mz-container">
-			<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>
-			<div class="mz-flex">
+		<div class="mz-box-upload mz-wrap">
+
+				<x-textarea :max="200" placeholder="这一刻的想法..." :value.sync="content"></x-textarea>
+			<!--<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>-->
+			<div class="mz-flex" style="padding: 0 12px">
 				<i class="mz-icon mz-icon-add"  @click="upload"></i>
 				<img :src="previewImg" v-if="previewImg" class="mz-preview-img">
 				<div style="flex: 1;margin-left: 10px">
@@ -56,6 +58,8 @@ import activity from '../../service/activityService'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
 import toast from '../../../node_modules/vux/dist/components/toast/index'
 import Popup from '../../../node_modules/vux/dist/components/popup/index'
+import {unshiftSigninfo} from '../../vuex/actions/activityAction'
+import xTextarea from '../../../node_modules/vux/dist/components/x-textarea/index'
 
 export default{
 	data: function () {
@@ -69,11 +73,22 @@ export default{
 			type: ''
 		}
 	},
+	route: {
+		data ({to: { params: {id}}}){
+			this.id = id
+		}
+	},
+	vuex:{
+		actions: {
+			unshiftSigninfo
+		}
+	},
 	components: {
 		mButton,
 		loading,
 		toast,
-		Popup
+		Popup,
+		xTextarea
 	},
 	props:{
 		showPOP: {
@@ -127,10 +142,18 @@ export default{
 				return false
 			}
 			this.$dispatch('loading')
-			activity.sign(this.id, this.url,this.content).then(function () {
-				_self.$dispatch('loading')
-				_self.$dispatch('success', '打卡成功!')
-				window.history.back()
+			activity.sign(this.id, this.url,this.content).then(function (data) {
+				var info = data.data
+				if(info.result === 0){
+					_self.$dispatch('loading')
+					_self.$dispatch('success', '打卡成功!')
+					_self.unshiftSigninfo(info.info)
+					window.history.back()
+				}
+				else{
+					_self.$dispatch('loading')
+					_self.$dispatch('error', '打卡失败')
+				}
 			}, function (err) {
 				_self.$dispatch('loading')
 				_self.$dispatch('error', err)

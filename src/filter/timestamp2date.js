@@ -3,9 +3,10 @@
  */
 
 export default function (value) {
+	if (value == undefined )return ''
   var date = new Date(value)
-  return value ? date.getFullYear() + '-' +
-    (date.getMonth() + 1) + '-' +
-        date.getDate()
+  return value ? date.getFullYear().toString() + '-' +
+    (date.getMonth() + 1).toString() + '-' +
+        date.getDate().toString()
         : '无'
 }

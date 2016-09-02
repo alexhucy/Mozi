@@ -14,8 +14,8 @@ import timeline from './views/me/activityTimeline.vue'
 import update from './components/Dialog/UpdateChildInfo.vue'
 import userUpdate from './components/alterInfo/userInfoModify.vue'
 import upload from './views/sign/upload.vue'
-
-
+import comment from './views/sign/comment.vue'
+import publish from './views/sign/publish.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -68,6 +68,15 @@ module.exports = function (router) {
 		'/item/:id/upload':{
 			name:'upload',
 			component: upload
+		},
+		'/sign/:activityId/:signId/comment':{
+			name:'comment',
+			component: comment
+		},
+		'/sign/:activityId/:signId/publish':{
+			name:'publish',
+			component: publish,
+			canReuse: false
 		}
 	})
 

@@ -1,7 +1,10 @@
 <template>
 	<div class="mz-timeline-box">
+		<div>
+			<span class="mz-label-time">{{date}}</span>
+		</div>
 		<div class="mz-timeline-card">
-			<h4 class="mz-label-time">{{title}}</h4>
+			<p v-html="title| newLine"></p>
 			<image-item :src="url"></image-item>
 			<comment :zan="zan"
 			         :comments="comments"
@@ -11,8 +14,6 @@
 								@on-loaded="loaded">
 			</comment>
 		</div>
-
-		<span>{{date}}</span>
 	</div>
 </template>
 
@@ -21,9 +22,10 @@
 	background: #fff;
 	position:relative;
 	padding: 0 10px ;
+	display: flex;
 }
 .mz-timeline-card{
-	padding-left: 80px;
+	flex:1;
 }
 .mz-timeline-box:before{
 	content: '';
@@ -35,7 +37,6 @@
 	background: #72e4dc;
 }
 .mz-label-time{
-	position: absolute;
 	z-index:99;
 	background: #fff;
 	width: 80px;

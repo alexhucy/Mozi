@@ -18,7 +18,7 @@
 		left: 0;
 		width: 60px;
 		text-align: right;
-		font-size: 1.3rem;
+		font-size: 1.2rem;
 	}
 </style>
 

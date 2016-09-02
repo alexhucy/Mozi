@@ -10,6 +10,7 @@
 		position: absolute;
 		text-align: center;
 		color:#fff;
+		font-size: 1.4rem;
 	}
 	.mz-top{
 		top:0;

@@ -2,19 +2,20 @@
 	<loading v-ref:loading @on-refresh="query"></loading>
 
 	<scroller v-ref:scroller lock-x>
-		<div>
+		<div style="padding-bottom: 10px">
 			<div v-if="activity.info">
 				<tab :title="activity.info.title" @on-fresh="fresh">
-					<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" >
-						<h4>{{activity.info.sponsor_name}}</h4>
-						<p>发起了活动: {{activity.info.title}}</p>
-						<p>活动时间: {{activity.info.start_time}} - {{activity.info.end_time}}</p>
-						<p>报名截至时间:{{activity.info.end_time}}</p>
-						<!--<p>每人保证金: 100元</p>-->
-					</avatar-item>
-
+					<div style="background: #fff;padding: 10px 15px">
+						<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" >
+							<h4>{{activity.info.sponsor_name}}</h4>
+							<p>发起了活动: {{activity.info.title}}</p>
+							<p>活动时间: {{activity.info.start_time}} - {{activity.info.end_time}}</p>
+							<p>报名截至时间:{{activity.info.end_time}}</p>
+							<!--<p>每人保证金: 100元</p>-->
+						</avatar-item>
+					</div>
 					<wrap title="活动介绍:" type="success"  >
-						<p>{{activity.info.desc}}</p>
+						<p>{{activity.info.desc | newLine}}</p>
 					</wrap>
 
 					<wrap title="相关课程:" type="warn">
@@ -34,8 +35,8 @@
 									:sign-id="item.signin_id"
 									:activity-id="item.activity_id"
 									:checked="item.my_agree===1?true:false"
-									date="2016 08-16 11:10"
-									@on-loaded="fresh">
+									:date="item.signin_time"
+									@on-loaded="pass(item)">
 
 				</timeline>
 			</div>
@@ -57,6 +58,7 @@ import halfItem from '../../components/item/HalfItem.vue'
 import loading from '../../components/load/loading.vue'
 import activityService from '../../service/activityService'
 import promise from '../../../node_modules/vue-resource/src/promise'
+import {setSignInfo} from '../../vuex/actions/activityAction'
 
 export default{
 	components: {
@@ -71,6 +73,11 @@ export default{
 	route: {
 		data ({to: { params: { id }}}){
 			this.id = id;
+		}
+	},
+	vuex: {
+		actions: {
+			setSignInfo
 		}
 	},
 	data: function () {
@@ -95,6 +102,9 @@ export default{
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
 			})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
 		}
 	},
 	ready: function () {
