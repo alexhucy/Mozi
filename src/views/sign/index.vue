@@ -2,7 +2,12 @@
 	<loading v-ref:loading @on-refresh="query"></loading>
 
 	<div v-if="activityInfo.info && items">
-		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
+		<scroller v-ref:scroller lock-x
+		          use-pullup
+		          @pullup:loading="loadMore"
+		          style="position: absolute;top:0;left: 0;right: 0;bottom: 50px"
+		          height="auto">
+
 			<div class="mz-sign" style="padding-bottom: 10px">
 				<div class="mz-item-cover">
 					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar">
@@ -89,7 +94,9 @@ export default {
 		return {
 			activityInfo: {},
 			items: [],
-			showUpload: false
+			showUpload: false,
+			page: 1,
+			size: 20
 		}
 	},
 	vuex:{
@@ -133,7 +140,15 @@ export default {
 					_self.$dispatch('loading')
 				 }
 			}).catch(function (err) {
-				_self.$dispatch('error',err)
+				if(err.status === 400){
+					_self.$dispatch('error',err.data.error_message)
+				}
+				else if(err.status === 0){
+					_self.$dispatch('error','请求超时请重试')
+				}
+				else{
+					_self.$dispatch('error','内容错误请重试')
+				}
 				_self.$dispatch('loading')
 			})
 		},
@@ -151,13 +166,33 @@ export default {
 		query: function () {
 			var _self = this
 			this.$refs.loading.OnLoading()
-			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id)]).then(function (data) {
+			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id, this.page, this.size)]).then(function (data) {
 				_self.activityInfo = data[0].data
 				_self.items = data[1].data.list
 				_self.$refs.loading.OnHide()
+				if(data[1].data.page_end === 1){
+					_self.$nextTick(function () {
+						_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					})
+				}
+				_self.page ++
 				_self.fresh()
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
+			})
+		},
+
+		loadMore: function (uuid) {
+			var _self = this
+			activityService.getActivitySignList(this.id, this.page, this.size).then(function (data) {
+				if(data.data)_self.items = _self.items.concat(data.data.list)
+				_self.$broadcast('pullup:reset', uuid)
+				if(data.data.page_end === 1){
+					_self.$broadcast('pullup:disable', uuid)
+				}
+				_self.page ++
+			}).catch(function () {
+				_self.$broadcast('pullup:reset', uuid)
 			})
 		},
 		

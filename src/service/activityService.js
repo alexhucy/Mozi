@@ -33,15 +33,15 @@ module.exports = {
 		return API.API_GET_ACTIVITY(id)
 	},
 	
-	getActivitySignList: function (id) {
-		return API.API_GET_SIGN_LIST(id)
+	getActivitySignList: function (id, page) {
+		return API.API_GET_SIGN_LIST(id, page)
 	},
 
 	getActivityCompletedInfo: function (id) {
 		return API.API_GET_COMPLETED_ACTIVITY(id)
 	},
 
-	getActivityTimeLine: function (id) {
-		return API.API_GET_COMPLETED_ACTIVITY_TIMELINE(id)
+	getActivityTimeLine: function (id, page) {
+		return API.API_GET_COMPLETED_ACTIVITY_TIMELINE(id, page)
 	}
 };

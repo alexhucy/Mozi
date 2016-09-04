@@ -40,3 +40,11 @@ export function getSignInfo() {
 export  function getLastCommentInfo() {
 	return store.state.activity.lastCommentSignInfo
 }
+export function getRankList() {
+	return store.state.activity.rankList
+}
+
+
+export  function getCompletedActivityList() {
+	return store.state.activity.completedActivityList
+}

@@ -6,10 +6,9 @@
 					<h4>{{info.activity_title}}</h4>
 					<p>{{info.text}}</p>
 					<image-item :src="info.image_url"></image-item>
+					<span v-if="info.signin_time">{{info.signin_time| friendlyTime}}</span>
+
 				</avatar-item>
-			</div>
-			<div class="mz-state">
-				<span v-if="info.signin_time">{{info.signin_time| friendlyTime}}</span>
 			</div>
 
 			<div class="mz-comment-title-bar">
@@ -138,7 +137,7 @@ export default {
 	ready: function () {
 		this.checked  =  this.info.my_agree === 1 ? true: false
 		if(this.activityId === this.items.activityId && this.signId === this.items.signId && this.items.commentList && this.items.commentList.length>0){
-
+			this.query()
 		}
 		else {
 			this.setLastCommentInfo(this.info, [], this.activityId, this.signId)

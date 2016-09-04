@@ -52,7 +52,6 @@ export const recordQuery = function ({ dispatch }, activity_id) {
 	})
 }
 
-
 export const setSignInfo = function ({dispatch}, info) {
 	dispatch(types.SET_SIGN_INFO, info)
 }
@@ -76,4 +75,16 @@ export const setLastCommentInfo = function ({dispatch},sign, commentList, activi
 
 export const pushLastCommentSign = function ({dispatch}, info) {
 	dispatch(types.PUSH_LAST_COMMENT_SIGN_INFO, info)
+}
+
+export const rankListQuery = function ({ dispatch }) {
+	return activity.API_GET_RANK_LIST().then(function (data) {
+		dispatch(types.GET_RANK_LIST, data)
+	})
+}
+
+export const getcompletedActivityListQuery = function ({dispatch}, data) {
+	return activity.API_GET_COMPLETED_ACTIVITY_LIST().then(function (data) {
+		dispatch(types.GET_COMPLETED_ACTIVITY_LIST, data)
+	})
 }

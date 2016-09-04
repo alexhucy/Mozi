@@ -9,7 +9,7 @@
 				<cell title="头像">
 
 					<div slot="value">
-						<img :src="user.user_avatar" width="33">
+						<img :src="user.user_avatar" @click="updateHeadImg" width="33">
 					</div>
 
 				</cell>
@@ -51,11 +51,11 @@
 				             :birthday="item.birthday"
 				             :id="item.id"
 				             :gender="item.gender"
-				             :avatar="avatar"
+				             :avatar="item.avatar"
 				             @on-edit="edit(item)">
 				</card-center>
 
-				<div class="mz-center" @click="add">
+				<div class="mz-center mz-text-center" @click="add">
 					<div  class="mz-icon mz-icon-addChild mz-text-center">添加孩子信息</div>
 				</div>
 			</group>
@@ -81,9 +81,10 @@ import Panel from '../../../node_modules/vux/dist/components/panel/index'
 import CardCenter from '../../components/card/cardCenterContent.vue'
 import Scroller from '../../../node_modules/vux/dist/components/scroller/index'
 import {getUserUpInfo, getChildInfo} from '../../vuex/getters/userGetter'
-import {childInfoQuery,setChildInfo} from '../../vuex/actions/userAction'
+import {childInfoQuery,setChildInfo, alterUserInfoFirstQuery} from '../../vuex/actions/userAction'
 import upload from '../../components/Dialog/UpdateChildInfo.vue'
 import loader from '../../components/load/loading.vue'
+import activity from '../../service/activityService'
 
 export default{
 	data: function () {
@@ -110,7 +111,8 @@ export default{
 		},
 		actions: {
 			childInfoQuery,
-			setChildInfo
+			setChildInfo,
+			alterUserInfoFirstQuery
 		}
 	},
 	ready: function () {
@@ -139,12 +141,58 @@ export default{
 			}).catch(function () {
 				_self.$refs.loader.OnError()
 			})
+		},
+		updateHeadImg: function () {
+			var _self = this
+			window.wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function (res) {
+					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					window.wx.uploadImage({
+						localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							activity.getUrlByServerId(serverId.toString()).then(function (data) {
+								if(data.data.state == '10000'){
+									_self.updaeUserInfo(data.data.url)
+								}
+								else{
+									_self.$dispatch('error',data.data.message)
+								}
+							})
+						},
+
+					});
+				}
+			});
+		},
+
+		updaeUserInfo: function (url) {
+			this.$dispatch('loading')
+			var _self = this
+			this.alterUserInfoFirstQuery({headImgUrl : url}).then(function () {
+				_self.$dispatch('loading')
+				_self.$dispatch('success','修改头像成功')
+			}).catch(function () {
+				_self.$dispatch('loading')
+				if(err.status === 400){
+					_self.$dispatch('error',err.data.error_message)
+				}
+				else if(err.status === 0){
+					_self.$dispatch('error','请求超时请重试')
+				}
+				else{
+					_self.$dispatch('error','内容错误请重试')
+				}
+			})
 		}
 	},
 	watch: {
 		items: function () {
 			this.$nextTick(() => {
-				console.log('refresh')
 				this.$refs.scroller.reset()
 			})
 		}

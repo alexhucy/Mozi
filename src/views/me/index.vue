@@ -1,5 +1,8 @@
 <template>
-	<scroller v-ref:scroller lock-x>
+	<scroller v-ref:scroller
+	          lock-x
+						use-pulldown
+						@pulldown:loading="refresh">
 
 		<div style="padding-bottom: 10px">
 			<div class="mz-center-cover" v-if="items">
@@ -157,12 +160,13 @@
 <script>
 import card from '../../components/card/cardWithoutAvatar.vue'
 import dialog from './awardDialog.vue'
-import {activityOngoingListQuery, setSignInfo} from '../../vuex/actions/activityAction'
-import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
+import {activityOngoingListQuery, setSignInfo, getcompletedActivityListQuery} from '../../vuex/actions/activityAction'
+import {getOngoingActivityList, getCompletedActivityList} from '../../vuex/getters/activityGetter'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
-import {childInfoQuery, userUpInfoQuery} from '../../vuex/actions/userAction'
-import {getUserUpInfo} from '../../vuex/getters/userGetter'
+import {childInfoQuery, userUpInfoQuery,} from '../../vuex/actions/userAction'
+import {getUserUpInfo, } from '../../vuex/getters/userGetter'
 import loader from '../../components/load/loading.vue'
+import promise from '../../../node_modules/vue-resource/src/promise'
 
 export default {
 	data(){
@@ -185,13 +189,22 @@ export default {
 				this.$refs.scroller.reset()
 			})
 		},
+
 		pass: function (info) {
 			this.setSignInfo(info)
+		},
+		refresh: function (uuid) {
+			var _self = this
+			Promise.all([this.getcompletedActivityListQuery(),this.userUpInfoQuery()]).then(function (){
+				_self.$broadcast('pulldown:reset', uuid)
+			}).catch(function () {
+				_self.$broadcast('pulldown:reset', uuid)
+			})
 		},
 		query: function () {
 			var _self = this
 			this.$refs.loader.OnLoading()
-			this.activityOngoingListQuery().then(function () {
+			this.getcompletedActivityListQuery().then(function () {
 				if(_self.items.length === 0){
 					_self.$refs.loader.OnEmpty()
 				}
@@ -208,17 +221,17 @@ export default {
 			activityOngoingListQuery,
 			childInfoQuery,
 			userUpInfoQuery,
-			setSignInfo
+			setSignInfo,
+			getcompletedActivityListQuery
 		},
 		getters: {
-			items: getOngoingActivityList,
+			items: getCompletedActivityList,
 			user: getUserUpInfo
 		}
 	},
 	ready: function(){
-		if(this.items.length === 0){
-			this.query()
-		}
+		this.query()
+		this.userUpInfoQuery()
 		switch (this.user.score_level){
 			case 0:
 				this.level = '小白'

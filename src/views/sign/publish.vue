@@ -59,7 +59,15 @@ export default{
 					}
 				}).catch(function (err) {
 					_self.$dispatch('loading')
-					_self.$dispatch('error', '评论失败')
+					if(err.status === 400){
+						_self.$dispatch('error',err.data.error_message)
+					}
+					else if(err.status === 0){
+						_self.$dispatch('error','请求超时请重试')
+					}
+					else{
+						_self.$dispatch('error','内容错误请重试')
+					}
 				})
 			}
 		}

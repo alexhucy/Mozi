@@ -19,7 +19,9 @@ import {
 	SET_LAST_ACTIVITY_BOOK_INFO,
 	SET_LAST_ACTIVITY_SIGN_INFO,
 	SET_LAST_COMMENT_INFO,
-	PUSH_LAST_COMMENT_SIGN_INFO
+	PUSH_LAST_COMMENT_SIGN_INFO,
+	GET_RANK_LIST,
+	GET_COMPLETED_ACTIVITY_LIST
 } from '../mutation-types'
 
 const state = {
@@ -38,7 +40,9 @@ const state = {
 	lastActivitySignInfo: {},
 	lastActivitySignList: [],
 	lastActivitySignId: -1,
-	lastCommentSignInfo: {}
+	lastCommentSignInfo: {},
+	rankList: [],
+	completedActivityList: []
 }
 
 const mutations = {
@@ -110,8 +114,14 @@ const mutations = {
 	},
 
 	[PUSH_LAST_COMMENT_SIGN_INFO] (state, info){
-		state.lastCommentSignInfo.sign.comment_count ++
+		state.lastCommentSignInfo.sign.comment_count++
 		state.lastCommentSignInfo.commentList.push(info)
+	},		
+	[GET_RANK_LIST](state, rankList){
+		state.rankList = rankList.data.list
+	},
+	[GET_COMPLETED_ACTIVITY_LIST](state,data){
+		state.completedActivityList = data.data.list
 	}
 }
 

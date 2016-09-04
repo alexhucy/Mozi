@@ -3,7 +3,7 @@
     <div style="margin:15px;padding:5px;border:1px solid #b0d160;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;">
             <span style="margin-right:15px;width:50px;height:50px;display:inline-block">
-            <img style="width:100%;height:100%;border-radius:50%;border:1px solid #b0d160;" src="http://static.youku.com/user/img/avatar/310/39.jpg"></span>
+            <img style="width:100%;height:100%;border-radius:50%;border:1px solid #b0d160;" :src="avatar||'http://static.youku.com/user/img/avatar/310/39.jpg'"></span>
             <div class="selfinfo">
               <span>小名:{{nickname}}</span>
               <span>生日:{{birthday | timestamp2date}}</span>
@@ -71,6 +71,9 @@ export default {
       deleteChildInfoQuery
     }
   },
+	ready: function () {
+		console.log
+	},
   methods: {
     delete: function () {
 			this.$dispatch('confirm' , '个人信息','确认删除' + this.nickname + '的信息么', this.confirm)
@@ -84,7 +87,15 @@ export default {
 			    _self.$dispatch('success', '删除成功')
 		  }).catch(function (err) {
 				  _self.$dispatch('loading')
-			    _self.$dispatch('error', err)
+				  if(err.status === 400){
+					  _self.$dispatch('error',err.data.error_message)
+				  }
+				  else if(err.status === 0){
+					  _self.$dispatch('error','请求超时请重试')
+				  }
+				  else{
+					  _self.$dispatch('error','内容错误请重试')
+				  }
 		  })
 	  },
 	  edit: function () {

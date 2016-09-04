@@ -48,13 +48,11 @@ export default{
 	},
 	vuex: {
 		actions:{
-			userUpInfoQuery,
-			childInfoQuery
+			userUpInfoQuery
 		}
 	},
 	ready: function () {
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
-		this.childInfoQuery()
 		this.userUpInfoQuery()
 	},
 	events: {

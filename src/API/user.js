@@ -11,7 +11,8 @@ import {
 	deleteChildInfoResource,
 	alterChildInfoResource,
 	alterUserInfo_first,
-	alterUserInfo_second
+	alterUserInfo_second,
+	headImgResource
 }
 from './resourse'
 
@@ -42,6 +43,8 @@ export default{
 	},
 	API_PATCH_ALTER_USER_INFO_SECOND: function (data) {
 		return alterUserInfo_second.save({}, data)
+	},
+	API_UPDATE_USER_HEADIMG: function (id) {
+		return headImgResource.get({id:id})
 	}
-
 }

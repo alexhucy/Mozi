@@ -1,4 +1,11 @@
 <template>
+		<group>
+			<cell title="头像">
+				<div slot="value">
+					<img :src="avatar || 'http://static.youku.com/user/img/avatar/310/39.jpg' " @click="updateHeadImg" width="33">
+				</div>
+			</cell>
+		</group>
     <group title="小名">
         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
     </group>
@@ -40,11 +47,13 @@ import loading from '../../../node_modules/vux/dist/components/loading/index'
 import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import DateTime from '../../../node_modules/vux/dist/components/datetime/index'
 import xButton from '../../../node_modules/vux/dist/components/x-button/index'
-import Cell from '../../../node_modules/vux/dist/components/group/index'
+import Cell from '../../../node_modules/vux/dist/components/cell/index'
 import {childUpdateQuery,alterChildInfoQuery,removeChildInfo} from '../../vuex/actions/userAction'
 import popup from '../../../node_modules/vux/dist/components/popup/index'
 import {getEditChildInfo,getOpreationStatus} from '../../vuex/getters/userGetter'
 import timestamp2date from '../../filter/timestamp2date'
+import activity from '../../service/activityService'
+
 export default {
   data() {
     return {
@@ -56,6 +65,7 @@ export default {
 	    birthdayValue: timestamp2date(this.child.birthday),
       nickname: this.child.nickname,
       id: this.child.id,
+	    avatar: this.child.avatar
     }
   },
   vuex: {
@@ -96,25 +106,41 @@ export default {
 	  edit: function () {
 		  var _self = this
 		  this.$dispatch('loading')
-		  this.alterChildInfoQuery(this.id,this.nickname,this.sex,this.birthday).then(function () {
+		  this.alterChildInfoQuery(this.id,this.nickname, this.sex, this.birthday, this.avatar).then(function () {
 			  _self.$dispatch('loading')
 			  _self.$dispatch('success', '修改成功')
 			  window.history.back()
 		  },function (err) {
 			  _self.$dispatch('loading')
-			  _self.$dispatch('error', err)
+			  if(err.status === 400){
+				  _self.$dispatch('error',err.data.error_message)
+			  }
+			  else if(err.status === 0){
+				  _self.$dispatch('error','请求超时请重试')
+			  }
+			  else{
+				  _self.$dispatch('error','内容错误请重试')
+			  }
 		  })
 	  },
 	  save: function(){
 		  var _self = this
 		  this.$dispatch('loading')
-		  this.childUpdateQuery(this.nickname, this.sex, this.birthday).then(function () {
+		  this.childUpdateQuery(this.nickname, this.sex, this.birthday, this.avatar).then(function () {
 			  _self.$dispatch('loading')
 			  _self.$dispatch('success', '新增成功')
 			  window.history.back()
 		  }, function (err) {
 			  _self.$dispatch('loading')
-			  _self.$dispatch('error', err)
+			  if(err.status === 400){
+				  _self.$dispatch('error',err.data.error_message)
+			  }
+			  else if(err.status === 0){
+				  _self.$dispatch('error','请求超时请重试')
+			  }
+			  else{
+				  _self.$dispatch('error','内容错误请重试')
+			  }
 		  })
 	  },
     updateInfo: function () {
@@ -147,7 +173,35 @@ export default {
 			  return false
 		  }
 		  return true
+	  },
+	  updateHeadImg: function () {
+		  var _self = this
+		  window.wx.chooseImage({
+			  count: 1, // 默认9
+			  sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+			  sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+			  success: function (res) {
+				  var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+				  window.wx.uploadImage({
+					  localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+					  isShowProgressTips: 1, // 默认为1，显示进度提示
+					  success: function (res) {
+						  var serverId = res.serverId; // 返回图片的服务器端ID
+						  activity.getUrlByServerId(serverId.toString()).then(function (data) {
+							  if(data.data.state == '10000'){
+								  _self.$dispatch('success','图片上传成功')
+								  _self.avatar = data.data.url
+							  }
+							  else{
+								  _self.$dispatch('error',data.data.message)
+							  }
+						  })
+					  },
+
+				  });
+			  }
+		  });
 	  }
-	}
+  }
 }
 </script>

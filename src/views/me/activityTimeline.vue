@@ -1,7 +1,11 @@
 <template>
 	<loading v-ref:loading @on-refresh="query"></loading>
 
-	<scroller v-ref:scroller lock-x>
+	<scroller v-ref:scroller lock-x
+	          use-pullup
+	          :pullup="disable"
+	          @pullup:loading="more"
+						height="100%">
 		<div style="padding-bottom: 10px">
 			<div v-if="activity.info">
 				<tab :title="activity.info.title" @on-fresh="fresh">
@@ -83,7 +87,9 @@ export default{
 	data: function () {
 		return {
 			activity: {},
-			items: []
+			items: [],
+			page: 1,
+			size: 20,
 		}
 	},
 	methods: {
@@ -95,14 +101,30 @@ export default{
 		query: function () {
 			var _self = this
 			this.$refs.loading.OnLoading()
-			promise.all([activityService.getActivityCompletedInfo(this.id),activityService.getActivityTimeLine(this.id)]).then(function (data) {
+			promise.all([activityService.getActivityCompletedInfo(this.id),activityService.getActivityTimeLine(this.id,this.page, this.size)]).then(function (data) {
 				_self.$refs.loading.OnHide()
 				_self.activity = data[0].data
 				_self.items = data[1].data.list
+				if(data[1].data.page_end === 1){
+					_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+				}
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
 			})
 		},
+
+		more: function (uuid) {
+				var _self = this
+				this.page ++
+				activityService.getActivityTimeLine(this.id, this.page, this.size).then(function (data) {
+					if(data.data.page_end === 1){
+						_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					}
+					if(data.data)_self.items = _self.items.concat(data.data.list)
+					_self.$broadcast('pullup:reset', uuid)
+				})
+		},
+
 		pass: function (info) {
 			this.setSignInfo(info)
 		}

@@ -104,6 +104,9 @@
 
 
 
+
+
+
 .mz-font-12{
 	font-size: 1.2rem;
 	color: #666;
@@ -252,6 +255,8 @@
 .mz-error-line a{
 	color: #333;
 }
+
+
 
 
 
@@ -537,6 +542,15 @@ h4{
 
 
 
+
+
+
+
+
+
+
+
+
 .mz-billboard-top-1{
 	height: 133px;
 	background: #72e4dc;
@@ -636,6 +650,23 @@ h4{
 	    -ms-flex-align: end;
 	        align-items: flex-end;
 }
+.mz-billboard-level{
+	display: inline-block;
+	border:2px solid #FBDF86;
+	border-radius:50%;
+	background-color: #F7BE32;
+	font-size:10px;
+	color: #FFFFFF;
+	text-align: center;
+	vertical-align: middle;
+	width:15px;
+	height:15px;
+}
+
+
+
+
+
 
 
 
@@ -861,6 +892,8 @@ h4{
 
 
 
+
+
 .mz-dialog-box{
 	background: #fff7e6;
 	padding: 20px 10px;
@@ -960,7 +993,6 @@ h4{
 
 
 
-
 .mz-box-upload{
 	background: #fff;
 	border:1px solid #72e4dc;
@@ -989,6 +1021,9 @@ textarea{
 	resize: none;
 	font-size: 1.5rem;
 }
+
+
+
 
 
 
@@ -1410,9 +1445,22 @@ textarea{
 
 
 
+
+
+
+
+
+
+
 .weui_btn_primary{
     background-color:#72e4dc;
 }
+
+
+
+
+
+
 
 
 
@@ -1553,6 +1601,10 @@ textarea{
 	-webkit-transform: rotate(45deg);
 	        transform: rotate(45deg);
 }
+
+
+
+
 
 
 
@@ -1800,6 +1852,14 @@ textarea{
 .mz-comment-name{
 	font-weight: 400px;
 }
+
+
+
+
+
+
+
+
 
 
 

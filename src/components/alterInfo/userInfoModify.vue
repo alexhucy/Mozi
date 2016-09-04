@@ -28,7 +28,8 @@
     <group>
 
         <x-button type="primary"
-                  @click="update">
+                  @click="update"
+        >
             确认修改
         </x-button>
 
@@ -114,16 +115,25 @@ export default{
 	        _self.$dispatch('loading')
 	        _self.$dispatch('success','修改成功')
 	        window.history.back()
-        }, function () {
+        }).catch(function (err) {
 	        _self.$dispatch('loading')
-	        _self.$dispatch('error','修改失败')
+	        if(err.status === 400){
+		        _self.$dispatch('error',err.data.error_message)
+	        }
+	        else if(err.status === 0){
+		        _self.$dispatch('error','请求超时请重试')
+	        }
+	        else{
+		        _self.$dispatch('error','内容错误请重试')
+	        }
         })
       }
       //用于修改地址和性别
       else {
         if (this.type == 2){
           this.obj.gender = this.sex
-        }else {
+        }
+        else {
           this.value1 = value2name(this.value, AddressChinaData)
           this.obj.location = this.value1.toString()
         }
@@ -137,9 +147,17 @@ export default{
             _self.user.address = _self.obj.location
           }
 	        window.history.back()
-        },function () {
+        }).catch(function (err) {
 	        _self.$dispatch('loading')
-					_self.$dispatch('error','修改失败,请重试')
+	        if(err.status === 400){
+		        _self.$dispatch('error',err.data.error_message)
+	        }
+	        else if(err.status === 0){
+		        _self.$dispatch('error','请求超时请重试')
+	        }
+	        else{
+		        _self.$dispatch('error','内容错误请重试')
+	        }
         })
       }
     },

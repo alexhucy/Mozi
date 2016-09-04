@@ -1,4 +1,6 @@
 <template>
+
+
 	<scroller v-ref:scroller
 	          use-pulldown
 	          @pulldown:loading="reload"
@@ -75,7 +77,7 @@ export default {
 			var _self = this
 			this.activityOngoingListQuery().then(function (data) {
 				_self.$broadcast('pulldown:reset', uuid)
-			}).then(function () {
+			}).catch(function () {
 				_self.$broadcast('pulldown:reset', uuid)
 			})
 		},

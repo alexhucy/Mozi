@@ -16,6 +16,7 @@ import userUpdate from './components/alterInfo/userInfoModify.vue'
 import upload from './views/sign/upload.vue'
 import comment from './views/sign/comment.vue'
 import publish from './views/sign/publish.vue'
+import test from './views/text.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -75,8 +76,11 @@ module.exports = function (router) {
 		},
 		'/sign/:activityId/:signId/publish':{
 			name:'publish',
-			component: publish,
-			canReuse: false
+			component: publish
+		},
+		'/test':{
+			name:'test',
+			component: test
 		}
 	})
 

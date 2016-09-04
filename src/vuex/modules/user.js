@@ -10,7 +10,8 @@ import {
 	POST_ALTER_CHILD_INFO,
 	DELETE_CHILD_INFO,
 	SET_EDIT_CHILD_INFO,
-	REMOVE_EDIT_CHILD_INFO
+	REMOVE_EDIT_CHILD_INFO,
+	UPDATE_USER_INFO
 } from '../mutation-types'
 
 const state = {
@@ -65,6 +66,13 @@ const mutations = {
 	[REMOVE_EDIT_CHILD_INFO](state){
 		state.child = {}
 		state.status = 'SAVE'
+	},
+	[UPDATE_USER_INFO] (state, data){
+		for(var key in data){
+			if(key === 'headImgUrl'){
+				state.userUpInfo.user_avatar = data[key]
+			}
+		}
 	}
 }
 

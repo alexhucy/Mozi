@@ -18,7 +18,6 @@
 			<m-button type="success" large @click="submit">确认</m-button>
 		</div>
 
-	<loading :show="showLoading" text="提交中"></loading>
 </template>
 
 <style>
@@ -56,7 +55,6 @@ textarea{
 import mButton from '../../components/button/button.vue'
 import activity from '../../service/activityService'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
-import toast from '../../../node_modules/vux/dist/components/toast/index'
 import Popup from '../../../node_modules/vux/dist/components/popup/index'
 import {unshiftSigninfo} from '../../vuex/actions/activityAction'
 import xTextarea from '../../../node_modules/vux/dist/components/x-textarea/index'
@@ -65,9 +63,7 @@ export default{
 	data: function () {
 		return {
 			content: '',
-			showLoading: false,
 			url: '',
-			showToast: false,
 			previewImg: '',
 			message: '',
 			type: ''
@@ -86,7 +82,6 @@ export default{
 	components: {
 		mButton,
 		loading,
-		toast,
 		Popup,
 		xTextarea
 	},
@@ -116,13 +111,13 @@ export default{
 							activity.getUrlByServerId(serverId.toString()).then(function (data) {
 								if(data.data.state == '10000'){
 									_self.url = data.data.url
-									_self.message = '图片上传成功'
-									_self.showToast = true
+									_self.$dispatch('success','图片上传成功')
 									_self.previewImg = _self.url
 								}
 								else{
 									_self.message = '图片上传失败'
 									_self.showToast = true
+									_self.$dispatch('error',data.data.message)
 								}
 							})
 						}
@@ -156,7 +151,15 @@ export default{
 				}
 			}, function (err) {
 				_self.$dispatch('loading')
-				_self.$dispatch('error', err)
+				if(err.status === 400){
+					_self.$dispatch('error',err.data.error_message)
+				}
+				else if(err.status === 0){
+					_self.$dispatch('error','请求超时请重试')
+				}
+				else{
+					_self.$dispatch('error','内容错误请重试')
+				}
 			})
 		}
 	}

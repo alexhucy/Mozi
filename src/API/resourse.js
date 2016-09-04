@@ -41,6 +41,7 @@ export const userupResource = Vue.resource(API_ROOT + '/api/signin/user/self-inf
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
 
 export const ongoingActivityResource = Vue.resource(API_ROOT + '/api/signin/user/signin_list')//我的进行中的活动
+export const completedActivityListResource = Vue.resource(API_ROOT + '/api/signin/user/activity_list')//我的所有活动列表
 export const completedActivityInfoResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}')//活动信息
 export const completedActivityTimelineResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}/signin_list')//活动打卡时间轴
 
@@ -53,3 +54,5 @@ export const deleteChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}'
 export const alterChildInfoResource = Vue.resource(API_ROOT + '/api/child/{id}')//修改孩子信息
 export const alterUserInfo_first = Vue.resource(API_ROOT + '/api/user/partial-update') // 修改头像和昵称
 export const alterUserInfo_second = Vue.resource(API_ROOT + '/api/profile/partial-update')//修改地址和性别
+
+export const rankListResource = Vue.resource(API_ROOT + '/api/signin/ranklist') //排行榜

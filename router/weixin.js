@@ -49,6 +49,7 @@ router.use('/wechat/getMedia', function (req, response) {
 				var filename = getFileName(res.headers['content-disposition']);
 				fs.writeFile(path.join(__dirname, '../media',filename), result, function (err) {
 					 if(!err){
+						 console.log('http://edu.ngrok.chainz.net/' + filename)
 						 response.json({'state':'10000', 'url': 'http://edu.ngrok.chainz.net/' + filename})
 					 }
 					 else{
@@ -57,6 +58,7 @@ router.use('/wechat/getMedia', function (req, response) {
 				})
 			}
 			else{
+				console.log(err)
 				response.json({'state':'11011','message':'文件上传失败'})
 			}
 		});

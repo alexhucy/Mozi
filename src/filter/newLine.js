@@ -4,6 +4,6 @@
 
 export default function (str) {
 	var regRN = /\r\n|\r|\n/g;
-	return str.replace(regRN,"<br />")
+	return str?str.replace(regRN,"<br />"):''
 }
 
