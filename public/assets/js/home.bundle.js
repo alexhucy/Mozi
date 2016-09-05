@@ -235,21 +235,24 @@ webpackJsonp([0],[
 		router.redirect({
 			'*': '/'
 		});
+
 		router.beforeEach(function (_ref) {
 			var to = _ref.to;
 			var from = _ref.from;
 			var next = _ref.next;
 
-			console.log('1');
 			var toIndex = history.getItem(to.path);
 			var fromIndex = history.getItem(from.path);
 			if (toIndex) {
 				if (toIndex > fromIndex) {
+					console.log('forward');
 					commit('UPDATE_DIRECTION', 'forward');
 				} else {
+					console.log('reverse');
 					commit('UPDATE_DIRECTION', 'reverse');
 				}
 			} else {
+				console.log('forward');
 				++historyCount;
 				history.setItem('count', historyCount);
 				to.path !== '/' && history.setItem(to.path, historyCount);
@@ -537,7 +540,7 @@ webpackJsonp([0],[
 	// 				    :title="item.title"
 	// 			      :head-img-url="item.sponsor_avatar"
 	// 				    :time-range="item.start_time+' —— '+item.end_time"
-	// 				    :last-time="item.end_time"
+	// 				    :last-time="item.signup_end_time"
 	// 				    :number="item.signup_number"
 	// 			      :money="item.deposit"
 	// 			      :course="item.course_desc"
@@ -4141,7 +4144,7 @@ webpackJsonp([0],[
 /* 118 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n\n<scroller v-ref:scroller lock-x height=\"auto\"\n          use-pulldown\n          @pulldown:loading=\"reload\"\n          style=\"position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;\" >\n\n\t<div style=\"padding-bottom: 20px\">\n\t\t<loading v-ref:loading\n\t\t         @on-refresh=\"query\">\n\t\t</loading>\n\n\t\t<card v-for=\"item in items\"\n\t\t\t    :title=\"item.title\"\n\t\t      :head-img-url=\"item.sponsor_avatar\"\n\t\t\t    :time-range=\"item.start_time+' —— '+item.end_time\"\n\t\t\t    :last-time=\"item.end_time\"\n\t\t\t    :number=\"item.signup_number\"\n\t\t      :money=\"item.deposit\"\n\t\t      :course=\"item.course_desc\"\n\t\t      :id=\"item.activity_id\">\n\t\t</card>\n\n\t</div>\n</scroller>\n\n";
+	module.exports = "\n\n\n<scroller v-ref:scroller lock-x height=\"auto\"\n          use-pulldown\n          @pulldown:loading=\"reload\"\n          style=\"position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;\" >\n\n\t<div style=\"padding-bottom: 20px\">\n\t\t<loading v-ref:loading\n\t\t         @on-refresh=\"query\">\n\t\t</loading>\n\n\t\t<card v-for=\"item in items\"\n\t\t\t    :title=\"item.title\"\n\t\t      :head-img-url=\"item.sponsor_avatar\"\n\t\t\t    :time-range=\"item.start_time+' —— '+item.end_time\"\n\t\t\t    :last-time=\"item.signup_end_time\"\n\t\t\t    :number=\"item.signup_number\"\n\t\t      :money=\"item.deposit\"\n\t\t      :course=\"item.course_desc\"\n\t\t      :id=\"item.activity_id\">\n\t\t</card>\n\n\t</div>\n</scroller>\n\n";
 
 /***/ },
 /* 119 */
@@ -6584,7 +6587,7 @@ webpackJsonp([0],[
 					this.$dispatch('error', '请先上传图片');
 					return false;
 				} else if (this.content.length <= 0) {
-					this.$dispatch('error', '留言内容不能为空');
+					this.$dispatch('error', '打卡内容不能为空');
 					return false;
 				}
 				this.$dispatch('loading');
@@ -27770,7 +27773,7 @@ webpackJsonp([0],[
 	//
 	// 				<comment-list v-for="item in items.commentList"
 	// 				              :name="item.user_name"
-	// 				              :src="item.src"
+	// 				              :src="item.user_avatar"
 	// 				              :content="item.text | newLine"
 	// 											v-if="items">
 	// 				</comment-list>
@@ -27996,7 +27999,7 @@ webpackJsonp([0],[
 /* 316 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<scroller lock-x v-ref:scroller>\n\t<div>\n\t\t<div class=\"mz-item-cover\">\n\t\t\t<avatar-item :avatar-url=\"info.user_avatar\" :name=\"info.user_name\">\n\t\t\t\t<h4>{{info.activity_title}}</h4>\n\t\t\t\t<p>{{info.text}}</p>\n\t\t\t\t<image-item :src=\"info.image_url\"></image-item>\n\t\t\t\t<span v-if=\"info.signin_time\">{{info.signin_time| friendlyTime}}</span>\n\n\t\t\t</avatar-item>\n\t\t</div>\n\n\t\t<div class=\"mz-comment-title-bar\">\n\t\t\t<span>评论 {{info.comment_count}}</span>\n\t\t\t<div>\n\t\t\t\t<i class=\"mz-icon-large mz-icon-good\" style=\"margin-right: 20px\"  :class=\"{'mz-checked': checked}\" @click=\"toggle\">赞</i>\n\t\t\t\t<i class=\"mz-icon-large mz-icon-write\" @click=\"comment\">写评论</i>\n\t\t\t</div>\n\t\t</div>\n\t\t<div style=\"background: #fff\">\n\t\t\t<loader v-ref:loading\n\t\t\t        @on-refresh=\"query\">\n\t\t\t</loader>\n\n\t\t\t<comment-list v-for=\"item in items.commentList\"\n\t\t\t              :name=\"item.user_name\"\n\t\t\t              :src=\"item.src\"\n\t\t\t              :content=\"item.text | newLine\"\n\t\t\t\t\t\t\t\t\t\tv-if=\"items\">\n\t\t\t</comment-list>\n\t\t</div>\n\n\t</div>\n</scroller>\n";
+	module.exports = "\n<scroller lock-x v-ref:scroller>\n\t<div>\n\t\t<div class=\"mz-item-cover\">\n\t\t\t<avatar-item :avatar-url=\"info.user_avatar\" :name=\"info.user_name\">\n\t\t\t\t<h4>{{info.activity_title}}</h4>\n\t\t\t\t<p>{{info.text}}</p>\n\t\t\t\t<image-item :src=\"info.image_url\"></image-item>\n\t\t\t\t<span v-if=\"info.signin_time\">{{info.signin_time| friendlyTime}}</span>\n\n\t\t\t</avatar-item>\n\t\t</div>\n\n\t\t<div class=\"mz-comment-title-bar\">\n\t\t\t<span>评论 {{info.comment_count}}</span>\n\t\t\t<div>\n\t\t\t\t<i class=\"mz-icon-large mz-icon-good\" style=\"margin-right: 20px\"  :class=\"{'mz-checked': checked}\" @click=\"toggle\">赞</i>\n\t\t\t\t<i class=\"mz-icon-large mz-icon-write\" @click=\"comment\">写评论</i>\n\t\t\t</div>\n\t\t</div>\n\t\t<div style=\"background: #fff\">\n\t\t\t<loader v-ref:loading\n\t\t\t        @on-refresh=\"query\">\n\t\t\t</loader>\n\n\t\t\t<comment-list v-for=\"item in items.commentList\"\n\t\t\t              :name=\"item.user_name\"\n\t\t\t              :src=\"item.user_avatar\"\n\t\t\t              :content=\"item.text | newLine\"\n\t\t\t\t\t\t\t\t\t\tv-if=\"items\">\n\t\t\t</comment-list>\n\t\t</div>\n\n\t</div>\n</scroller>\n";
 
 /***/ },
 /* 317 */

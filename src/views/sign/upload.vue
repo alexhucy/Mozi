@@ -133,7 +133,7 @@ export default{
 				return false
 			}
 			else if(this. content.length <= 0){
-				this.$dispatch('error','留言内容不能为空')
+				this.$dispatch('error','打卡内容不能为空')
 				return false
 			}
 			this.$dispatch('loading')

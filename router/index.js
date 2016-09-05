@@ -7,10 +7,11 @@ var wechat = require('wechat'),
 	router = express.Router(),
 	path = require('path'),
 	weixinService = require('../service/weixinService'),
-	config = require('../config')
+	config = require('../config');
+
 
 router.use('/$',function (req,res) {
-	if(req.headers.cookie){
+	if(req.cookies.Authorization){
 		res.sendFile(path.join(__dirname,'../public/views/index.html'))
 		return false
 	}
@@ -20,9 +21,14 @@ router.use('/$',function (req,res) {
 			res.cookie('Authorization',token)
 			res.sendFile(path.join(__dirname,'../public/views/index.html'))
 		}).catch(function (error) {
-			res.writeHead(500,{
-				'Content-Type':'text/plain'
-			});
+			if(error.code){
+				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+			}
+			else{
+				res.setHeader('content-type','text/html; charset=UTF-8');
+				res.writeHead(403)
+				res.end('服务器错误,请重新登陆')
+			}
 		})
 	}
 	else {

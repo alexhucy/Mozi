@@ -25,7 +25,7 @@
 
 				<comment-list v-for="item in items.commentList"
 				              :name="item.user_name"
-				              :src="item.src"
+				              :src="item.user_avatar"
 				              :content="item.text | newLine"
 											v-if="items">
 				</comment-list>

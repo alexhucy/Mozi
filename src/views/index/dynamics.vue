@@ -15,7 +15,7 @@
 				    :title="item.title"
 			      :head-img-url="item.sponsor_avatar"
 				    :time-range="item.start_time+' —— '+item.end_time"
-				    :last-time="item.end_time"
+				    :last-time="item.signup_end_time"
 				    :number="item.signup_number"
 			      :money="item.deposit"
 			      :course="item.course_desc"

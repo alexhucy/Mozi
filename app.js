@@ -12,7 +12,8 @@ var express = require('express'),
 	 weixin = require('./router/weixin'),
 	 routes = require('./router/index'),
 	 weixinService = require('./service/weixinService'),
-	 bodyParser = require('body-parser');
+	 bodyParser = require('body-parser'),
+	 cookieParser = require('cookie-parser');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -22,6 +23,7 @@ app.set('view engine', 'html'); //替换文件扩展名ejs为html;;
 app.use(express.static(path.join(__dirname, './public/assets')));
 app.use(express.static(path.join(__dirname, './media')))
 app.use(express.query());
+app.use(cookieParser());
 
 app.use('/',routes);
 
