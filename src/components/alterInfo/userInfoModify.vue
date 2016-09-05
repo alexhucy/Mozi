@@ -1,4 +1,5 @@
 <template>
+    <div>
     <group>
         <x-input :title="title"
                  type="text"
@@ -38,7 +39,7 @@
     <loading :show="show"></loading>
 
     <toast type="text" :show.sync="show1" width="20em">请求失败，请重试</toast>
-
+    </div>
 </template>
 <style>
 

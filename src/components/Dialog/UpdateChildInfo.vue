@@ -1,4 +1,5 @@
 <template>
+    <div>
     <group title="小名">
         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
     </group>
@@ -17,7 +18,8 @@
                    month-row="{value}月"
                    day-row="{value}日"
                    confirm-text="完成"
-                   cancel-text="取消">
+                   cancel-text="取消"
+        >
 
         </date-time>
     </group>
@@ -27,6 +29,7 @@
 
 	      <x-button type="red" @click="cancel">取消</x-button>
     </group>
+    </div>
 </template>
 <style>
     .weui_btn_primary{

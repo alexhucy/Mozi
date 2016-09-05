@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<scroller v-ref:scroller lock-x >
 
 	<div class="mz-center-cover" v-if="items">
@@ -55,6 +56,7 @@
 	</scroller>
 
 	<dialog></dialog>
+	</div>
 </template>
 
 <style>

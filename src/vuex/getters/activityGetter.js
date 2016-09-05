@@ -36,3 +36,7 @@ export function getRecord() {
 export function getRankList() {
 	return store.state.activity.rankList
 }
+
+export function getDirection() {
+	return store.state.activity.direction
+}

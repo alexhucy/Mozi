@@ -17,6 +17,8 @@
 
 
 
+
+
  .mz-item h4{
 	 font-size: 1.4rem;
  }
@@ -509,6 +511,11 @@
 
 
 
+
+
+
+
+
 .mz-billboard-top-1{
 	height: 133px;
 	background: #72e4dc;
@@ -543,6 +550,14 @@
 	height: 60px;
 	width: 60px;
 	border-radius: 50%;
+}
+.mz-billboard-bottom{
+	font-size: 0.6rem;
+	position: absolute;
+	bottom:-32px;
+	left:-32px;
+	width:120px;
+	text-align: center;
 }
 .mz-billboard-item{
 	height:60px;
@@ -620,6 +635,8 @@
 	width:15px;
 	height:15px;
 }
+
+
 
 
 
@@ -1031,6 +1048,8 @@ textarea{
 
 
 
+
+
 .mz-container{
 	padding: 0 10px;
 }
@@ -1263,6 +1282,8 @@ textarea{
 
 
 
+
+
 .mz-center{
 	margin:15px;
 	padding:5px;
@@ -1347,6 +1368,9 @@ textarea{
 .infoicon span{
     margin:5px;
 }
+
+
+
 
 
 
@@ -1684,6 +1708,10 @@ textarea{
 
 
 
+
+
+
+
 html,body{
 	font-size: 10px;
 	height: 100%;
@@ -1703,4 +1731,120 @@ html,body{
 	font-weight: normal;
 	font-style: normal;
 }
-
+.vux-pop-out-transition,
+.vux-pop-in-transition {
+	width: 100%;
+	-webkit-animation-duration: 0.5s;
+	        animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;
+	-webkit-backface-visibility: hidden;
+	        backface-visibility: hidden;
+}
+.vux-pop-out-enter,
+.vux-pop-out-leave,
+.vux-pop-in-enter,
+.vux-pop-in-leave {
+	will-change: transform;
+	height: 100%;
+	position: absolute;
+	left: 0;
+}
+.vux-pop-out-enter {
+	-webkit-animation-name: popInLeft;
+	        animation-name: popInLeft;
+}
+.vux-pop-out-leave {
+	-webkit-animation-name: popOutRight;
+	        animation-name: popOutRight;
+}
+.vux-pop-in-enter {
+	-webkit-perspective: 1000;
+	        perspective: 1000;
+	-webkit-animation-name: popInRight;
+	        animation-name: popInRight;
+}
+.vux-pop-in-leave {
+	-webkit-animation-name: popOutLeft;
+	        animation-name: popOutLeft;
+}
+@-webkit-keyframes popInLeft {
+	from {
+		-webkit-transform: translate3d(-100%, 0, 0);
+		        transform: translate3d(-100%, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+}
+@keyframes popInLeft {
+	from {
+		-webkit-transform: translate3d(-100%, 0, 0);
+		        transform: translate3d(-100%, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+}
+@-webkit-keyframes popOutLeft {
+	from {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(-100%, 0, 0);
+		        transform: translate3d(-100%, 0, 0);
+	}
+}
+@keyframes popOutLeft {
+	from {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(-100%, 0, 0);
+		        transform: translate3d(-100%, 0, 0);
+	}
+}
+@-webkit-keyframes popInRight {
+	from {
+		-webkit-transform: translate3d(100%, 0, 0);
+		        transform: translate3d(100%, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+}
+@keyframes popInRight {
+	from {
+		-webkit-transform: translate3d(100%, 0, 0);
+		        transform: translate3d(100%, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+}
+@-webkit-keyframes popOutRight {
+	from {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(100%, 0, 0);
+		        transform: translate3d(100%, 0, 0);
+	}
+}
+@keyframes popOutRight {
+	from {
+		-webkit-transform: translate3d(0, 0, 0);
+		        transform: translate3d(0, 0, 0);
+	}
+	to {
+		-webkit-transform: translate3d(100%, 0, 0);
+		        transform: translate3d(100%, 0, 0);
+	}
+}

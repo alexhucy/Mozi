@@ -1,5 +1,6 @@
 
 <template>
+	<div>
 	<tab>
 		<tab-item :selected="$route.name == 'dynamics'" v-link="{name:'dynamics'}">一周活动</tab-item>
 		<tab-item :selected="$route.name == 'mysign'" v-link="{name:'mysign'}">我的打卡</tab-item>
@@ -14,6 +15,7 @@
 
 
 	<foot></foot>
+	</div>
 </template>
 
 <style>

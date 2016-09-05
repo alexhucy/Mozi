@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<scroller v-ref:scroller lock-x height="auto" style="position:absolute;right:0px;left:0px;">
 		<!--个人信息 start-->
 		<group style="margin: 0">
@@ -57,6 +58,7 @@
 		</group>
 		<!--孩子信息 end-->
 	</scroller>
+	</div>
 </template>
 
 <style>

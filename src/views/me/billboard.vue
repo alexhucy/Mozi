@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<scroller v-ref:scroller
 			  lock-x
 			  height="auto"
@@ -26,8 +27,11 @@
 				  <div class="mz-billboard-top-1-decorate">
 					  {{item.user_name}}
 				  </div>
-
+				  <div class="mz-billboard-bottom">
+					累计打卡次数: {{item.signin_count}}
+				  </div>
 			</div>
+
 
 		</div>
 
@@ -38,13 +42,14 @@
 
 			<div>
 				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
-				<p class="mz-billboard-point">打卡次数:{{item.signin_count}}</p>
+				<p class="mz-billboard-point">次数: {{item.signin_count}}</p>
 			</div>
 
 		</div>
 
 	</div>
 	</scroller>
+	</div>
 </template>
 
 <style>
@@ -75,6 +80,14 @@
 	height: 60px;
 	width: 60px;
 	border-radius: 50%;
+}
+.mz-billboard-bottom{
+	font-size: 0.6rem;
+	position: absolute;
+	bottom:-32px;
+	left:-32px;
+	width:120px;
+	text-align: center;
 }
 .mz-billboard-item{
 	height:60px;
@@ -189,9 +202,7 @@ export default{
 		}
 	},
 	ready:function () {
-		if (this.items.length === 0){
 			this.query()
-		}
 	}
 }
 </script>
