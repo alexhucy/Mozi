@@ -20,8 +20,9 @@ router.use('/$',function (req,res) {
 			res.cookie('Authorization',token)
 			res.sendFile(path.join(__dirname,'../public/views/index.html'))
 		}).catch(function (error) {
-			console.log(error)
-			res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+			res.writeHead(500,{
+				'Content-Type':'text/plain'
+			});
 		})
 	}
 	else {

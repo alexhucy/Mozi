@@ -3,10 +3,15 @@
 	<loading v-ref:loading @on-refresh="query"></loading>
 
 	<div v-if="activityInfo.info && items">
-		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto">
-			<div class="mz-sign">
+		<scroller v-ref:scroller lock-x
+		          use-pullup
+		          @pullup:loading="loadMore"
+		          style="position: absolute;top:0;left: 0;right: 0;bottom: 50px"
+		          height="auto">
+
+			<div class="mz-sign" style="padding-bottom: 10px">
 				<div class="mz-item-cover">
-					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar" v-if="activityInfo.info">
+					<avatar-item :avatar-url="activityInfo.info.sponsor_avatar">
 						<h4>{{activityInfo.info.sponsor_name}}</h4>
 						<p>发起了活动: {{activityInfo.info.title}}</p>
 						<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
@@ -15,10 +20,10 @@
 				</div>
 
 				<wrap title="活动介绍:" type="success">
-					<p v-if="activityInfo.info">{{activityInfo.info.desc}}</p>
+					<p v-html="activityInfo.info.desc | newLine "></p>
 				</wrap>
 
-				<wrap title="相关课程:" type="warn" v-if="activityInfo.info">
+				<wrap title="相关课程:" type="warn">
 					<half-item
 									v-for="course in activityInfo.info.resource_list"
 									:url="course.image_url"
@@ -28,7 +33,7 @@
 				</wrap>
 
 				<div class="mz-content-container" style="margin-top: 10px">
-					<icon-item type="people">已报名人数:<span v-if="activityInfo.info">{{activityInfo.info.signup_number}}</span></icon-item>
+					<icon-item type="people">已报名人数:<span>{{activityInfo.info.signup_number}}</span></icon-item>
 					<!--<icon-item type="money">每人保证金</icon-item>-->
 					<!--<icon-item type="gift">剩余2人在坚持,每人可获得100元</icon-item>-->
 				</div>
@@ -38,11 +43,11 @@
 							:cover="item.image_url"
 							:zan="item.agree_count"
 							:comments="item.comment_count"
-							:content="item.text"
+							:content="item.text | newLine"
 							:activity-id="item.activity_id"
 							:sign-id="item.signin_id"
 							:checked="item.my_agree === 1 ? true: false "
-							@on-loaded="fresh"
+							@on-loaded="pass(item)"
 							:date="item.signin_time"
 							:name="item.user_name">
 				</card>
@@ -84,13 +89,21 @@ import halfItem from '../../components/item/HalfItem.vue'
 import promise from '../../../node_modules/vue-resource/src/promise'
 import upload from './upload.vue'
 import loading from '../../components/load/loading.vue'
+import {setSignInfo} from '../../vuex/actions/activityAction'
 
 export default {
 	data (){
 		return {
 			activityInfo: {},
 			items: [],
-			showUpload: false
+			showUpload: false,
+			page: 1,
+			size: 20
+		}
+	},
+	vuex:{
+		actions: {
+			setSignInfo
 		}
 	},
 	components: {
@@ -129,7 +142,15 @@ export default {
 					_self.$dispatch('loading')
 				 }
 			}).catch(function (err) {
-				_self.$dispatch('error',err)
+				if(err.status === 400){
+					_self.$dispatch('error',err.data.error_message)
+				}
+				else if(err.status === 0){
+					_self.$dispatch('error','请求超时请重试')
+				}
+				else{
+					_self.$dispatch('error','内容错误请重试')
+				}
 				_self.$dispatch('loading')
 			})
 		},
@@ -147,18 +168,41 @@ export default {
 		query: function () {
 			var _self = this
 			this.$refs.loading.OnLoading()
-			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id)]).then(function (data) {
+			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id, this.page, this.size)]).then(function (data) {
 				_self.activityInfo = data[0].data
 				_self.items = data[1].data.list
 				_self.$refs.loading.OnHide()
+				if(data[1].data.page_end === 1){
+					_self.$nextTick(function () {
+						_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					})
+				}
+				_self.page ++
 				_self.fresh()
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
 			})
 		},
+
+		loadMore: function (uuid) {
+			var _self = this
+			activityService.getActivitySignList(this.id, this.page, this.size).then(function (data) {
+				if(data.data)_self.items = _self.items.concat(data.data.list)
+				_self.$broadcast('pullup:reset', uuid)
+				if(data.data.page_end === 1){
+					_self.$broadcast('pullup:disable', uuid)
+				}
+				_self.page ++
+			}).catch(function () {
+				_self.$broadcast('pullup:reset', uuid)
+			})
+		},
 		
 		upload: function () {
 			this.$router.go({name:'upload'})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
 		}
 	}
 }

@@ -12,10 +12,12 @@
 			<m-button type="glass" large @click="confirm">
 				我要打卡
 			</m-button>
+			<div style="margin-top: 8px">
+				<m-button type="success" large @click="toggle">
+					随便看看
+				</m-button>
+			</div>
 
-			<m-button type="success" large @click="toggle">
-				随便看看
-			</m-button>
 		</div>
 	</dialog>
 </template>

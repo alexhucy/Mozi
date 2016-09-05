@@ -1,7 +1,9 @@
 <template>
-		<div class="mz-box-upload mz-wrap mz-container">
-			<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>
-			<div class="mz-flex">
+		<div class="mz-box-upload mz-wrap">
+
+				<x-textarea :max="200" placeholder="这一刻的想法..." :value.sync="content"></x-textarea>
+			<!--<textarea contenteditable="true" placeholder="这一刻的想法..." v-model="content"></textarea>-->
+			<div class="mz-flex" style="padding: 0 12px">
 				<i class="mz-icon mz-icon-add"  @click="upload"></i>
 				<img :src="previewImg" v-if="previewImg" class="mz-preview-img">
 				<div style="flex: 1;margin-left: 10px">
@@ -16,7 +18,6 @@
 			<m-button type="success" large @click="submit">确认</m-button>
 		</div>
 
-	<loading :show="showLoading" text="提交中"></loading>
 </template>
 
 <style>
@@ -54,26 +55,35 @@ textarea{
 import mButton from '../../components/button/button.vue'
 import activity from '../../service/activityService'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
-import toast from '../../../node_modules/vux/dist/components/toast/index'
 import Popup from '../../../node_modules/vux/dist/components/popup/index'
+import {unshiftSigninfo} from '../../vuex/actions/activityAction'
+import xTextarea from '../../../node_modules/vux/dist/components/x-textarea/index'
 
 export default{
 	data: function () {
 		return {
 			content: '',
-			showLoading: false,
 			url: '',
-			showToast: false,
 			previewImg: '',
 			message: '',
 			type: ''
 		}
 	},
+	route: {
+		data ({to: { params: {id}}}){
+			this.id = id
+		}
+	},
+	vuex:{
+		actions: {
+			unshiftSigninfo
+		}
+	},
 	components: {
 		mButton,
 		loading,
-		toast,
-		Popup
+		Popup,
+		xTextarea
 	},
 	props:{
 		showPOP: {
@@ -101,13 +111,13 @@ export default{
 							activity.getUrlByServerId(serverId.toString()).then(function (data) {
 								if(data.data.state == '10000'){
 									_self.url = data.data.url
-									_self.message = '图片上传成功'
-									_self.showToast = true
+									_self.$dispatch('success','图片上传成功')
 									_self.previewImg = _self.url
 								}
 								else{
 									_self.message = '图片上传失败'
 									_self.showToast = true
+									_self.$dispatch('error',data.data.message)
 								}
 							})
 						}
@@ -127,13 +137,29 @@ export default{
 				return false
 			}
 			this.$dispatch('loading')
-			activity.sign(this.id, this.url,this.content).then(function () {
-				_self.$dispatch('loading')
-				_self.$dispatch('success', '打卡成功!')
-				window.history.back()
+			activity.sign(this.id, this.url,this.content).then(function (data) {
+				var info = data.data
+				if(info.result === 0){
+					_self.$dispatch('loading')
+					_self.$dispatch('success', '打卡成功!')
+					_self.unshiftSigninfo(info.info)
+					window.history.back()
+				}
+				else{
+					_self.$dispatch('loading')
+					_self.$dispatch('error', '打卡失败')
+				}
 			}, function (err) {
 				_self.$dispatch('loading')
-				_self.$dispatch('error', err)
+				if(err.status === 400){
+					_self.$dispatch('error',err.data.error_message)
+				}
+				else if(err.status === 0){
+					_self.$dispatch('error','请求超时请重试')
+				}
+				else{
+					_self.$dispatch('error','内容错误请重试')
+				}
 			})
 		}
 	}

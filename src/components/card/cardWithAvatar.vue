@@ -3,7 +3,7 @@
 		<div style="padding: 15px 15px 0">
 			<avatar-item :avatar-url="headImgUrl" :name="name">
 				<h4>{{title}}</h4>
-				<p>{{content}}</p>
+				<p v-html="content | newLine"></p>
 				<image-item :src="cover"></image-item>
 			</avatar-item>
 

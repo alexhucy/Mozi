@@ -1,10 +1,13 @@
 <template>
+
+
 	<scroller v-ref:scroller
 	          use-pulldown
 	          @pulldown:loading="reload"
 	          lock-x height="auto"
 	          style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
-		<div>
+		<div style="padding-bottom: 20px">
+
 			<loading v-ref:loading
 			         @on-refresh="query">
 			</loading>
@@ -20,7 +23,7 @@
 						:activity-id="item.activity_id"
 						:sign-id="item.signin_id"
 						:checked="item.my_agree === 1 ? true : false"
-						@on-loaded="fresh"
+						@on-loaded="pass(item)"
 						:date="item.signin_time">
 			</card>
 
@@ -28,9 +31,13 @@
 	</scroller>
 </template>
 
+<style>
+
+</style>
+
 <script>
 import card from './signCard.vue'
-import {activityOngoingListQuery} from '../../vuex/actions/activityAction'
+import {activityOngoingListQuery,setSignInfo} from '../../vuex/actions/activityAction'
 import {getOngoingActivityList} from '../../vuex/getters/activityGetter'
 import loading from '../../components/load/loading.vue'
 import {isEmptyObject} from '../../common'
@@ -44,7 +51,8 @@ export default {
 	},
 	vuex: {
 		actions: {
-			activityOngoingListQuery
+			activityOngoingListQuery,
+			setSignInfo
 		},
 		getters: {
 			items:getOngoingActivityList
@@ -55,7 +63,6 @@ export default {
 			var _self = this;
 			this.$refs.loading.OnLoading()
 			this.activityOngoingListQuery().then(function (data) {
-				_self.fresh()
 				if(isEmptyObject(_self.items)){
 					_self.$refs.loading.OnEmpty()
 				}
@@ -66,21 +73,31 @@ export default {
 				_self.$refs.loading.OnError()
 			})
 		},
-		fresh: function () {
-			this.$nextTick(() => {
-				this.$refs.scroller.reset()
-			})
-		},
 		reload: function (uuid) {
 			var _self = this
 			this.activityOngoingListQuery().then(function (data) {
 				_self.$broadcast('pulldown:reset', uuid)
+			}).catch(function () {
+				_self.$broadcast('pulldown:reset', uuid)
+			})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
+		}
+	},
+	watch:{
+		items:function () {
+			this.$nextTick(() => {
+				this.$refs.scroller.reset()
 			})
 		}
 	},
 	ready:function () {
 		if (this.items.length === 0){
 			this.query()
+		}
+		else{
+			this.activityOngoingListQuery()
 		}
 	}
 }

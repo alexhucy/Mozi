@@ -3,8 +3,15 @@
 
 	<div v-if="activity.info && items">
 
-		<scroller v-ref:scroller lock-x style="position: absolute;top:0;left: 0;right: 0;bottom: 50px" height="auto" >
-			<div class="mz-sign">
+		<scroller v-ref:scroller
+		          lock-x
+		          use-pullup
+		          @pullup:loading="loadMore"
+		          style="position: absolute;top:0;left: 0;right: 0;bottom: 50px"
+		          height="auto" >
+
+			<div class="mz-sign" style="padding-bottom: 10px">
+
 				<tab :title="activity.info.title" @on-fresh="fresh">
 					<div class="mz-item-cover">
 						<avatar-item :avatar-url="activity.info.sponsor_avatar" >
@@ -17,7 +24,7 @@
 					</div>
 
 					<wrap title="活动介绍:" type="success"  >
-						<p>{{activity.info.desc}}</p>
+						<p>{{activity.info.desc || '无活动介绍'}}</p>
 					</wrap>
 
 					<wrap title="相关课程:" type="warn">
@@ -46,7 +53,7 @@
 								:activity-id="item.activity_id"
 								:sign-id="item.signin_id"
 								:checked="item.my_agree === 1?true:false"
-							  @on-loaded="fresh"
+							  @on-loaded="pass(item)"
 								:date="item.signin_time"
 								:name="item.user_name">
 				</card>
@@ -85,6 +92,7 @@ import upload from './upload.vue'
 import activityService from '../../service/activityService'
 import promise from '../../../node_modules/vue-resource/src/promise'
 import loading from '../../components/load/loading.vue'
+import {setSignInfo} from '../../vuex/actions/activityAction'
 
 export default {
 	components: {
@@ -106,7 +114,13 @@ export default {
 			message: '',
 			showUpload: false,
 			items : [],
-			activity: {}
+			activity: {},
+			page: 1
+		}
+	},
+	vuex: {
+		actions: {
+			setSignInfo
 		}
 	},
 	route: {
@@ -118,12 +132,19 @@ export default {
 		query: function () {
 			var _self = this
 			this.$refs.loading.OnLoading()
-			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id)]).then(function (data) {
+			promise.all([activityService.getActivityInfo(this.id), activityService.getActivitySignList(this.id,this.page)]).then(function (data) {
 				_self.activity = data[0].data
 				_self.items = data[1].data.list
 				_self.$refs.loading.OnHide()
 				_self.fresh()
+				if(data[1].data.page_end === 1){
+					_self.$nextTick(function () {
+						_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					})
+				}
+				_self.page++
 			}).catch(function (err) {
+				console.log(err)
 				_self.$refs.loading.OnError()
 			})
 		},
@@ -134,12 +155,30 @@ export default {
 			})
 		},
 
+		loadMore: function (uuid) {
+			var _self = this
+
+			activityService.getActivitySignList(this.id, this.page, this.size).then(function (data) {
+				if(data.data.page_end === 1){
+					_self.$broadcast('pullup:disable', uuid)
+				}
+				_self.page ++
+				if(data.data)_self.items = _self.items.concat(data.data.list)
+				_self.$broadcast('pullup:reset', uuid)
+			}).catch(function () {
+				_self.$broadcast('pullup:reset', uuid)
+			})
+		},
+
 		success: function () {
 			this.activity.signin = 1
 			this.activity.signin_count ++
 		},
 		sign: function () {
 			this.$router.go({name: 'upload'})
+		},
+		pass: function (info) {
+			this.setSignInfo(info)
 		}
 	},
 	ready:function () {

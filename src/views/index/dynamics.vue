@@ -6,17 +6,17 @@
 	          @pulldown:loading="reload"
 	          style="position:absolute;top: 44px;bottom: 60px;right:0px;left:0px;" >
 
-		<loading v-ref:loading @on-refresh="query">
-		</loading>
-
-		<div>
+		<div style="padding-bottom: 20px">
+			<loading v-ref:loading
+			         @on-refresh="query">
+			</loading>
 
 			<card v-for="item in items"
-				  :title="item.title"
+				    :title="item.title"
 			      :head-img-url="item.sponsor_avatar"
-				  :time-range="item.start_time+' —— '+item.end_time"
-				  :last-time="item.end_time"
-				  :number="item.signup_number"
+				    :time-range="item.start_time+' —— '+item.end_time"
+				    :last-time="item.end_time"
+				    :number="item.signup_number"
 			      :money="item.deposit"
 			      :course="item.course_desc"
 			      :id="item.activity_id">
@@ -71,6 +71,8 @@ export default{
 		reload: function (uuid) {
 			var _self = this
 			this.activityListQuery().then(function () {
+				_self.$broadcast('pulldown:reset', uuid)
+			}).catch(function () {
 				_self.$broadcast('pulldown:reset', uuid)
 			})
 		}

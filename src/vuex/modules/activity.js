@@ -14,7 +14,14 @@ import {
 	GET_COMPLETED_ACTIVITY_INFO,
 	GET_COMPLETED_ACTIVITY_TIMELINE,
 	GET_RECORD,
-	GET_RANK_LIST
+	SET_SIGN_INFO,
+  UNSHIFT_SIGN_INFO,
+	SET_LAST_ACTIVITY_BOOK_INFO,
+	SET_LAST_ACTIVITY_SIGN_INFO,
+	SET_LAST_COMMENT_INFO,
+	PUSH_LAST_COMMENT_SIGN_INFO,
+	GET_RANK_LIST,
+	GET_COMPLETED_ACTIVITY_LIST
 } from '../mutation-types'
 
 const state = {
@@ -26,8 +33,17 @@ const state = {
 	completedActivity: {},
 	timeline: [],
 	record: {},
+	direction: 'forward',
+	sign: {},
+	lastActivityBookInfo: {},
+	lastActivityBookSignList: [],
+	lastActivityBookId: -1,
+	lastActivitySignInfo: {},
+	lastActivitySignList: [],
+	lastActivitySignId: -1,
+	lastCommentSignInfo: {},
 	rankList: [],
-	direction: 'forward'
+	completedActivityList: []
 }
 
 const mutations = {
@@ -68,11 +84,48 @@ const mutations = {
 	[GET_RECORD](state, record){
 		state.record = record.data
 	},
+	[SET_SIGN_INFO](state,info){
+		state.sign = info
+	},
+	[UNSHIFT_SIGN_INFO](state,info){
+		state.onGoingActivityList.forEach(function (activity) {
+			if(activity.activity_id === info.activity_id){
+				info.signin_status = 1
+				info.activity_title = activity.activity_title
+				var index = state.onGoingActivityList.indexOf(activity)
+				state.onGoingActivityList.$set(index, info)
+			}
+		})
+	},
+	[SET_LAST_ACTIVITY_BOOK_INFO](state, activity, signList){
+		state.lastActivityBookInfo = activity
+		state.lastActivityBookId = activity.info.activity_id
+		state.lastActivityBookSignList = signList
+	},
+	
+	[SET_LAST_ACTIVITY_SIGN_INFO](state, activity, signList){
+		state.lastActivitySignInfo = activity
+		state.lastActivitySignId = activity.info.activity_id
+		state.lastActivitySignList = signList
+		state.lastActivitySignInfo = {}
+	},
+	
+	[SET_LAST_COMMENT_INFO](state,sign,commentList, activityId, signId){
+		state.lastCommentSignInfo =  {activityId:activityId, signId:signId, sign:sign, commentList: commentList}
+	},
+
+	[PUSH_LAST_COMMENT_SIGN_INFO] (state, info){
+		state.lastCommentSignInfo.sign.comment_count++
+		state.lastCommentSignInfo.commentList.push(info)
+	},		
 	[GET_RANK_LIST](state, rankList){
 		state.rankList = rankList.data.list
 	},
 	UPDATE_DIRECTION (state, direction) {
 		state.direction = direction
+	},
+	[GET_COMPLETED_ACTIVITY_LIST](state,data){
+		state.completedActivityList = data.data.list
 	}
 }
 

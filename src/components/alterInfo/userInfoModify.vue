@@ -48,9 +48,8 @@
 import xButton from '../../../node_modules/vux/dist/components/x-button/index'
 import xInput from '../../../node_modules/vux/dist/components/x-input/index'
 import Group from '../../../node_modules/vux/dist/components/group/index'
-import Loading from '../../../node_modules/vux/dist/components/loading/index'
-import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import toast from '../../../node_modules/vux/dist/components/toast/index'
+import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import Address from '../../../node_modules/vux/dist/components/address/index'
 import AddressChinaData from '../../../node_modules/vux/src/components/address/list.json'
 import {alterUserInfoFirstQuery,alterUserInfoSecondQuery} from '../../vuex/actions/userAction'
@@ -60,8 +59,6 @@ import value2name from '../../filter/value2name'
 export default{
   data() {
     return {
-      show: false,
-      show1: false,
       type: Number,
       radio001: [ '男', '女' ],
       title: '',
@@ -75,7 +72,6 @@ export default{
     xButton,
     Group,
     xInput,
-    Loading,
     Radio,
     Address,
     toast
@@ -107,7 +103,7 @@ export default{
   methods: {
     update: function () {
       var _self = this
-      _self.show = true
+	    this.$dispatch('loading')
       //用于修改头像和昵称
       if (this.type == 1 || this.type == 4) {
         if (this.type == 1) {
@@ -117,40 +113,59 @@ export default{
           this.obj.headImgUrl = this.value
         }
         _self.alterUserInfoFirstQuery(this.obj).then(function () {
-          _self.show = false
           //判断类型修改本地数据
           if (_self.type == 1){
             _self.user.user_name = _self.value
-          }else {
+          }
+          else {
             _self.user.user_avatar = _self.value
           }
-          _self.$router.go({name: 'info', replace: true})
-        }, function () {
-          _self.show = false
-          _self.show1 = true
+	        _self.$dispatch('loading')
+	        _self.$dispatch('success','修改成功')
+	        window.history.back()
+        }).catch(function (err) {
+	        _self.$dispatch('loading')
+	        if(err.status === 400){
+		        _self.$dispatch('error',err.data.error_message)
+	        }
+	        else if(err.status === 0){
+		        _self.$dispatch('error','请求超时请重试')
+	        }
+	        else{
+		        _self.$dispatch('error','内容错误请重试')
+	        }
         })
       }
       //用于修改地址和性别
       else {
         if (this.type == 2){
           this.obj.gender = this.sex
-        }else {
+        }
+        else {
           this.value1 = value2name(this.value, AddressChinaData)
           this.obj.location = this.value1.toString()
         }
         _self.alterUserInfoSecondQuery(this.obj).then(function () {
-          _self.show = false
-          //判断修改本地数据
+	        _self.$dispatch('loading')
+	        _self.$dispatch('success','修改成功')
+	        //判断修改本地数据
           if (_self.type == 2){
             _self.user.sex = _self.sex
           }else {
             _self.user.address = _self.obj.location
           }
-          _self.$router.go({name: 'info',replace: true})
-        },function () {
-          _self.show = false
-          _self.show1 = true
-
+	        window.history.back()
+        }).catch(function (err) {
+	        _self.$dispatch('loading')
+	        if(err.status === 400){
+		        _self.$dispatch('error',err.data.error_message)
+	        }
+	        else if(err.status === 0){
+		        _self.$dispatch('error','请求超时请重试')
+	        }
+	        else{
+		        _self.$dispatch('error','内容错误请重试')
+	        }
         })
       }
     },

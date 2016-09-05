@@ -117,12 +117,10 @@ export default{
 		},
 		getters: {
 			direction: getDirection
-
 		}
 	},
 	ready: function () {
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
-		this.childInfoQuery()
 		this.userUpInfoQuery()
 	},
 	events: {

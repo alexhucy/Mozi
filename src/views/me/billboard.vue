@@ -1,19 +1,12 @@
 <template>
 	<div>
 	<scroller v-ref:scroller
-			  lock-x
-			  height="auto"
-			  style="position:absolute;
-			  top: 0;
-			  right:0px;
-			  left:0px;"
-	>
-
-		<loading v-ref:loading
-				 @on-refresh="query">
-		</loading>
+			  lock-x>
 
 	<div class="mz-billboard mz-item">
+		<loading v-ref:loading
+		         @on-refresh="query">
+		</loading>
 
 		<div v-if="$index == 0" class="mz-billboard-top-1" v-for="item in items">
 

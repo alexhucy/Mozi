@@ -9,7 +9,7 @@
 			</cl>
 			<h4>{{title}}</h4>
 			<p>{{state}}</p>
-			<p>{{content}}</p>
+			<p class="mz-card-content" v-html="content | newLine"></p>
 			<image-item :src="url"></image-item>
 		</div>
 
@@ -31,6 +31,13 @@
 }
 .mz-text-center{
 	text-align: center;
+}
+h4{
+	font-size: 1.6rem;
+}
+.mz-card-content{
+	color:#666;
+	font-size: 1.4rem;
 }
 </style>
 

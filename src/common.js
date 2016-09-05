@@ -8,3 +8,4 @@ export const isEmptyObject = function (e) {
 	}
 	return !0
 }
+

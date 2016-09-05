@@ -16,8 +16,11 @@ import {
 	completedActivityTimelineResource,
 	getUrlByServerIdResource,
 	recordResource,
-	rankListResource
+	rankListResource,
+	completedActivityListResource
 } from './resourse'
+
+const size = 1
 
 export default {
 	API_GET_ACTIVITY_LIST: function () {
@@ -28,8 +31,8 @@ export default {
 		return activityResource.get({activity_id: id})
 	},
 
-	API_GET_SIGN_LIST: function (id) {
-		return signListResource.get({activity_id: id})
+	API_GET_SIGN_LIST: function (id, page) {
+		return signListResource.get({activity_id: id, page: page, page_size: size})
 	},
 
 	API_BOOK_ACTIVITY: function (id) {
@@ -59,13 +62,15 @@ export default {
 	API_RECORD: function (activity_id) {
 			return recordResource.get({activity_id: activity_id})
 	},
-
+	API_GET_COMPLETED_ACTIVITY_LIST: function () {
+		return 	completedActivityListResource.get()
+	},
 	API_GET_COMPLETED_ACTIVITY: function (id) {
 		return completedActivityInfoResource.get({activity_id: id})
 	},
 
-	API_GET_COMPLETED_ACTIVITY_TIMELINE: function (id) {
-		return completedActivityTimelineResource.get({activity_id: id})
+	API_GET_COMPLETED_ACTIVITY_TIMELINE: function (id, page) {
+		return completedActivityTimelineResource.get({activity_id: id, page:page, page_size:size})
 	},
 	
 	API_GET_URL_BY_SERVERID: function (id) {

@@ -14,7 +14,7 @@
 	}
 	.mz-item.mz-item-avatar{
 		min-height:72px ;
-		padding:10px 0 15px 60px;
+		padding:10px 0 15px 70px;
 	}
 	.mz-avatar{
 		position:absolute;
@@ -33,7 +33,6 @@
 	.mz-avatar span{
 		display: block;
 	}
-
 </style>
 
 <script>

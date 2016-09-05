@@ -33,10 +33,21 @@ export function getRecord() {
 	return store.state.activity.record
 }
 
+export function getSignInfo() {
+	return store.state.activity.sign
+}
+
+export  function getLastCommentInfo() {
+	return store.state.activity.lastCommentSignInfo
+}
 export function getRankList() {
 	return store.state.activity.rankList
 }
 
 export function getDirection() {
 	return store.state.activity.direction
+}
+
+export  function getCompletedActivityList() {
+	return store.state.activity.completedActivityList
 }

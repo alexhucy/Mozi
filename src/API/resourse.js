@@ -15,6 +15,7 @@ Vue.http.interceptors.push({
 		// 这里对请求体进行处理
 		var cookies = Cookie.load('Authorization')
 		request.headers = request.headers || {}
+		request.headers.contentType = 'application/json'
 		if (cookies) {
 			request.headers.Authorization = cookies
 		}
@@ -40,6 +41,7 @@ export const userupResource = Vue.resource(API_ROOT + '/api/signin/user/self-inf
 export const weixinJSSDKResource = Vue.resource(API_ROOT + '/wechat/jsconfig/')
 
 export const ongoingActivityResource = Vue.resource(API_ROOT + '/api/signin/user/signin_list')//我的进行中的活动
+export const completedActivityListResource = Vue.resource(API_ROOT + '/api/signin/user/activity_list')//我的所有活动列表
 export const completedActivityInfoResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}')//活动信息
 export const completedActivityTimelineResource = Vue.resource(API_ROOT + '/api/signin/user/record/{activity_id}/signin_list')//活动打卡时间轴
 
