@@ -164,6 +164,7 @@
 	vertical-align: middle;
 	width:15px;
 	height:15px;
+	line-height: 16px;
 }
 </style>
 

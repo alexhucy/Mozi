@@ -12,7 +12,7 @@
 			         @on-refresh="query">
 			</loading>
 
-			<card v-for="item in items"
+			<card v-for="item in items "
 						:label="item.signin_status===1?'今日已打卡':'我要打卡'"
 						:type="item.signin_status===1?'ready':'glass'"
 						:title="item.activity_title"

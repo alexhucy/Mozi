@@ -6,13 +6,8 @@
 		<tab-item :selected="$route.name == 'mysign'" v-link="{name:'mysign'}">我的打卡</tab-item>
 	</tab>
 
-
-
-			<router-view>
-
-			</router-view>
-
-
+	<router-view>
+	</router-view>
 
 	<foot></foot>
 	</div>
@@ -28,7 +23,6 @@
 import tab from '../../../node_modules/vux/dist/components/tab/index'
 import tabItem from '../../../node_modules/vux/dist/components/tab-item/index'
 import foot from './footer.vue'
-
 
 export default{
 	components:{

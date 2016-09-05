@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="mz-center-point mz-center-item">
-					{{user.score}}积分
+					<span class="mz-billboard-level" style="margin-right: 8px">v{{user.score_level}}</span>{{user.score}}积分<span style="display: block"></span>
 				</div>
 
 
@@ -130,6 +130,11 @@
 	height: 27px;
 	line-height: 27px;
 	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
+	padding:0 8px
 }
 .mz-href{
 	color:#fff;

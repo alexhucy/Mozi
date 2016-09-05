@@ -44,7 +44,7 @@ module.exports = {
 				loaders:[ 'babel'],
 				exclude: /node_modules|vue\/dist|vue-hot-reload-api|vue-loader/
 			},
-			{ test: /\.(css|scss)$/, loader: ExtractTextPlugin.extract('style','css!sass') },
+			{ test: /\.(css|scss|less)$/, loader: ExtractTextPlugin.extract('style','css!sass!less') },
 			{test: /\.(jpg|png)$/, loader: "url?limit=8192"}//不大于8K的图片打包成base64,
 		]
 	},
@@ -55,7 +55,7 @@ module.exports = {
 	vue: {
 		loaders: {
 			js:'babel',
-			css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader', 'sass-loader'),
+			css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader', 'sass-loader','less-loader'),
 			exclude: /node_modules/
 		}
 	},

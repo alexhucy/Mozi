@@ -76,7 +76,11 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 
+<<<<<<< HEAD
 /******/ 			script.src = __webpack_require__.p + "js/" + {"0":"21d68048"}[chunkId] + ".js";
+=======
+/******/ 			script.src = __webpack_require__.p + "js/" + {"0":"2d4d4f5c"}[chunkId] + ".js";
+>>>>>>> 6f50f2127bf0302eb0bb3ed1258d5074fafd7158
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -99,14 +103,14 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-	__webpack_require__(40);
-	module.exports = __webpack_require__(3);
+	__webpack_require__(20);
+	__webpack_require__(59);
+	module.exports = __webpack_require__(22);
 
 
 /***/ },
 
-/***/ 1:
+/***/ 20:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {/*!
@@ -10183,11 +10187,11 @@
 	}, 0);
 
 	module.exports = Vue;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(2)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(21)))
 
 /***/ },
 
-/***/ 2:
+/***/ 21:
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -10219,45 +10223,17 @@
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
-	        //normal enviroments in sane situations
 	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
 	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedSetTimeout(fun, 0);
-	    } catch(e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-	            return cachedSetTimeout.call(null, fun, 0);
-	        } catch(e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-	            return cachedSetTimeout.call(this, fun, 0);
-	        }
-	    }
-
-
 	}
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
-	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
 	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedClearTimeout(marker);
-	    } catch (e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-	            return cachedClearTimeout.call(null, marker);
-	        } catch (e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-	            return cachedClearTimeout.call(this, marker);
-	        }
-	    }
-
-
-
 	}
 	var queue = [];
 	var draining = false;
@@ -10354,7 +10330,7 @@
 
 /***/ },
 
-/***/ 3:
+/***/ 22:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -13069,7 +13045,7 @@
 
 /***/ },
 
-/***/ 40:
+/***/ 59:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!

@@ -28,9 +28,6 @@ history.setItem('/',0)
 
 const commit = store.commit || store.dispatch
 
-
-
-
 module.exports = function (router) {
 	router.map({
 		'/': {
@@ -39,17 +36,17 @@ module.exports = function (router) {
 			subRoutes: {
 				'/': {
 					name: 'dynamics',
-					component: dynamic
+					component: dynamic,
 				},
 				'/mysign': {
 					name: 'mysign',
-					component: mysign
+					component: mysign,
 				}
 			}
 		},
 		'/billboard': {
 			name: 'billboard',
-			component: billboard
+			component: billboard,
 		},
 		'/item/:id/book': {
 			name: 'book',
@@ -101,21 +98,22 @@ module.exports = function (router) {
 		'*': '/'
 	})
 
-	router.beforeEach( function({to, from, next}){
-		const toIndex = history.getItem(to.path)
-		const fromIndex = history.getItem(from.path)
-		if (toIndex) {
-			if (toIndex > fromIndex) {
-				commit('UPDATE_DIRECTION', 'forward')
-			} else {
-				commit('UPDATE_DIRECTION', 'reverse')
-			}
-		} else {
-			++historyCount
-			history.setItem('count', historyCount)
-			to.path !== '/' && history.setItem(to.path, historyCount)
-			commit('UPDATE_DIRECTION', 'forward')
-		}
-		setTimeout(next, 50)
-	})
+	// router.beforeEach( function({to, from, next}){
+	// 	console.log('1')
+	// 	const toIndex = history.getItem(to.path)
+	// 	const fromIndex = history.getItem(from.path)
+	// 	if (toIndex) {
+	// 		if (toIndex > fromIndex) {
+	// 			commit('UPDATE_DIRECTION', 'forward')
+	// 		} else {
+	// 			commit('UPDATE_DIRECTION', 'reverse')
+	// 		}
+	// 	} else {
+	// 		++historyCount
+	// 		history.setItem('count', historyCount)
+	// 		to.path !== '/' && history.setItem(to.path, historyCount)
+	// 		commit('UPDATE_DIRECTION', 'forward')
+	// 	}
+	// 	setTimeout(next, 50)
+	// })
 }

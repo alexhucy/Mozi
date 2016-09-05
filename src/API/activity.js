@@ -20,7 +20,7 @@ import {
 	completedActivityListResource
 } from './resourse'
 
-const size = 1
+const size = 10
 
 export default {
 	API_GET_ACTIVITY_LIST: function () {

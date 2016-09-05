@@ -57,7 +57,7 @@ import activity from '../../service/activityService'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
 import Popup from '../../../node_modules/vux/dist/components/popup/index'
 import {unshiftSigninfo} from '../../vuex/actions/activityAction'
-import xTextarea from '../../../node_modules/vux/dist/components/x-textarea/index'
+import xTextarea from '../../components/textarea/textarea.vue'
 
 export default{
 	data: function () {
