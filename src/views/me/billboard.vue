@@ -18,7 +18,7 @@
 					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 
 				  <div class="mz-billboard-top-1-decorate">
-					  {{item.user_name}}
+					  <span>{{item.user_name}}</span>
 				  </div>
 				  <div class="mz-billboard-bottom">
 					累计打卡次数: {{item.signin_count}}
@@ -34,7 +34,7 @@
 			<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 
 			<div>
-				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
+				<p class="mz-billboard-name"><span>{{item.user_name}}</span> <span class="mz-billboard-level">v{{item.score_level}}</span></p>
 				<p class="mz-billboard-point">次数: {{item.signin_count}}</p>
 			</div>
 
@@ -75,7 +75,7 @@
 	border-radius: 50%;
 }
 .mz-billboard-bottom{
-	font-size: 0.6rem;
+	font-size: 12px;
 	position: absolute;
 	bottom:-32px;
 	left:-32px;
@@ -102,6 +102,16 @@
 .mz-billboard-name{
 	color:#333;
 	font-size: 1.6rem;
+	display: flex;
+}
+.mz-billboard-name span:first-child{
+	display: inline-block;
+	width:6em;
+	height:22px;
+	white-space: nowrap;
+	overflow: hidden;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
 }
 .mz-billboard-point{
 	color:#6cd9d1;
@@ -135,6 +145,13 @@
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
+}
+.mz-billboard-top-1-decorate span{
+	width:6em;
+	white-space: nowrap;
+	overflow: hidden;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
 }
 .mz-billboard-level{
 	display: inline-block;

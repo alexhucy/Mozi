@@ -45,6 +45,12 @@
     display: flex;
     flex-flow: column wrap;
 }
+.selfinfo span{
+    white-space: nowrap;
+    width:8em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
 .infoicon{
     display: flex;
     flex-flow:row nowrap;
@@ -71,9 +77,6 @@ export default {
       deleteChildInfoQuery
     }
   },
-	ready: function () {
-		console.log
-	},
   methods: {
     delete: function () {
 			this.$dispatch('confirm' , '个人信息','确认删除' + this.nickname + '的信息么', this.confirm)

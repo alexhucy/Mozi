@@ -144,16 +144,17 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// let history = window.sessionStorage
+	// history.clear()
+	// let historyCount = history.getItem('count') * 1 || 0
+	// history.setItem('/',0)
+	//
+	// const commit = store.commit || store.dispatch
+
+
 	/**
 	 * Created by Alex on 16/8/4.
 	 */
-
-	var history = window.sessionStorage;
-	history.clear();
-	var historyCount = history.getItem('count') * 1 || 0;
-	history.setItem('/', 0);
-
-	var commit = _store2.default.commit || _store2.default.dispatch;
 
 	module.exports = function (router) {
 		router.map({
@@ -224,9 +225,7 @@ webpackJsonp([0],[
 		router.redirect({
 			'*': '/'
 		});
-		// router.beforeEach(function () {
-		//
-		// })
+
 		router.beforeEach(function (_ref) {
 			var to = _ref.to;
 			var from = _ref.from;
@@ -5181,7 +5180,7 @@ webpackJsonp([0],[
 	// 					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 	//
 	// 				  <div class="mz-billboard-top-1-decorate">
-	// 					  {{item.user_name}}
+	// 					  <span>{{item.user_name}}</span>
 	// 				  </div>
 	// 				  <div class="mz-billboard-bottom">
 	// 					累计打卡次数: {{item.signin_count}}
@@ -5197,7 +5196,7 @@ webpackJsonp([0],[
 	// 			<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 	//
 	// 			<div>
-	// 				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
+	// 				<p class="mz-billboard-name"><span>{{item.user_name}}</span> <span class="mz-billboard-level">v{{item.score_level}}</span></p>
 	// 				<p class="mz-billboard-point">次数: {{item.signin_count}}</p>
 	// 			</div>
 	//
@@ -5238,7 +5237,7 @@ webpackJsonp([0],[
 	// 	border-radius: 50%;
 	// }
 	// .mz-billboard-bottom{
-	// 	font-size: 0.6rem;
+	// 	font-size: 12px;
 	// 	position: absolute;
 	// 	bottom:-32px;
 	// 	left:-32px;
@@ -5265,6 +5264,16 @@ webpackJsonp([0],[
 	// .mz-billboard-name{
 	// 	color:#333;
 	// 	font-size: 1.6rem;
+	// 	display: flex;
+	// }
+	// .mz-billboard-name span:first-child{
+	// 	display: inline-block;
+	// 	width:6em;
+	// 	height:22px;
+	// 	white-space: nowrap;
+	// 	overflow: hidden;
+	// 	-ms-text-overflow: ellipsis;
+	// 	text-overflow: ellipsis;
 	// }
 	// .mz-billboard-point{
 	// 	color:#6cd9d1;
@@ -5298,6 +5307,13 @@ webpackJsonp([0],[
 	// 	display: flex;
 	// 	justify-content: center;
 	// 	align-items: flex-end;
+	// }
+	// .mz-billboard-top-1-decorate span{
+	// 	width:6em;
+	// 	white-space: nowrap;
+	// 	overflow: hidden;
+	// 	-ms-text-overflow: ellipsis;
+	// 	text-overflow: ellipsis;
 	// }
 	// .mz-billboard-level{
 	// 	display: inline-block;
@@ -5365,7 +5381,7 @@ webpackJsonp([0],[
 /* 130 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n<scroller v-ref:scroller\n\t\t  lock-x>\n\n<div class=\"mz-billboard mz-item\">\n\t<loading v-ref:loading\n\t         @on-refresh=\"query\">\n\t</loading>\n\n\t<div v-if=\"$index == 0\" class=\"mz-billboard-top-1\" v-for=\"item in items\">\n\n\t\t<i class=\"mz-billboard-rank\">NO.{{$index+1}}</i>\n\n\t\t<div class=\"mz-billboard-avatar\">\n\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  {{item.user_name}}\n\t\t\t  </div>\n\t\t\t  <div class=\"mz-billboard-bottom\">\n\t\t\t\t累计打卡次数: {{item.signin_count}}\n\t\t\t  </div>\n\t\t</div>\n\n\n\t</div>\n\n\t<div v-if=\"$index > 0\" class=\"mz-billboard-item\" :class=\"[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']\" v-for=\"item in items\">\n\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.{{$index+1}}</span>\n\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">{{item.user_name}} <span class=\"mz-billboard-level\">v{{item.score_level}}</span></p>\n\t\t\t<p class=\"mz-billboard-point\">次数: {{item.signin_count}}</p>\n\t\t</div>\n\n\t</div>\n\n</div>\n</scroller>\n</div>\n";
+	module.exports = "\n<div>\n<scroller v-ref:scroller\n\t\t  lock-x>\n\n<div class=\"mz-billboard mz-item\">\n\t<loading v-ref:loading\n\t         @on-refresh=\"query\">\n\t</loading>\n\n\t<div v-if=\"$index == 0\" class=\"mz-billboard-top-1\" v-for=\"item in items\">\n\n\t\t<i class=\"mz-billboard-rank\">NO.{{$index+1}}</i>\n\n\t\t<div class=\"mz-billboard-avatar\">\n\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  <span>{{item.user_name}}</span>\n\t\t\t  </div>\n\t\t\t  <div class=\"mz-billboard-bottom\">\n\t\t\t\t累计打卡次数: {{item.signin_count}}\n\t\t\t  </div>\n\t\t</div>\n\n\n\t</div>\n\n\t<div v-if=\"$index > 0\" class=\"mz-billboard-item\" :class=\"[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']\" v-for=\"item in items\">\n\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.{{$index+1}}</span>\n\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\"><span>{{item.user_name}}</span> <span class=\"mz-billboard-level\">v{{item.score_level}}</span></p>\n\t\t\t<p class=\"mz-billboard-point\">次数: {{item.signin_count}}</p>\n\t\t</div>\n\n\t</div>\n\n</div>\n</scroller>\n</div>\n";
 
 /***/ },
 /* 131 */
@@ -9190,6 +9206,12 @@ webpackJsonp([0],[
 	//     display: flex;
 	//     flex-flow: column wrap;
 	// }
+	// .selfinfo span{
+	//     white-space: nowrap;
+	//     width:8em;
+	//     overflow:hidden;
+	//     text-overflow:ellipsis;
+	// }
 	// .infoicon{
 	//     display: flex;
 	//     flex-flow:row nowrap;
@@ -9212,9 +9234,6 @@ webpackJsonp([0],[
 			actions: {
 				deleteChildInfoQuery: _userAction.deleteChildInfoQuery
 			}
-		},
-		ready: function ready() {
-			console.log;
 		},
 		methods: {
 			delete: function _delete() {
@@ -9453,6 +9472,10 @@ webpackJsonp([0],[
 				});
 			},
 			updateInfo: function updateInfo() {
+				if (this.nickname.length > 16) {
+					this.$dispatch('error', '姓名长度不能超过16个字符');
+					return;
+				}
 				if (this.validate()) {
 					this.type === 'EDIT' ? this.edit() : this.save();
 				}
@@ -10527,7 +10550,6 @@ webpackJsonp([0],[
 	//                  hide-district>
 	//
 	//         </address>
-	//
 	//     </group>
 	//
 	//     <group>
@@ -10600,6 +10622,12 @@ webpackJsonp([0],[
 	  },
 	  methods: {
 	    update: function update() {
+	      if (this.type == 1) {
+	        if (this.value.length > 16) {
+	          this.$dispatch('error', '姓名长度不能超过16个字符');
+	          return;
+	        }
+	      }
 	      var _self = this;
 	      this.$dispatch('loading');
 	      //用于修改头像和昵称
@@ -27182,7 +27210,7 @@ webpackJsonp([0],[
 /* 281 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district>\n\n    </address>\n\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\"\n    >\n        确认修改\n    </x-button>\n\n</group>\n\n<loading :show=\"show\"></loading>\n\n<toast type=\"text\" :show.sync=\"show1\" width=\"20em\">请求失败，请重试</toast>\n</div>\n";
+	module.exports = "\n<div>\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district>\n\n    </address>\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\"\n    >\n        确认修改\n    </x-button>\n\n</group>\n\n<loading :show=\"show\"></loading>\n\n<toast type=\"text\" :show.sync=\"show1\" width=\"20em\">请求失败，请重试</toast>\n</div>\n";
 
 /***/ },
 /* 282 */
@@ -27848,6 +27876,7 @@ webpackJsonp([0],[
 	//
 	// 		<router-view :transition="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')"
 	// 					 transition-model="out-in"
+	// 					 keep-alive
 	// 		>
 	// 		</router-view>
 	//
@@ -28115,7 +28144,7 @@ webpackJsonp([0],[
 /* 307 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n\n\t<router-view :transition=\"'vux-pop-' + (direction === 'forward' ? 'in' : 'out')\"\n\t\t\t\t transition-model=\"out-in\"\n\t>\n\t</router-view>\n\n<tips v-ref:tips></tips>\n</div>\n";
+	module.exports = "\n<div>\n\n\t<router-view :transition=\"'vux-pop-' + (direction === 'forward' ? 'in' : 'out')\"\n\t\t\t\t transition-model=\"out-in\"\n\t\t\t\t keep-alive\n\t>\n\t</router-view>\n\n<tips v-ref:tips></tips>\n</div>\n";
 
 /***/ },
 /* 308 */

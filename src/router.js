@@ -100,9 +100,7 @@ module.exports = function (router) {
 	router.redirect({
 		'*': '/'
 	})
-	// router.beforeEach(function () {
-	//
-	// })
+
 	router.beforeEach( function({to, from, next}){
 		const toIndex = history.getItem(to.path)
 		const fromIndex = history.getItem(from.path)

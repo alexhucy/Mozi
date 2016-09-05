@@ -3,6 +3,7 @@
 
 		<router-view :transition="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')"
 					 transition-model="out-in"
+					 keep-alive
 		>
 		</router-view>
 
