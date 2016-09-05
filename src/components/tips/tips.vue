@@ -5,7 +5,7 @@
 
 	<loading :show="loadingLayer" text="数据提交中"></loading>
 
-	<toast :show.sync="toastLayer">{{toastMessage}}</toast>
+	<toast :show.sync="toastLayer" :time="1000">{{toastMessage}}</toast>
 
 	<confirm :show.sync="confirmLayer" cancel-text="取消" confirm-text="确定" :title="title" @on-confirm="confirm">{{confirmMessage}}</confirm>
 	<!--提示框 end-->
@@ -19,7 +19,8 @@
 <script>
 import alert from '../../../node_modules/vux/dist/components/alert/index'
 import loading from '../../../node_modules/vux/dist/components/loading/index'
-import toast from '../../../node_modules/vux/dist/components/toast/index'
+//import toast from '../../../node_modules/vux/src/components/toast/index.vue'
+import toast from './toast.vue'
 import confirm from '../../../node_modules/vux/dist/components/confirm/index'
 
 export default{

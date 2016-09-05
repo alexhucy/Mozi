@@ -12,11 +12,6 @@
 
 
 
-
-
-
-
-
  .mz-item h4{
 	 font-size: 1.4rem;
  }
@@ -661,6 +656,7 @@ h4{
 	vertical-align: middle;
 	width:15px;
 	height:15px;
+	line-height: 16px;
 }
 
 
@@ -735,6 +731,9 @@ h4{
 .mz-item-cover{
 	padding: 10px 13px 0 13px;
 	background: #fff;
+}
+p{
+	font-size: 1.3rem;
 }
 
 
@@ -1161,6 +1160,17 @@ textarea{
 	height: 27px;
 	line-height: 27px;
 	margin: 0 auto;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	box-sizing: border-box;
+	padding:0 8px
 }
 .mz-href{
 	color:#fff;
@@ -1673,6 +1683,10 @@ textarea{
 
 
 
+
+
+
+
 .mz-timeline-box{
 	background: #fff;
 	position:relative;
@@ -1682,6 +1696,7 @@ textarea{
 	display: flex;
 }
 .mz-timeline-card{
+	padding: 10px 0  10px 15px;
 	-webkit-box-flex:1;
 	    -ms-flex:1;
 	        flex:1;
@@ -1691,7 +1706,7 @@ textarea{
 	position: absolute;
 	top:  0;
 	bottom: 0;
-	left: 40px;
+	left: 50px;
 	width: 1px;
 	background: #72e4dc;
 }
@@ -1699,7 +1714,9 @@ textarea{
 	z-index:99;
 	background: #fff;
 	width: 80px;
-	top:0;
+	display: inline-block;
+	word-break: break-all;
+	position: relative;
 }
 .mz-timeline-card h4{
 	font-size: 1.6rem;

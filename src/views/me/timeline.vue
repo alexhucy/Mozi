@@ -1,7 +1,7 @@
 <template>
 	<div class="mz-timeline-box">
 		<div>
-			<span class="mz-label-time">{{date}}</span>
+			<span class="mz-label-time mz-text-center" v-html="date.replace(' ','</br>')"></span>
 		</div>
 		<div class="mz-timeline-card">
 			<p v-html="title| newLine"></p>
@@ -25,6 +25,7 @@
 	display: flex;
 }
 .mz-timeline-card{
+	padding: 10px 0  10px 15px;
 	flex:1;
 }
 .mz-timeline-box:before{
@@ -32,7 +33,7 @@
 	position: absolute;
 	top:  0;
 	bottom: 0;
-	left: 40px;
+	left: 50px;
 	width: 1px;
 	background: #72e4dc;
 }
@@ -40,7 +41,9 @@
 	z-index:99;
 	background: #fff;
 	width: 80px;
-	top:0;
+	display: inline-block;
+	word-break: break-all;
+	position: relative;
 }
 .mz-timeline-card h4{
 	font-size: 1.6rem;

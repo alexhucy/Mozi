@@ -21,6 +21,8 @@
     "html-webpack-plugin": "^2.22.0",
     "http-proxy": "^1.14.0",
     "i18n": "^0.8.3",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "mint-loadmore": "^0.1.2",
     "mocha": "^3.0.2",
     "mongodb": "^2.2.5",

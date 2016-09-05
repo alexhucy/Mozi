@@ -1,13 +1,17 @@
 <template>
+
 	<loading v-ref:loading @on-refresh="query"></loading>
 
 	<scroller v-ref:scroller lock-x
 	          use-pullup
 	          :pullup="disable"
 	          @pullup:loading="more"
-						height="100%">
-		<div style="padding-bottom: 10px">
-			<div v-if="activity.info">
+						 v-if="activity.info">
+
+
+
+		<div style="padding-bottom: 10px;height: 100%">
+			<div >
 				<tab :title="activity.info.title" @on-fresh="fresh">
 					<div style="background: #fff;padding: 10px 15px">
 						<avatar-item avatar-url="http://static.youku.com/user/img/avatar/310/39.jpg" >
@@ -44,7 +48,7 @@
 
 				</timeline>
 			</div>
-	</div>
+	  </div>
 	</scroller>
 </template>
 
@@ -106,7 +110,9 @@ export default{
 				_self.activity = data[0].data
 				_self.items = data[1].data.list
 				if(data[1].data.page_end === 1){
-					_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					_self.$nextTick(function () {
+						_self.$broadcast('pullup:disable', _self.$refs.scroller.uuid)
+					})
 				}
 			}).catch(function (err) {
 				_self.$refs.loading.OnError()
@@ -131,6 +137,11 @@ export default{
 	},
 	ready: function () {
 		this.query()
+	},
+	watch:  {
+		items: function () {
+			this.fresh()
+		}
 	}
 }
 </script>

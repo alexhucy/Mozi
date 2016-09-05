@@ -15,7 +15,7 @@
 
 <script>
 import group from '../../../node_modules/vux/dist/components/group/index'
-import xTextarea from '../../../node_modules/vux/dist/components/x-textarea/index'
+import xTextarea from '../../components/textarea/textarea.vue'
 import tButton from '../../components/button/button.vue'
 import activity from '../../service/activityService'
 import {pushLastCommentSign} from '../../vuex/actions/activityAction'

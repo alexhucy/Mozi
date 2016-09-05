@@ -26,17 +26,17 @@ module.exports = function (router) {
 			subRoutes: {
 				'/': {
 					name: 'dynamics',
-					component: dynamic
+					component: dynamic,
 				},
 				'/mysign': {
 					name: 'mysign',
-					component: mysign
+					component: mysign,
 				}
 			}
 		},
 		'/billboard': {
 			name: 'billboard',
-			component: billboard
+			component: billboard,
 		},
 		'/item/:id/book': {
 			name: 'book',
@@ -87,5 +87,6 @@ module.exports = function (router) {
 	router.redirect({
 		'*': '/'
 	})
+
 
 }

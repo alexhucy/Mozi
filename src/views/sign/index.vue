@@ -72,6 +72,9 @@
 		padding: 10px 13px 0 13px;
 		background: #fff;
 	}
+	p{
+		font-size: 1.3rem;
+	}
 </style>
 
 <script>
