@@ -33,6 +33,7 @@ const state = {
 	completedActivity: {},
 	timeline: [],
 	record: {},
+	direction: 'forward',
 	sign: {},
 	lastActivityBookInfo: {},
 	lastActivityBookSignList: [],
@@ -119,6 +120,9 @@ const mutations = {
 	},		
 	[GET_RANK_LIST](state, rankList){
 		state.rankList = rankList.data.list
+	},
+	UPDATE_DIRECTION (state, direction) {
+		state.direction = direction
 	},
 	[GET_COMPLETED_ACTIVITY_LIST](state,data){
 		state.completedActivityList = data.data.list

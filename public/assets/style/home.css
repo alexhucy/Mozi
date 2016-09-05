@@ -12,6 +12,8 @@
 
 
 
+
+
  .mz-item h4{
 	 font-size: 1.4rem;
  }
@@ -546,6 +548,11 @@ h4{
 
 
 
+
+
+
+
+
 .mz-billboard-top-1{
 	height: 133px;
 	background: #72e4dc;
@@ -580,6 +587,14 @@ h4{
 	height: 60px;
 	width: 60px;
 	border-radius: 50%;
+}
+.mz-billboard-bottom{
+	font-size: 0.6rem;
+	position: absolute;
+	bottom:-32px;
+	left:-32px;
+	width:120px;
+	text-align: center;
 }
 .mz-billboard-item{
 	height:60px;
@@ -658,6 +673,8 @@ h4{
 	height:15px;
 	line-height: 16px;
 }
+
+
 
 
 
@@ -1089,6 +1106,8 @@ textarea{
 
 
 
+
+
 .mz-container{
 	padding: 0 10px;
 }
@@ -1341,6 +1360,8 @@ textarea{
 
 
 
+
+
 .mz-center{
 	margin:15px;
 	padding:5px;
@@ -1425,6 +1446,10 @@ textarea{
 .infoicon span{
     margin:5px;
 }
+
+
+
+
 
 
 
@@ -1799,6 +1824,12 @@ textarea{
 
 
 
+
+
+
+
+
+
 .mz-comment-title-bar{
 	margin-top: 10px;
 	padding: 12px;
@@ -1900,6 +1931,7 @@ textarea{
 
 
 
+
 html,body{
 	font-size: 10px;
 	height: 100%;
@@ -1919,7 +1951,67 @@ html,body{
 	font-weight: normal;
 	font-style: normal;
 }
-
+/*.vux-pop-out-transition,*/
+/*.vux-pop-in-transition {*/
+	/*width: 100%;*/
+	/*animation-duration: 0.5s;*/
+	/*animation-fill-mode: both;*/
+	/*backface-visibility: hidden;*/
+/*}*/
+/*.vux-pop-out-enter,*/
+/*.vux-pop-out-leave,*/
+/*.vux-pop-in-enter,*/
+/*.vux-pop-in-leave {*/
+	/*will-change: transform;*/
+	/*height: 100%;*/
+	/*position: absolute;*/
+	/*left: 0;*/
+/*}*/
+/*.vux-pop-out-enter {*/
+	/*animation-name: popInLeft;*/
+/*}*/
+/*.vux-pop-out-leave {*/
+	/*animation-name: popOutRight;*/
+/*}*/
+/*.vux-pop-in-enter {*/
+	/*perspective: 1000;*/
+	/*animation-name: popInRight;*/
+/*}*/
+/*.vux-pop-in-leave {*/
+	/*animation-name: popOutLeft;*/
+/*}*/
+/*@keyframes popInLeft {*/
+	/*from {*/
+		/*transform: translate3d(-100%, 0, 0);*/
+	/*}*/
+	/*to {*/
+		/*transform: translate3d(0, 0, 0);*/
+	/*}*/
+/*}*/
+/*@keyframes popOutLeft {*/
+	/*from {*/
+		/*transform: translate3d(0, 0, 0);*/
+	/*}*/
+	/*to {*/
+		/*transform: translate3d(-100%, 0, 0);*/
+	/*}*/
+/*}*/
+/*@keyframes popInRight {*/
+	/*from {*/
+		/*transform: translate3d(100%, 0, 0);*/
+	/*}*/
+	/*to {*/
+		/*transform: translate3d(0, 0, 0);*/
+	/*}*/
+/*}*/
+/*@keyframes popOutRight {*/
+	/*from {*/
+		/*transform: translate3d(0, 0, 0);*/
+	/*}*/
+	/*to {*/
+		/*transform: translate3d(100%, 0, 0);*/
+	/*}*/
+/*}*/
 
 
 

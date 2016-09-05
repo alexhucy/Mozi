@@ -149,7 +149,22 @@ webpackJsonp([0],[
 
 	var _text2 = _interopRequireDefault(_text);
 
+	var _store = __webpack_require__(58);
+
+	var _store2 = _interopRequireDefault(_store);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Created by Alex on 16/8/4.
+	 */
+
+	var history = window.sessionStorage;
+	history.clear();
+	var historyCount = history.getItem('count') * 1 || 0;
+	history.setItem('/', 0);
+
+	var commit = _store2.default.commit || _store2.default.dispatch;
 
 	module.exports = function (router) {
 		router.map({
@@ -220,9 +235,29 @@ webpackJsonp([0],[
 		router.redirect({
 			'*': '/'
 		});
-	}; /**
-	    * Created by Alex on 16/8/4.
-	    */
+		router.beforeEach(function (_ref) {
+			var to = _ref.to;
+			var from = _ref.from;
+			var next = _ref.next;
+
+			console.log('1');
+			var toIndex = history.getItem(to.path);
+			var fromIndex = history.getItem(from.path);
+			if (toIndex) {
+				if (toIndex > fromIndex) {
+					commit('UPDATE_DIRECTION', 'forward');
+				} else {
+					commit('UPDATE_DIRECTION', 'reverse');
+				}
+			} else {
+				++historyCount;
+				history.setItem('count', historyCount);
+				to.path !== '/' && history.setItem(to.path, historyCount);
+				commit('UPDATE_DIRECTION', 'forward');
+			}
+			setTimeout(next, 50);
+		});
+	};
 
 /***/ },
 /* 24 */
@@ -293,6 +328,7 @@ webpackJsonp([0],[
 	// </script>
 	//
 	// <template>
+	// 	<div>
 	// 	<tab>
 	// 		<tab-item :selected="$route.name == 'dynamics'" v-link="{name:'dynamics'}">一周活动</tab-item>
 	// 		<tab-item :selected="$route.name == 'mysign'" v-link="{name:'mysign'}">我的打卡</tab-item>
@@ -302,6 +338,7 @@ webpackJsonp([0],[
 	// 	</router-view>
 	//
 	// 	<foot></foot>
+	// 	</div>
 	// </template>
 	//
 	// <style>
@@ -416,7 +453,7 @@ webpackJsonp([0],[
 /* 33 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n<tab>\n\t<tab-item :selected=\"$route.name == 'dynamics'\" v-link=\"{name:'dynamics'}\">一周活动</tab-item>\n\t<tab-item :selected=\"$route.name == 'mysign'\" v-link=\"{name:'mysign'}\">我的打卡</tab-item>\n</tab>\n\n<router-view>\n</router-view>\n\n<foot></foot>\n";
+	module.exports = "\n\n<div>\n<tab>\n\t<tab-item :selected=\"$route.name == 'dynamics'\" v-link=\"{name:'dynamics'}\">一周活动</tab-item>\n\t<tab-item :selected=\"$route.name == 'mysign'\" v-link=\"{name:'mysign'}\">我的打卡</tab-item>\n</tab>\n\n<router-view>\n</router-view>\n\n<foot></foot>\n</div>\n";
 
 /***/ },
 /* 34 */
@@ -1083,6 +1120,7 @@ webpackJsonp([0],[
 	exports.getSignInfo = getSignInfo;
 	exports.getLastCommentInfo = getLastCommentInfo;
 	exports.getRankList = getRankList;
+	exports.getDirection = getDirection;
 	exports.getCompletedActivityList = getCompletedActivityList;
 
 	var _store = __webpack_require__(58);
@@ -1132,6 +1170,10 @@ webpackJsonp([0],[
 	}
 	function getRankList() {
 		return _store2.default.state.activity.rankList;
+	}
+
+	function getDirection() {
+		return _store2.default.state.activity.direction;
 	}
 
 	function getCompletedActivityList() {
@@ -1212,6 +1254,7 @@ webpackJsonp([0],[
 		completedActivity: {},
 		timeline: [],
 		record: {},
+		direction: 'forward',
 		sign: {},
 		lastActivityBookInfo: {},
 		lastActivityBookSignList: [],
@@ -1267,6 +1310,8 @@ webpackJsonp([0],[
 		state.lastCommentSignInfo.commentList.push(info);
 	}), (0, _defineProperty3.default)(_mutations, _mutationTypes.GET_RANK_LIST, function (state, rankList) {
 		state.rankList = rankList.data.list;
+	}), (0, _defineProperty3.default)(_mutations, 'UPDATE_DIRECTION', function UPDATE_DIRECTION(state, direction) {
+		state.direction = direction;
 	}), (0, _defineProperty3.default)(_mutations, _mutationTypes.GET_COMPLETED_ACTIVITY_LIST, function (state, data) {
 		state.completedActivityList = data.data.list;
 	}), _mutations);
@@ -5097,6 +5142,7 @@ webpackJsonp([0],[
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// <template>
+	// 	<div>
 	// 	<scroller v-ref:scroller
 	// 			  lock-x>
 	//
@@ -5117,8 +5163,11 @@ webpackJsonp([0],[
 	// 				  <div class="mz-billboard-top-1-decorate">
 	// 					  {{item.user_name}}
 	// 				  </div>
-	//
+	// 				  <div class="mz-billboard-bottom">
+	// 					累计打卡次数: {{item.signin_count}}
+	// 				  </div>
 	// 			</div>
+	//
 	//
 	// 		</div>
 	//
@@ -5129,13 +5178,14 @@ webpackJsonp([0],[
 	//
 	// 			<div>
 	// 				<p class="mz-billboard-name">{{item.user_name}} <span class="mz-billboard-level">v{{item.score_level}}</span></p>
-	// 				<p class="mz-billboard-point">打卡次数:{{item.signin_count}}</p>
+	// 				<p class="mz-billboard-point">次数: {{item.signin_count}}</p>
 	// 			</div>
 	//
 	// 		</div>
 	//
 	// 	</div>
 	// 	</scroller>
+	// 	</div>
 	// </template>
 	//
 	// <style>
@@ -5166,6 +5216,14 @@ webpackJsonp([0],[
 	// 	height: 60px;
 	// 	width: 60px;
 	// 	border-radius: 50%;
+	// }
+	// .mz-billboard-bottom{
+	// 	font-size: 0.6rem;
+	// 	position: absolute;
+	// 	bottom:-32px;
+	// 	left:-32px;
+	// 	width:120px;
+	// 	text-align: center;
 	// }
 	// .mz-billboard-item{
 	// 	height:60px;
@@ -5279,9 +5337,7 @@ webpackJsonp([0],[
 			}
 		},
 		ready: function ready() {
-			if (this.items.length === 0) {
-				this.query();
-			}
+			this.query();
 		}
 	};
 	// </script>
@@ -5290,7 +5346,7 @@ webpackJsonp([0],[
 /* 149 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<scroller v-ref:scroller\n\t\t  lock-x>\n\n<div class=\"mz-billboard mz-item\">\n\t<loading v-ref:loading\n\t         @on-refresh=\"query\">\n\t</loading>\n\n\t<div v-if=\"$index == 0\" class=\"mz-billboard-top-1\" v-for=\"item in items\">\n\n\t\t<i class=\"mz-billboard-rank\">NO.{{$index+1}}</i>\n\n\t\t<div class=\"mz-billboard-avatar\">\n\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  {{item.user_name}}\n\t\t\t  </div>\n\n\t\t</div>\n\n\t</div>\n\n\t<div v-if=\"$index > 0\" class=\"mz-billboard-item\" :class=\"[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']\" v-for=\"item in items\">\n\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.{{$index+1}}</span>\n\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">{{item.user_name}} <span class=\"mz-billboard-level\">v{{item.score_level}}</span></p>\n\t\t\t<p class=\"mz-billboard-point\">打卡次数:{{item.signin_count}}</p>\n\t\t</div>\n\n\t</div>\n\n</div>\n</scroller>\n";
+	module.exports = "\n<div>\n<scroller v-ref:scroller\n\t\t  lock-x>\n\n<div class=\"mz-billboard mz-item\">\n\t<loading v-ref:loading\n\t         @on-refresh=\"query\">\n\t</loading>\n\n\t<div v-if=\"$index == 0\" class=\"mz-billboard-top-1\" v-for=\"item in items\">\n\n\t\t<i class=\"mz-billboard-rank\">NO.{{$index+1}}</i>\n\n\t\t<div class=\"mz-billboard-avatar\">\n\n\t\t\t\t<img src=\"/images/crown.png\" class=\"mz-billboard-top-1-crown\">\n\t\t\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t\t  <div class=\"mz-billboard-top-1-decorate\">\n\t\t\t\t  {{item.user_name}}\n\t\t\t  </div>\n\t\t\t  <div class=\"mz-billboard-bottom\">\n\t\t\t\t累计打卡次数: {{item.signin_count}}\n\t\t\t  </div>\n\t\t</div>\n\n\n\t</div>\n\n\t<div v-if=\"$index > 0\" class=\"mz-billboard-item\" :class=\"[item.id%2 == 0 ? 'mz-item-odds' : 'mz-item-even']\" v-for=\"item in items\">\n\n\t\t<span class=\"mz-billboard-item-rank-number\">NO.{{$index+1}}</span>\n\t\t<img :src=\"item.user_avatar\" class=\"mz-billboard-img-avatar\">\n\n\t\t<div>\n\t\t\t<p class=\"mz-billboard-name\">{{item.user_name}} <span class=\"mz-billboard-level\">v{{item.score_level}}</span></p>\n\t\t\t<p class=\"mz-billboard-point\">次数: {{item.signin_count}}</p>\n\t\t</div>\n\n\t</div>\n\n</div>\n</scroller>\n</div>\n";
 
 /***/ },
 /* 150 */
@@ -5507,6 +5563,7 @@ webpackJsonp([0],[
 	};
 	// </script>
 	// <template>
+	// 	<div>
 	// 	<loading v-ref:loading @on-refresh="query"></loading>
 	//
 	// 	<div v-if="activityInfo.info && items">
@@ -5572,6 +5629,7 @@ webpackJsonp([0],[
 	// 		<dialog v-ref:dialog
 	// 						@on-confirm="upload">
 	// 		</dialog>
+	// 	</div>
 	// 	</div>
 	// </template>
 	//
@@ -7107,7 +7165,7 @@ webpackJsonp([0],[
 /* 192 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<loading v-ref:loading @on-refresh=\"query\"></loading>\n\n<div v-if=\"activityInfo.info && items\">\n\t<scroller v-ref:scroller lock-x\n\t          use-pullup\n\t          @pullup:loading=\"loadMore\"\n\t          style=\"position: absolute;top:0;left: 0;right: 0;bottom: 50px\"\n\t          height=\"auto\">\n\n\t\t<div class=\"mz-sign\" style=\"padding-bottom: 10px\">\n\t\t\t<div class=\"mz-item-cover\">\n\t\t\t\t<avatar-item :avatar-url=\"activityInfo.info.sponsor_avatar\">\n\t\t\t\t\t<h4>{{activityInfo.info.sponsor_name}}</h4>\n\t\t\t\t\t<p>发起了活动: {{activityInfo.info.title}}</p>\n\t\t\t\t\t<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>\n\t\t\t\t\t<p>报名截至时间:{{activityInfo.info.end_time}}</p>\n\t\t\t\t</avatar-item>\n\t\t\t</div>\n\n\t\t\t<wrap title=\"活动介绍:\" type=\"success\">\n\t\t\t\t<p v-html=\"activityInfo.info.desc | newLine \"></p>\n\t\t\t</wrap>\n\n\t\t\t<wrap title=\"相关课程:\" type=\"warn\">\n\t\t\t\t<half-item\n\t\t\t\t\t\t\t\tv-for=\"course in activityInfo.info.resource_list\"\n\t\t\t\t\t\t\t\t:url=\"course.image_url\"\n\t\t\t\t\t\t\t\t:title=\"course.link_text\"\n\t\t\t\t\t\t\t\t:href=\"course.link_url\">\n\t\t\t\t</half-item>\n\t\t\t</wrap>\n\n\t\t\t<div class=\"mz-content-container\" style=\"margin-top: 10px\">\n\t\t\t\t<icon-item type=\"people\">已报名人数:<span>{{activityInfo.info.signup_number}}</span></icon-item>\n\t\t\t\t<!--<icon-item type=\"money\">每人保证金</icon-item>-->\n\t\t\t\t<!--<icon-item type=\"gift\">剩余2人在坚持,每人可获得100元</icon-item>-->\n\t\t\t</div>\n\n\t\t\t<card v-for=\"item in items\"\n\t\t\t      :head-img-url=\"item.user_avatar\"\n\t\t\t\t\t\t:cover=\"item.image_url\"\n\t\t\t\t\t\t:zan=\"item.agree_count\"\n\t\t\t\t\t\t:comments=\"item.comment_count\"\n\t\t\t\t\t\t:content=\"item.text | newLine\"\n\t\t\t\t\t\t:activity-id=\"item.activity_id\"\n\t\t\t\t\t\t:sign-id=\"item.signin_id\"\n\t\t\t\t\t\t:checked=\"item.my_agree === 1 ? true: false \"\n\t\t\t\t\t\t@on-loaded=\"pass(item)\"\n\t\t\t\t\t\t:date=\"item.signin_time\"\n\t\t\t\t\t\t:name=\"item.user_name\">\n\t\t\t</card>\n\n\t\t</div>\n\t</scroller>\n\n\t<f-button type=\"success\"\n\t\t\t\t\t\t:action=\"activityInfo.signup===1?'已报名':'我要报名'\"\n\t\t\t\t\t\t:disable=\"activityInfo.signup===1?true:false\"\n\t\t\t\t\t\t@on-confirm=\"confirm\">\n\n\t</f-button>\n\n\t<dialog v-ref:dialog\n\t\t\t\t\t@on-confirm=\"upload\">\n\t</dialog>\n</div>\n";
+	module.exports = "\n<div>\n<loading v-ref:loading @on-refresh=\"query\"></loading>\n\n<div v-if=\"activityInfo.info && items\">\n\t<scroller v-ref:scroller lock-x\n\t          use-pullup\n\t          @pullup:loading=\"loadMore\"\n\t          style=\"position: absolute;top:0;left: 0;right: 0;bottom: 50px\"\n\t          height=\"auto\">\n\n\t\t<div class=\"mz-sign\" style=\"padding-bottom: 10px\">\n\t\t\t<div class=\"mz-item-cover\">\n\t\t\t\t<avatar-item :avatar-url=\"activityInfo.info.sponsor_avatar\">\n\t\t\t\t\t<h4>{{activityInfo.info.sponsor_name}}</h4>\n\t\t\t\t\t<p>发起了活动: {{activityInfo.info.title}}</p>\n\t\t\t\t\t<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>\n\t\t\t\t\t<p>报名截至时间:{{activityInfo.info.end_time}}</p>\n\t\t\t\t</avatar-item>\n\t\t\t</div>\n\n\t\t\t<wrap title=\"活动介绍:\" type=\"success\">\n\t\t\t\t<p v-html=\"activityInfo.info.desc | newLine \"></p>\n\t\t\t</wrap>\n\n\t\t\t<wrap title=\"相关课程:\" type=\"warn\">\n\t\t\t\t<half-item\n\t\t\t\t\t\t\t\tv-for=\"course in activityInfo.info.resource_list\"\n\t\t\t\t\t\t\t\t:url=\"course.image_url\"\n\t\t\t\t\t\t\t\t:title=\"course.link_text\"\n\t\t\t\t\t\t\t\t:href=\"course.link_url\">\n\t\t\t\t</half-item>\n\t\t\t</wrap>\n\n\t\t\t<div class=\"mz-content-container\" style=\"margin-top: 10px\">\n\t\t\t\t<icon-item type=\"people\">已报名人数:<span>{{activityInfo.info.signup_number}}</span></icon-item>\n\t\t\t\t<!--<icon-item type=\"money\">每人保证金</icon-item>-->\n\t\t\t\t<!--<icon-item type=\"gift\">剩余2人在坚持,每人可获得100元</icon-item>-->\n\t\t\t</div>\n\n\t\t\t<card v-for=\"item in items\"\n\t\t\t      :head-img-url=\"item.user_avatar\"\n\t\t\t\t\t\t:cover=\"item.image_url\"\n\t\t\t\t\t\t:zan=\"item.agree_count\"\n\t\t\t\t\t\t:comments=\"item.comment_count\"\n\t\t\t\t\t\t:content=\"item.text | newLine\"\n\t\t\t\t\t\t:activity-id=\"item.activity_id\"\n\t\t\t\t\t\t:sign-id=\"item.signin_id\"\n\t\t\t\t\t\t:checked=\"item.my_agree === 1 ? true: false \"\n\t\t\t\t\t\t@on-loaded=\"pass(item)\"\n\t\t\t\t\t\t:date=\"item.signin_time\"\n\t\t\t\t\t\t:name=\"item.user_name\">\n\t\t\t</card>\n\n\t\t</div>\n\t</scroller>\n\n\t<f-button type=\"success\"\n\t\t\t\t\t\t:action=\"activityInfo.signup===1?'已报名':'我要报名'\"\n\t\t\t\t\t\t:disable=\"activityInfo.signup===1?true:false\"\n\t\t\t\t\t\t@on-confirm=\"confirm\">\n\n\t</f-button>\n\n\t<dialog v-ref:dialog\n\t\t\t\t\t@on-confirm=\"upload\">\n\t</dialog>\n</div>\n</div>\n";
 
 /***/ },
 /* 193 */
@@ -7286,6 +7344,7 @@ webpackJsonp([0],[
 	};
 	// </script>
 	// <template>
+	// 	<div>
 	// 	<scroller v-ref:scroller
 	// 	          lock-x
 	// 						use-pulldown
@@ -7351,6 +7410,7 @@ webpackJsonp([0],[
 	// 	</scroller>
 	//
 	// 	<dialog></dialog>
+	// 	</div>
 	// </template>
 	//
 	// <style>
@@ -9146,7 +9206,7 @@ webpackJsonp([0],[
 /* 257 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<scroller v-ref:scroller\n          lock-x\n\t\t\t\t\tuse-pulldown\n\t\t\t\t\t@pulldown:loading=\"refresh\">\n\n\t<div style=\"padding-bottom: 10px\">\n\t\t<div class=\"mz-center-cover\" v-if=\"items\">\n\n\t\t\t<div class=\"mz-center-name\">\n\t\t\t\t{{user.user_name}}\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-flex mz-container\">\n\t\t\t\t<div class=\"mz-flex\">\n\t\t\t\t\t\t<div class=\"mz-center-info mz-pop\" v-link=\"{name:'info'}\">\n\t\t\t\t\t\t\t\t完善资料\n\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mz-center-avatar mz-item\">\n\t\t\t\t\t<div class=\"mz-center-crown\"></div>\n\t\t\t\t\t<img :src=\"user.user_avatar\" class=\"mz-center-img-avatar\"><!--\n\t\t\t\t--></div>\n\t\t\t\t<div class=\"mz-flex\">\n\t\t\t\t\t<div class=\"mz-center-billboard mz-pop\" v-link=\"{name:'billboard'}\">\n\t\t\t\t\t\t\t打卡<br>排行榜\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-signature mz-center-item\">\n\t\t\t\t个人战绩: 坚持打卡<span class=\"mz-bold\">{{user.duration}}</span>天,累计打卡<span class=\"mz-bold\">{{user.signin_count}}</span>次\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-center-point mz-center-item\">\n\t\t\t\t<span class=\"mz-billboard-level\" style=\"margin-right: 8px\">v{{user.score_level}}</span>{{user.score}}积分<span style=\"display: block\"></span>\n\t\t\t</div>\n\n\n\t\t\t<div class=\"mz-center-item\">\n\t\t\t\t<a href=\"javascript:;\" class=\"mz-href\" @click=\"awardIntroduce\"> 积分奖励说明</a>\n\t\t\t</div>\n\n\t\t</div>\n\n\n\t\t<loader v-ref:loader\n\t\t         @on-refresh=\"query\">\n\t\t</loader>\n\n\t\t<card v-for=\"item in items\"\n\t\t\t\t\t:zan=\"item.agree_count\"\n\t\t\t\t\t:comments=\"item.comment_count\"\n\t\t\t\t\t:title=\"item.activity_title\"\n\t\t\t\t\t:content=\"item.text\"\n\t\t\t\t\t:cover=\"item.image_url\"\n\t\t\t\t\t:activity-id=\"item.activity_id\"\n\t\t\t\t\t:sign-id=\"item.signin_id\"\n\t\t\t\t\t:checked=\"item.my_agree === 1 ? true: false\"\n\t\t\t\t\t@on-loaded=\"pass(item)\"\n\t\t\t\t\t:date=\"item.signin_time\">\n\t\t</card>\n\t</div>\n</scroller>\n\n<dialog></dialog>\n";
+	module.exports = "\n<div>\n<scroller v-ref:scroller\n          lock-x\n\t\t\t\t\tuse-pulldown\n\t\t\t\t\t@pulldown:loading=\"refresh\">\n\n\t<div style=\"padding-bottom: 10px\">\n\t\t<div class=\"mz-center-cover\" v-if=\"items\">\n\n\t\t\t<div class=\"mz-center-name\">\n\t\t\t\t{{user.user_name}}\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-flex mz-container\">\n\t\t\t\t<div class=\"mz-flex\">\n\t\t\t\t\t\t<div class=\"mz-center-info mz-pop\" v-link=\"{name:'info'}\">\n\t\t\t\t\t\t\t\t完善资料\n\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mz-center-avatar mz-item\">\n\t\t\t\t\t<div class=\"mz-center-crown\"></div>\n\t\t\t\t\t<img :src=\"user.user_avatar\" class=\"mz-center-img-avatar\"><!--\n\t\t\t\t--></div>\n\t\t\t\t<div class=\"mz-flex\">\n\t\t\t\t\t<div class=\"mz-center-billboard mz-pop\" v-link=\"{name:'billboard'}\">\n\t\t\t\t\t\t\t打卡<br>排行榜\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-signature mz-center-item\">\n\t\t\t\t个人战绩: 坚持打卡<span class=\"mz-bold\">{{user.duration}}</span>天,累计打卡<span class=\"mz-bold\">{{user.signin_count}}</span>次\n\t\t\t</div>\n\n\t\t\t<div class=\"mz-center-point mz-center-item\">\n\t\t\t\t<span class=\"mz-billboard-level\" style=\"margin-right: 8px\">v{{user.score_level}}</span>{{user.score}}积分<span style=\"display: block\"></span>\n\t\t\t</div>\n\n\n\t\t\t<div class=\"mz-center-item\">\n\t\t\t\t<a href=\"javascript:;\" class=\"mz-href\" @click=\"awardIntroduce\"> 积分奖励说明</a>\n\t\t\t</div>\n\n\t\t</div>\n\n\n\t\t<loader v-ref:loader\n\t\t         @on-refresh=\"query\">\n\t\t</loader>\n\n\t\t<card v-for=\"item in items\"\n\t\t\t\t\t:zan=\"item.agree_count\"\n\t\t\t\t\t:comments=\"item.comment_count\"\n\t\t\t\t\t:title=\"item.activity_title\"\n\t\t\t\t\t:content=\"item.text\"\n\t\t\t\t\t:cover=\"item.image_url\"\n\t\t\t\t\t:activity-id=\"item.activity_id\"\n\t\t\t\t\t:sign-id=\"item.signin_id\"\n\t\t\t\t\t:checked=\"item.my_agree === 1 ? true: false\"\n\t\t\t\t\t@on-loaded=\"pass(item)\"\n\t\t\t\t\t:date=\"item.signin_time\">\n\t\t</card>\n\t</div>\n</scroller>\n\n<dialog></dialog>\n</div>\n";
 
 /***/ },
 /* 258 */
@@ -9347,6 +9407,7 @@ webpackJsonp([0],[
 	};
 	// </script>
 	// <template>
+	// 	<div>
 	// 	<scroller v-ref:scroller lock-x>
 	// 		<div style="padding-bottom: 30px">
 	// 			<!--个人信息 start-->
@@ -9410,6 +9471,7 @@ webpackJsonp([0],[
 	// 			<!--孩子信息 end-->
 	// 		</div>
 	// 	</scroller>
+	// 	</div>
 	// </template>
 	//
 	// <style>
@@ -9944,6 +10006,7 @@ webpackJsonp([0],[
 	};
 	// </script>
 	// <template>
+	//     <div>
 	// 		<group>
 	// 			<cell title="头像">
 	// 				<div slot="value">
@@ -9951,6 +10014,7 @@ webpackJsonp([0],[
 	// 				</div>
 	// 			</cell>
 	// 		</group>
+	//
 	//     <group title="小名">
 	//         <x-input placeholder="请输入姓名" type="text"  :value.sync="nickname"></x-input>
 	//     </group>
@@ -9970,6 +10034,7 @@ webpackJsonp([0],[
 	//                    day-row="{value}日"
 	//                    confirm-text="完成"
 	//                    cancel-text="取消">
+	//
 	//         </date-time>
 	//     </group>
 	//
@@ -9978,6 +10043,7 @@ webpackJsonp([0],[
 	//
 	// 	      <x-button type="red" @click="cancel">取消</x-button>
 	//     </group>
+	//     </div>
 	// </template>
 	// <style>
 	//     .weui_btn_primary{
@@ -10030,13 +10096,13 @@ webpackJsonp([0],[
 /* 281 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\t\t<group>\n\t\t\t<cell title=\"头像\">\n\t\t\t\t<div slot=\"value\">\n\t\t\t\t\t<img :src=\"avatar || 'http://static.youku.com/user/img/avatar/310/39.jpg' \" @click=\"updateHeadImg\" width=\"33\">\n\t\t\t\t</div>\n\t\t\t</cell>\n\t\t</group>\n    <group title=\"小名\">\n        <x-input placeholder=\"请输入姓名\" type=\"text\"  :value.sync=\"nickname\"></x-input>\n    </group>\n\n    <group title=\"性别\">\n        <radio :options=\"radio001\" :value.sync=\"sexValue\" @on-change=\"change\"></radio>\n    </group>\n\n    <group title=\"生日\">\n        <date-time :value.sync=\"birthdayValue\"\n                   placeholder=\"请选择日期\"\n                   format=\"YYYY-MM-DD\"\n                   @on-change=\"changebirth\"\n                   title=\"选择日期\"\n                   year-row=\"{value}年\"\n                   month-row=\"{value}月\"\n                   day-row=\"{value}日\"\n                   confirm-text=\"完成\"\n                   cancel-text=\"取消\">\n        </date-time>\n    </group>\n\n    <group>\n        <x-button type=\"primary\" @click=\"updateInfo\">确认</x-button>\n\n\t      <x-button type=\"red\" @click=\"cancel\">取消</x-button>\n    </group>\n";
+	module.exports = "\n    <div>\n\t\t<group>\n\t\t\t<cell title=\"头像\">\n\t\t\t\t<div slot=\"value\">\n\t\t\t\t\t<img :src=\"avatar || 'http://static.youku.com/user/img/avatar/310/39.jpg' \" @click=\"updateHeadImg\" width=\"33\">\n\t\t\t\t</div>\n\t\t\t</cell>\n\t\t</group>\n\n    <group title=\"小名\">\n        <x-input placeholder=\"请输入姓名\" type=\"text\"  :value.sync=\"nickname\"></x-input>\n    </group>\n\n    <group title=\"性别\">\n        <radio :options=\"radio001\" :value.sync=\"sexValue\" @on-change=\"change\"></radio>\n    </group>\n\n    <group title=\"生日\">\n        <date-time :value.sync=\"birthdayValue\"\n                   placeholder=\"请选择日期\"\n                   format=\"YYYY-MM-DD\"\n                   @on-change=\"changebirth\"\n                   title=\"选择日期\"\n                   year-row=\"{value}年\"\n                   month-row=\"{value}月\"\n                   day-row=\"{value}日\"\n                   confirm-text=\"完成\"\n                   cancel-text=\"取消\">\n\n        </date-time>\n    </group>\n\n    <group>\n        <x-button type=\"primary\" @click=\"updateInfo\">确认</x-button>\n\n\t      <x-button type=\"red\" @click=\"cancel\">取消</x-button>\n    </group>\n    </div>\n";
 
 /***/ },
 /* 282 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<scroller v-ref:scroller lock-x>\n\t<div style=\"padding-bottom: 30px\">\n\t\t<!--个人信息 start-->\n\t\t<group style=\"margin: 0\">\n\n\t\t\t<group-title type=\"success\">个人信息</group-title>\n\n\t\t\t<cell title=\"头像\">\n\n\t\t\t\t<div slot=\"value\">\n\t\t\t\t\t<img :src=\"user.user_avatar\" @click=\"updateHeadImg\" width=\"33\">\n\t\t\t\t</div>\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"昵称\" is-link\n\t\t\t\t  :value=\"user.user_name\"\n\t\t\t\t  v-link=\"{name:'userUpdate',query: {title:'昵称',value: user.user_name,type: '1'}}\">\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"性别\"\n\t\t\t\t  is-link\n\t\t\t\t  :value=\"user.sex == 1 ? '男' : '女'\"\n\t\t\t\t  v-link=\"{name:'userUpdate', query: {title: '性别', value: user.sex,type: '2'}}\">\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"居住地\"\n\t\t\t\t  is-link\n\t\t\t\t  :value=\"user.address\"\n\t\t\t\t  v-link=\"{name: 'userUpdate', query: {title: '居住地', value: user.address,type: '3'}}\">\n\n\t\t\t</cell>\n\n\t\t</group>\n\t\t<!--个人信息 end-->\n\n\t\t<!--孩子信息 start-->\n\t\t<group>\n\n\t\t\t<group-title type=\"glass\">孩子信息</group-title>\n\n\t\t\t<loader v-ref:loader\n\t\t\t        @on-refresh=\"query\">\n\t\t\t</loader>\n\n\t\t\t<card-center type=\"2\" v-for=\"item in items\"\n\t\t\t             :nickname=\"item.nickname\"\n\t\t\t             :birthday=\"item.birthday\"\n\t\t\t             :id=\"item.id\"\n\t\t\t             :gender=\"item.gender\"\n\t\t\t             :avatar=\"item.avatar\"\n\t\t\t             @on-edit=\"edit(item)\">\n\t\t\t</card-center>\n\n\t\t\t<div class=\"mz-center mz-text-center\" @click=\"add\">\n\t\t\t\t<div  class=\"mz-icon mz-icon-addChild mz-text-center\">添加孩子信息</div>\n\t\t\t</div>\n\t\t</group>\n\t\t<!--孩子信息 end-->\n\t</div>\n</scroller>\n";
+	module.exports = "\n<div>\n<scroller v-ref:scroller lock-x>\n\t<div style=\"padding-bottom: 30px\">\n\t\t<!--个人信息 start-->\n\t\t<group style=\"margin: 0\">\n\n\t\t\t<group-title type=\"success\">个人信息</group-title>\n\n\t\t\t<cell title=\"头像\">\n\n\t\t\t\t<div slot=\"value\">\n\t\t\t\t\t<img :src=\"user.user_avatar\" @click=\"updateHeadImg\" width=\"33\">\n\t\t\t\t</div>\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"昵称\" is-link\n\t\t\t\t  :value=\"user.user_name\"\n\t\t\t\t  v-link=\"{name:'userUpdate',query: {title:'昵称',value: user.user_name,type: '1'}}\">\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"性别\"\n\t\t\t\t  is-link\n\t\t\t\t  :value=\"user.sex == 1 ? '男' : '女'\"\n\t\t\t\t  v-link=\"{name:'userUpdate', query: {title: '性别', value: user.sex,type: '2'}}\">\n\n\t\t\t</cell>\n\n\t\t\t<cell title=\"居住地\"\n\t\t\t\t  is-link\n\t\t\t\t  :value=\"user.address\"\n\t\t\t\t  v-link=\"{name: 'userUpdate', query: {title: '居住地', value: user.address,type: '3'}}\">\n\n\t\t\t</cell>\n\n\t\t</group>\n\t\t<!--个人信息 end-->\n\n\t\t<!--孩子信息 start-->\n\t\t<group>\n\n\t\t\t<group-title type=\"glass\">孩子信息</group-title>\n\n\t\t\t<loader v-ref:loader\n\t\t\t        @on-refresh=\"query\">\n\t\t\t</loader>\n\n\t\t\t<card-center type=\"2\" v-for=\"item in items\"\n\t\t\t             :nickname=\"item.nickname\"\n\t\t\t             :birthday=\"item.birthday\"\n\t\t\t             :id=\"item.id\"\n\t\t\t             :gender=\"item.gender\"\n\t\t\t             :avatar=\"item.avatar\"\n\t\t\t             @on-edit=\"edit(item)\">\n\t\t\t</card-center>\n\n\t\t\t<div class=\"mz-center mz-text-center\" @click=\"add\">\n\t\t\t\t<div  class=\"mz-icon mz-icon-addChild mz-text-center\">添加孩子信息</div>\n\t\t\t</div>\n\t\t</group>\n\t\t<!--孩子信息 end-->\n\t</div>\n</scroller>\n</div>\n";
 
 /***/ },
 /* 283 */
@@ -10898,13 +10964,17 @@ webpackJsonp([0],[
 
 	var _index6 = _interopRequireDefault(_index5);
 
-	var _index7 = __webpack_require__(277);
+	var _index7 = __webpack_require__(137);
 
 	var _index8 = _interopRequireDefault(_index7);
 
-	var _index9 = __webpack_require__(303);
+	var _index9 = __webpack_require__(277);
 
 	var _index10 = _interopRequireDefault(_index9);
+
+	var _index11 = __webpack_require__(303);
+
+	var _index12 = _interopRequireDefault(_index11);
 
 	var _list = __webpack_require__(304);
 
@@ -10920,6 +10990,53 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// <template>
+	//     <div>
+	//     <group>
+	//         <x-input :title="title"
+	//                  type="text"
+	//                  :value.sync="value"
+	//                  v-if="type == 1">
+	//
+	//         </x-input>
+	//
+	//         <radio v-if="type == 2"
+	//                :options="radio001"
+	//                :value.sync="value"
+	//                @on-change="change">
+	//
+	//         </radio>
+	//
+	//         <address v-if="type == 3"
+	//                  :title="title"
+	//                  :value.sync="value"
+	//                  raw-value
+	//                  :list="addressData"
+	//                  hide-district>
+	//
+	//         </address>
+	//
+	//     </group>
+	//
+	//     <group>
+	//
+	//         <x-button type="primary"
+	//                   @click="update"
+	//         >
+	//             确认修改
+	//         </x-button>
+	//
+	//     </group>
+	//
+	//     <loading :show="show"></loading>
+	//
+	//     <toast type="text" :show.sync="show1" width="20em">请求失败，请重试</toast>
+	//     </div>
+	// </template>
+	// <style>
+	//
+	// </style>
+	// <script>
 	exports.default = {
 	  data: function data() {
 	    return {
@@ -10937,8 +11054,9 @@ webpackJsonp([0],[
 	    xButton: _index2.default,
 	    Group: _index6.default,
 	    xInput: _index4.default,
-	    Radio: _index8.default,
-	    Address: _index10.default
+	    Radio: _index10.default,
+	    Address: _index12.default,
+	    toast: _index8.default
 	  },
 	  route: {
 	    data: function data(_ref) {
@@ -11036,47 +11154,6 @@ webpackJsonp([0],[
 	  }
 	};
 	// </script>
-	// <template>
-	//     <group>
-	//         <x-input :title="title"
-	//                  type="text"
-	//                  :value.sync="value"
-	//                  v-if="type == 1">
-	//
-	//         </x-input>
-	//
-	//         <radio v-if="type == 2"
-	//                :options="radio001"
-	//                :value.sync="value"
-	//                @on-change="change">
-	//
-	//         </radio>
-	//
-	//         <address v-if="type == 3"
-	//                  :title="title"
-	//                  :value.sync="value"
-	//                  raw-value
-	//                  :list="addressData"
-	//                  hide-district>
-	//
-	//         </address>
-	//
-	//     </group>
-	//
-	//     <group>
-	//
-	//         <x-button type="primary"
-	//                   @click="update"
-	//         >
-	//             确认修改
-	//         </x-button>
-	//
-	//     </group>
-	// </template>
-	// <style>
-	//
-	// </style>
-	// <script>
 
 /***/ },
 /* 303 */
@@ -27589,7 +27666,7 @@ webpackJsonp([0],[
 /* 308 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district>\n\n    </address>\n\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\"\n    >\n        确认修改\n    </x-button>\n\n</group>\n";
+	module.exports = "\n<div>\n<group>\n    <x-input :title=\"title\"\n             type=\"text\"\n             :value.sync=\"value\"\n             v-if=\"type == 1\">\n\n    </x-input>\n\n    <radio v-if=\"type == 2\"\n           :options=\"radio001\"\n           :value.sync=\"value\"\n           @on-change=\"change\">\n\n    </radio>\n\n    <address v-if=\"type == 3\"\n             :title=\"title\"\n             :value.sync=\"value\"\n             raw-value\n             :list=\"addressData\"\n             hide-district>\n\n    </address>\n\n</group>\n\n<group>\n\n    <x-button type=\"primary\"\n              @click=\"update\"\n    >\n        确认修改\n    </x-button>\n\n</group>\n\n<loading :show=\"show\"></loading>\n\n<toast type=\"text\" :show.sync=\"show1\" width=\"20em\">请求失败，请重试</toast>\n</div>\n";
 
 /***/ },
 /* 309 */
@@ -28189,6 +28266,8 @@ webpackJsonp([0],[
 
 	var _userAction = __webpack_require__(254);
 
+	var _activityGetter = __webpack_require__(57);
+
 	var _weixinService = __webpack_require__(328);
 
 	var _index = __webpack_require__(138);
@@ -28209,47 +28288,19 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// <template>
-	// 	<div>
-	// 		<router-view>
-	// 		</router-view>
-	// 	</div>
-	//
-	// 	<tips v-ref:tips></tips>
-	// </template>
-	//
-	// <style>
-	// 	html,body{
-	// 		font-size: 10px;
-	// 		height: 100%;
-	// 		position: relative;
-	// 		margin: 0;
-	// 		padding: 0;
-	// 		background: #fff7e6;
-	// 		overflow: hidden;
-	// 	}
-	// 	@font-face {
-	// 		font-family: 'MOZI';
-	// 		src: url('/font/icomoon.eot');
-	// 		src: url('/font/icomoon.eot?#iefix') format('embedded-opentype'),
-	// 		url('/font/icomoon.woff') format('woff'),
-	// 		url('/font/icomoon.ttf') format('truetype'),
-	// 		url('/font/icomoon.svg#Taidii') format('svg');
-	// 		font-weight: normal;
-	// 		font-style: normal;
-	// 	}
-	//
-	// </style>
-	//
-	// <script>
 	exports.default = {
 		store: _store2.default,
 		components: {
-			tips: _tips2.default
+			tips: _tips2.default,
+			loading: _index2.default
 		},
 		vuex: {
 			actions: {
-				userUpInfoQuery: _userAction.userUpInfoQuery
+				userUpInfoQuery: _userAction.userUpInfoQuery,
+				childInfoQuery: _userAction.childInfoQuery
+			},
+			getters: {
+				direction: _activityGetter.getDirection
 			}
 		},
 		ready: function ready() {
@@ -28276,6 +28327,100 @@ webpackJsonp([0],[
 		}
 	};
 	// </script>
+	// <template>
+	// 	<div>
+	//
+	// 		<router-view>
+	// 		</router-view>
+	//
+	// 		<tips v-ref:tips></tips>
+	// 	</div>
+	// </template>
+	//
+	// <style>
+	// 	html,body{
+	// 		font-size: 10px;
+	// 		height: 100%;
+	// 		position: relative;
+	// 		margin: 0;
+	// 		padding: 0;
+	// 		background: #fff7e6;
+	// 		overflow: hidden;
+	// 	}
+	// 	@font-face {
+	// 		font-family: 'MOZI';
+	// 		src: url('/font/icomoon.eot');
+	// 		src: url('/font/icomoon.eot?#iefix') format('embedded-opentype'),
+	// 		url('/font/icomoon.woff') format('woff'),
+	// 		url('/font/icomoon.ttf') format('truetype'),
+	// 		url('/font/icomoon.svg#Taidii') format('svg');
+	// 		font-weight: normal;
+	// 		font-style: normal;
+	// 	}
+	// 	/*.vux-pop-out-transition,*/
+	// 	/*.vux-pop-in-transition {*/
+	// 		/*width: 100%;*/
+	// 		/*animation-duration: 0.5s;*/
+	// 		/*animation-fill-mode: both;*/
+	// 		/*backface-visibility: hidden;*/
+	// 	/*}*/
+	// 	/*.vux-pop-out-enter,*/
+	// 	/*.vux-pop-out-leave,*/
+	// 	/*.vux-pop-in-enter,*/
+	// 	/*.vux-pop-in-leave {*/
+	// 		/*will-change: transform;*/
+	// 		/*height: 100%;*/
+	// 		/*position: absolute;*/
+	// 		/*left: 0;*/
+	// 	/*}*/
+	// 	/*.vux-pop-out-enter {*/
+	// 		/*animation-name: popInLeft;*/
+	// 	/*}*/
+	// 	/*.vux-pop-out-leave {*/
+	// 		/*animation-name: popOutRight;*/
+	// 	/*}*/
+	// 	/*.vux-pop-in-enter {*/
+	// 		/*perspective: 1000;*/
+	// 		/*animation-name: popInRight;*/
+	// 	/*}*/
+	// 	/*.vux-pop-in-leave {*/
+	// 		/*animation-name: popOutLeft;*/
+	// 	/*}*/
+	// 	/*@keyframes popInLeft {*/
+	// 		/*from {*/
+	// 			/*transform: translate3d(-100%, 0, 0);*/
+	// 		/*}*/
+	// 		/*to {*/
+	// 			/*transform: translate3d(0, 0, 0);*/
+	// 		/*}*/
+	// 	/*}*/
+	// 	/*@keyframes popOutLeft {*/
+	// 		/*from {*/
+	// 			/*transform: translate3d(0, 0, 0);*/
+	// 		/*}*/
+	// 		/*to {*/
+	// 			/*transform: translate3d(-100%, 0, 0);*/
+	// 		/*}*/
+	// 	/*}*/
+	// 	/*@keyframes popInRight {*/
+	// 		/*from {*/
+	// 			/*transform: translate3d(100%, 0, 0);*/
+	// 		/*}*/
+	// 		/*to {*/
+	// 			/*transform: translate3d(0, 0, 0);*/
+	// 		/*}*/
+	// 	/*}*/
+	// 	/*@keyframes popOutRight {*/
+	// 		/*from {*/
+	// 			/*transform: translate3d(0, 0, 0);*/
+	// 		/*}*/
+	// 		/*to {*/
+	// 			/*transform: translate3d(100%, 0, 0);*/
+	// 		/*}*/
+	// 	/*}*/
+	// </style>
+	//
+	// <script>
 
 /***/ },
 /* 328 */
@@ -28629,7 +28774,7 @@ webpackJsonp([0],[
 /* 339 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n\t<router-view>\n\t</router-view>\n</div>\n\n<tips v-ref:tips></tips>\n";
+	module.exports = "\n<div>\n\n\t<router-view>\n\t</router-view>\n\n\t<tips v-ref:tips></tips>\n</div>\n";
 
 /***/ },
 /* 340 */

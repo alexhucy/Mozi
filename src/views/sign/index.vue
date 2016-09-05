@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<loading v-ref:loading @on-refresh="query"></loading>
 
 	<div v-if="activityInfo.info && items">
@@ -64,6 +65,7 @@
 		<dialog v-ref:dialog
 						@on-confirm="upload">
 		</dialog>
+	</div>
 	</div>
 </template>
 

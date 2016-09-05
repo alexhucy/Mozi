@@ -44,6 +44,9 @@ export function getRankList() {
 	return store.state.activity.rankList
 }
 
+export function getDirection() {
+	return store.state.activity.direction
+}
 
 export  function getCompletedActivityList() {
 	return store.state.activity.completedActivityList

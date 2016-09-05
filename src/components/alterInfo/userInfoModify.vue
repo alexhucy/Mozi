@@ -1,4 +1,5 @@
 <template>
+    <div>
     <group>
         <x-input :title="title"
                  type="text"
@@ -34,6 +35,11 @@
         </x-button>
 
     </group>
+
+    <loading :show="show"></loading>
+
+    <toast type="text" :show.sync="show1" width="20em">请求失败，请重试</toast>
+    </div>
 </template>
 <style>
 
@@ -42,6 +48,7 @@
 import xButton from '../../../node_modules/vux/dist/components/x-button/index'
 import xInput from '../../../node_modules/vux/dist/components/x-input/index'
 import Group from '../../../node_modules/vux/dist/components/group/index'
+import toast from '../../../node_modules/vux/dist/components/toast/index'
 import Radio from '../../../node_modules/vux/dist/components/radio/index'
 import Address from '../../../node_modules/vux/dist/components/address/index'
 import AddressChinaData from '../../../node_modules/vux/src/components/address/list.json'
@@ -66,7 +73,8 @@ export default{
     Group,
     xInput,
     Radio,
-    Address
+    Address,
+    toast
   },
   route: {
     data ({to: {query: {title, value, type}}}) {

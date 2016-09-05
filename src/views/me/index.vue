@@ -1,4 +1,5 @@
 <template>
+	<div>
 	<scroller v-ref:scroller
 	          lock-x
 						use-pulldown
@@ -64,6 +65,7 @@
 	</scroller>
 
 	<dialog></dialog>
+	</div>
 </template>
 
 <style>
