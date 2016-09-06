@@ -34,10 +34,6 @@
         </x-button>
 
     </group>
-
-    <loading :show="show"></loading>
-
-    <toast type="text" :show.sync="show1" width="20em">请求失败，请重试</toast>
     </div>
 </template>
 <style>
@@ -102,8 +98,8 @@ export default{
   methods: {
     update: function () {
         if (this.type == 1){
-            if (this.value.length > 16){
-                this.$dispatch('error','姓名长度不能超过16个字符')
+            if (this.value.length > 16 || this.value.length <=0 ){
+                this.$dispatch('error','姓名长度应该在0到16个之间')
                 return
             }
         }

@@ -128,7 +128,6 @@ export default {
 	},
 	ready: function () {
 		this.query()
-		this.getRule()
 	},
 	methods: {
 		onConfirm: function () {

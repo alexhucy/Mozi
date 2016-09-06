@@ -23,7 +23,7 @@
 						</avatar-item>
 					</div>
 					<wrap title="活动介绍:" type="success"  >
-						<p>{{activity.info.desc | newLine}}</p>
+						<p v-html="activity.info.desc | newLine"></p>
 					</wrap>
 
 					<wrap title="相关课程:" type="warn">
