@@ -28,7 +28,6 @@ router.use('/wechat/jsconfig/', function (req,res) {
 		url: req.headers.referer
 	};
 	weixinServcie.getJSConfig(param, function (err, result) {
-		console.log(err)
 		if(err === null || err === undefined || err === '' ){
 			res.json(result)
 		}

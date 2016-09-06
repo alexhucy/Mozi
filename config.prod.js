@@ -8,14 +8,15 @@ module.exports = {
 	mchid: ' ',
 	token: 'Taidii',
 	proxy: {
-		Host: 'http://localhost:8080'
+		Host: 'http://localhost:9090'
 	},
 	logic: {
 		Host: 'localhost',
-		Port: '8080'
+		Port: '9090'
 	},
 	API: {
-		createOrUpdateUser:'/api/create-weixin-user/'
+		createOrUpdateUser:'/api/create-weixin-user/',
+		checkAuth: '/api/refresh-token'
 	},
 	domain: 'http://weixin.xingaokaowang.cn',
 	cdn:'http://weixin.xingaokaowang.cn/'

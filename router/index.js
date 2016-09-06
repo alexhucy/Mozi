@@ -7,34 +7,70 @@ var wechat = require('wechat'),
 	router = express.Router(),
 	path = require('path'),
 	weixinService = require('../service/weixinService'),
-	config = require('../config');
+	config = require('../config'),
+	http = require('http');
 
 
 router.use('/$',function (req,res) {
-	if(req.cookies.Authorization){
-		res.sendFile(path.join(__dirname,'../public/views/index.html'))
+	var code = req.query.code || '';
+	checkAuth(req.cookies.Authorization, function (err) {
+		if(err === '' || err === undefined || err === null){
+			res.sendFile(path.join(__dirname,'../public/views/index.html'))
+			return false
+		}
+		else if(code){
+			weixinService.codeForToken(code).then(function (token) {
+				res.cookie('Authorization',token)
+				res.sendFile(path.join(__dirname,'../public/views/index.html'))
+			}).catch(function (error) {
+				if(error.code){
+					res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+				}
+				else{
+					res.setHeader('content-type','text/html; charset=UTF-8');
+					res.writeHead(403)
+					res.end('服务器错误,请重新登陆')
+				}
+			})
+		}
+		else{
+			res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+		}
+	})
+
+});
+
+function checkAuth(auth, callback) {
+	if(!auth){
+		callback({error:'auth不能为空'},'')
 		return false
 	}
-	var code = req.query.code || '';
-	if (code) {
-		weixinService.codeForToken(code).then(function (token) {
-			res.cookie('Authorization',token)
-			res.sendFile(path.join(__dirname,'../public/views/index.html'))
-		}).catch(function (error) {
-			console.log(error.code)
-			if(error.code){
-				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+	var options = {
+		host: config.logic.Host,
+		port: config.logic.Port,
+		path: config.API.checkAuth,
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization':auth
+		}
+	};
+	var req = http.request(options, function(res) {
+		res.on('data',function (chunk) {
+			var data = JSON.parse(chunk);
+			if (res.statusCode >=200 && res.statusCode <300){
+				callback(null, data)
 			}
 			else{
-				res.setHeader('content-type','text/html; charset=UTF-8');
-				res.writeHead(403)
-				res.end('服务器错误,请重新登陆')
+				callback({error:'auth失效'}, data)
 			}
-		})
-	}
-	else {
-		res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
-	}
-});
+		});
+	});
+
+	req.on('error', function(e) {
+		callback(e)
+	});
+	req.end();
+}
 
 module.exports = router;
