@@ -18,7 +18,7 @@
 							<h4>{{activity.info.sponsor_name}}</h4>
 							<p>发起了活动: {{activity.info.title}}</p>
 							<p>活动时间: {{activity.info.start_time}} - {{activity.info.end_time}}</p>
-							<p>报名截至时间:{{activity.info.end_time}}</p>
+							<p>报名截至时间:{{activity.info.signup_end_time}}</p>
 							<!--<p>每人保证金: 100元</p>-->
 						</avatar-item>
 					</div>
@@ -62,8 +62,8 @@
 		</scroller>
 
 		<f-button type="glass"
-							:action="activity.signin===1?'今日已打卡': '我要打卡'"
-							:disable="activity.signin===1?true: false"
+							:action="status.action"
+							:disable="status.disable"
 							@on-confirm="sign">
 		</f-button>
 
@@ -183,6 +183,25 @@ export default {
 	},
 	ready:function () {
 		this.query()
+	},
+	computed: {
+		status: function () {
+			if (this.activity.info) {
+				var endDate = new Date(this.activity.info.end_time + ' 23:59:59')
+				if (new Date() > endDate) {
+					return {
+						action: '活动已结束',
+						disable: true
+					}
+				}
+				else {
+					return {
+						action: this.activity.signin === 1 ? '今日已打卡' : '我要打卡',
+						disable:this.activity.signin === 1 ? true : false
+					}
+				}
+			}
+		}
 	}
 }
 </script>

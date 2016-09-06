@@ -6,12 +6,12 @@
 
 			<div class="mz-award-box">
 				<div style="padding-bottom: 10px">
-					<p>原始积分100分</p>
-					<p>报名活动-30分</p>
+					<p>原始积分{{init||100}}分</p>
+					<p>报名活动{{join||-10}}分</p>
 					<p class="mz-award-supply">(坚持完成该活动全部打卡,返还积分)</p>
-					<p>每日打卡+2分</p>
-					<p>评论+1分</p>
-					<p class="mz-award-supply">(评论次数不限定,封顶20分)</p>
+					<p>每日打卡+{{sign||2}}分</p>
+					<p>评论+{{comment||1}}分</p>
+					<p class="mz-award-supply">(评论次数不限定,封顶{{limit||20}}分)</p>
 				</div>
 				<m-button type="success" large @click="awardIntroduce">
 					了解了
@@ -63,6 +63,14 @@ export default {
 	components: {
 		dialog,
 		MButton
+	},
+	props: {
+		init: String,
+		join: String,
+		sign: String,
+		comment: String,
+		completed: String,
+		limit: String
 	},
 	data: function () {
 		return {

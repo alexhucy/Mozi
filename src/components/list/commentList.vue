@@ -35,7 +35,8 @@
 export default{
 	props:{
 		name: String,
-		content: String
+		content: String,
+		src: String
 	},
 	methods: {
 		toHtml: function (str) {

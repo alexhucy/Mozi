@@ -15,7 +15,7 @@
 						<h4>{{activityInfo.info.sponsor_name}}</h4>
 						<p>发起了活动: {{activityInfo.info.title}}</p>
 						<p>活动时间: {{activityInfo.info.start_time}} - {{activityInfo.info.end_time}}</p>
-						<p>报名截至时间:{{activityInfo.info.end_time}}</p>
+						<p>报名截至时间:{{activityInfo.info.signup_end_time}}</p>
 					</avatar-item>
 				</div>
 
@@ -56,8 +56,8 @@
 		</scroller>
 
 		<f-button type="success"
-							:action="activityInfo.signup===1?'已报名':'我要报名'"
-							:disable="activityInfo.signup===1?true:false"
+							:action="status.action"
+							:disable="status.disable"
 							@on-confirm="confirm">
 
 		</f-button>
@@ -128,6 +128,7 @@ export default {
 	},
 	ready: function () {
 		this.query()
+		this.getRule()
 	},
 	methods: {
 		onConfirm: function () {
@@ -206,6 +207,25 @@ export default {
 		},
 		pass: function (info) {
 			this.setSignInfo(info)
+		}
+	},
+	computed: {
+		status: function () {
+			if (this.activityInfo.info) {
+				var endDate = new Date(this.activityInfo.info.signup_end_time + ' 23:59:59')
+				if (new Date() > endDate) {
+					return {
+						action: '报名已截止',
+						disable: true
+					}
+				}
+				else {
+					return {
+						action: this.activityInfo.signup === 1 ? '已报名' : '我要报名',
+						disable:this.activityInfo.signup === 1 ? true : false
+					}
+				}
+			}
 		}
 	}
 }

@@ -23,7 +23,6 @@
                  hide-district>
 
         </address>
-
     </group>
 
     <group>
@@ -102,6 +101,12 @@ export default{
   },
   methods: {
     update: function () {
+        if (this.type == 1){
+            if (this.value.length > 16){
+                this.$dispatch('error','姓名长度不能超过16个字符')
+                return
+            }
+        }
       var _self = this
 	    this.$dispatch('loading')
       //用于修改头像和昵称
@@ -126,7 +131,7 @@ export default{
         }).catch(function (err) {
 	        _self.$dispatch('loading')
 	        if(err.status === 400){
-		        _self.$dispatch('error',err.data.error_message)
+                _self.$dispatch('error', err.data.error_message)
 	        }
 	        else if(err.status === 0){
 		        _self.$dispatch('error','请求超时请重试')

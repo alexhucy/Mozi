@@ -43,5 +43,9 @@ module.exports = {
 
 	getActivityTimeLine: function (id, page) {
 		return API.API_GET_COMPLETED_ACTIVITY_TIMELINE(id, page)
+	},
+	
+	getActivityRule: function () {
+		return API.API_GET_RULE()
 	}
 };

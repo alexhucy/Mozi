@@ -17,7 +17,8 @@ import {
 	getUrlByServerIdResource,
 	recordResource,
 	rankListResource,
-	completedActivityListResource
+	completedActivityListResource,
+	activityRuleResource
 } from './resourse'
 
 const size = 10
@@ -79,5 +80,9 @@ export default {
 
 	API_GET_RANK_LIST: function () {
 		return rankListResource.get()
+	},
+	
+	API_GET_RULE: function () {
+		return activityRuleResource.get()
 	}
 }

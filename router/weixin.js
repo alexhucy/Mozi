@@ -6,10 +6,9 @@ var wechat = require('wechat'),
 		express = require('express'),
 		config = require('../config'),
 		router = express.Router(),
-	  wechatAPI = require('wechat-api'),
+		weixinServcie = require('../service/weixinService'),
 		path = require('path'),
-	  fs = require('fs'),
-		API = new wechatAPI(config.appid, config.appsecret);
+	  fs = require('fs');
 
 router.use('/wechat/$',wechat(config, function (req, res, next) {
 	
@@ -28,14 +27,15 @@ router.use('/wechat/jsconfig/', function (req,res) {
 		jsApiList: data.jsApiList,
 		url: req.headers.referer
 	};
-	API.getJsConfig(param, function (err, result) {
+	weixinServcie.getJSConfig(param, function (err, result) {
+		console.log(err)
 		if(err === null || err === undefined || err === '' ){
 			res.json(result)
 		}
-		else {
-			res.json({'state':'11001', 'message': '参数错误'})
+		else{
+			res.json({'state': '10001','message':'参数错误'})
 		}
-	});
+	})
 });
 
 /**
@@ -44,38 +44,19 @@ router.use('/wechat/jsconfig/', function (req,res) {
 router.use('/wechat/getMedia', function (req, response) {
 	var media_id = req.query.id || '';
 	if(media_id){
-		API.getMedia(media_id, function (err, result,res) {
+		weixinServcie.getMedia(media_id, function (err, result,res) {
 			if(err === null || err === undefined || err === '' ){
-				console.log(err)
 				var filename = getFileName(res.headers['content-disposition']);
 				fs.writeFile(path.join(__dirname, '../media',filename), result, function (err) {
 					 if(!err){
-						 response.json({'state':'10000', 'url': 'http://edu.ngrok.chainz.net/' + filename})
+						 response.json({'state':'10000', 'url': config.cdn + filename})
 					 }
 					 else{
 						 response.json({'state':'11010', 'message': '文件保存失败'})
 					 }
 				})
 			}
-			else if(result.errcode === 40001){
-				API.getAccessToken(function () {
-					API.getMedia(media_id, function (err, result,res) {
-						if(err === null || err === undefined || err === '' ){
-							var filename = getFileName(res.headers['content-disposition']);
-							fs.writeFile(path.join(__dirname, '../media',filename), result, function (err) {
-								if(!err){
-									response.json({'state':'10000', 'url': 'http://edu.ngrok.chainz.net/' + filename})
-								}
-								else{
-									response.json({'state':'11010', 'message': '文件保存失败'})
-								}
-							})
-						}
-					})
-				})
-			}
 			else{
-				console.log(err)
 				response.json({'state':'11011','message':'文件上传失败'})
 			}
 		});

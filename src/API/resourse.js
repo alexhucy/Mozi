@@ -56,3 +56,5 @@ export const alterUserInfo_first = Vue.resource(API_ROOT + '/api/user/partial-up
 export const alterUserInfo_second = Vue.resource(API_ROOT + '/api/profile/partial-update')//修改地址和性别
 
 export const rankListResource = Vue.resource(API_ROOT + '/api/signin/ranklist') //排行榜
+
+export const activityRuleResource = Vue.resource(API_ROOT + '/api/signin/score_rule')//积分规则

@@ -21,6 +21,7 @@ router.use('/$',function (req,res) {
 			res.cookie('Authorization',token)
 			res.sendFile(path.join(__dirname,'../public/views/index.html'))
 		}).catch(function (error) {
+			console.log(error.code)
 			if(error.code){
 				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
 			}

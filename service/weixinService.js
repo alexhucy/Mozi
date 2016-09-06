@@ -96,5 +96,27 @@ module.exports={
 
 	getAuthorizeURL: function (redirect, state, scope) {
 		return client.getAuthorizeURL(redirect, state, scope)
+	},
+
+	getJSConfig: function (param, callback) {
+		wechatAPI.getJsConfig(param, function (err, result) {
+			if(err === null || err === undefined || err === '' ){
+				callback(null, result)
+			}
+			else {
+				callback(err, result)
+			}
+		});
+	},
+
+	getMedia: function (serverId, callback) {
+		wechatAPI.getMedia(serverId, function (err, result,res) {
+			if(err === null || err === undefined || err === '' ){
+				callback(null, result, res)
+			}
+			else {
+				callback(err, result, res)
+			}
+		});
 	}
 }

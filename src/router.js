@@ -98,25 +98,23 @@ module.exports = function (router) {
 		'*': '/'
 	})
 
-	router.beforeEach( function({to, from, next}){
-		const toIndex = history.getItem(to.path)
-		const fromIndex = history.getItem(from.path)
-		if (toIndex) {
-			if (toIndex > fromIndex) {
-				console.log('forward')
-				commit('UPDATE_DIRECTION', 'forward')
-			} else {
-				console.log('reverse')
-				commit('UPDATE_DIRECTION', 'reverse')
-			}
-		} else {
-			console.log('forward')
-			++historyCount
-			history.setItem('count', historyCount)
-			to.path !== '/' && history.setItem(to.path, historyCount)
-			commit('UPDATE_DIRECTION', 'forward')
-		}
-		setTimeout(next, 50)
-	})
 
+	// router.beforeEach( function({to, from, next}){
+	// 	console.log('1')
+	// 	const toIndex = history.getItem(to.path)
+	// 	const fromIndex = history.getItem(from.path)
+	// 	if (toIndex) {
+	// 		if (toIndex > fromIndex) {
+	// 			commit('UPDATE_DIRECTION', 'forward')
+	// 		} else {
+	// 			commit('UPDATE_DIRECTION', 'reverse')
+	// 		}
+	// 	} else {
+	// 		++historyCount
+	// 		history.setItem('count', historyCount)
+	// 		to.path !== '/' && history.setItem(to.path, historyCount)
+	// 		commit('UPDATE_DIRECTION', 'forward')
+	// 	}
+	// 	setTimeout(next, 50)
+	// })
 }

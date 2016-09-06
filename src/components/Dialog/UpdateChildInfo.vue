@@ -148,11 +148,15 @@ export default {
 		  })
 	  },
     updateInfo: function () {
-	    if (this.validate()){
-		    this.type === 'EDIT' ?
-						    this.edit():
-						    this.save()
-	    }
+        if (this.nickname.length > 16){
+            this.$dispatch('error','姓名长度不能超过16个字符')
+            return
+        }
+        if (this.validate()) {
+                this.type === 'EDIT' ?
+                        this.edit() :
+                        this.save()
+        }
     },
     changebirth: function (value) {
       this.birthday = value

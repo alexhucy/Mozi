@@ -64,7 +64,13 @@
 		</div>
 	</scroller>
 
-	<dialog></dialog>
+	<dialog :init="rule.score_init"
+					:join="rule.reward_join"
+					:sign="rule.reward_signin"
+					:comment="rule.reward_comment"
+					:completed="rule.reward_complete"
+					:limit="rule.reward_comment_limit">
+	</dialog>
 	</div>
 </template>
 
@@ -174,11 +180,13 @@ import {childInfoQuery, userUpInfoQuery,} from '../../vuex/actions/userAction'
 import {getUserUpInfo, } from '../../vuex/getters/userGetter'
 import loader from '../../components/load/loading.vue'
 import promise from '../../../node_modules/vue-resource/src/promise'
+import activityService from '../../service/activityService'
 
 export default {
 	data(){
 		return {
-			level: String
+			level: String,
+			rule: {}
 		}
 	},
 	components: {
@@ -206,6 +214,12 @@ export default {
 				_self.$broadcast('pulldown:reset', uuid)
 			}).catch(function () {
 				_self.$broadcast('pulldown:reset', uuid)
+			})
+		},
+		getRule: function () {
+			var _self = this
+			activityService.getActivityRule().then(function (data) {
+				_self.rule = data.data
 			})
 		},
 		query: function () {
@@ -238,6 +252,7 @@ export default {
 	},
 	ready: function(){
 		this.query()
+		this.getRule()
 		this.userUpInfoQuery()
 		switch (this.user.score_level){
 			case 0:
