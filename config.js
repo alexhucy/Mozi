@@ -18,7 +18,7 @@ module.exports = {
 		createOrUpdateUser:'/api/create-weixin-user/'
 	},
 	domain: 'http://edu.ngrok.chainz.net',
-	cdn:'http://edu.ngrok.chainz.net'
+	cdn:'http://edu.ngrok.chainz.net/'
 }
 
 

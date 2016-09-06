@@ -65,12 +65,12 @@ export default {
 		MButton
 	},
 	props: {
-		init: String,
-		join: String,
-		sign: String,
-		comment: String,
-		completed: String,
-		limit: String
+		init: Number,
+		join: Number,
+		sign: Number,
+		comment: Number,
+		completed: Number,
+		limit: Number
 	},
 	data: function () {
 		return {
