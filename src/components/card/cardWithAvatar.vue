@@ -13,7 +13,7 @@
 		         :comments="comments"
 		         :activity-id="activityId"
 		         :sign-id="signId"
-		         :checked="checked"
+		         :checked.sync="checked"
 		         @on-loaded="loaded"
 		         :date="date">
 
@@ -64,7 +64,7 @@ export default {
 			type: Number
 		},
 		checked: {
-			type: Boolean
+			type: Number
 		},
 		date: {
 			type: String

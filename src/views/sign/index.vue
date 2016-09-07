@@ -46,7 +46,7 @@
 							:content="item.text | newLine"
 							:activity-id="item.activity_id"
 							:sign-id="item.signin_id"
-							:checked="item.my_agree === 1 ? true: false "
+							:checked.sync="item.my_agree"
 							@on-loaded="pass(item)"
 							:date="item.signin_time"
 							:name="item.user_name">

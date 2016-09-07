@@ -42,7 +42,7 @@
 									:comments="item.comment_count"
 									:sign-id="item.signin_id"
 									:activity-id="item.activity_id"
-									:checked="item.my_agree===1?true:false"
+									:checked.sync="item.my_agree"
 									:date="item.signin_time"
 									@on-loaded="pass(item)">
 

@@ -6,7 +6,7 @@
 			</div>
 			<div>
 				<i class="mz-icon mz-icon-comment mz-pull-right mz-space-15"  @click="comment">{{comments}}</i>
-				<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  :class="{'mz-checked': checked}"  @click="toggle">{{zan}}</i>
+				<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  :class="{'mz-checked': checked===1?true:false}"  @click="toggle">{{zan}}</i>
 			</div>
 		</div>
 	</div>
@@ -103,8 +103,7 @@ export default{
 			type: Number
 		},
 		checked: {
-			type: Boolean,
-			default: false
+			type: Number
 		},
 		date: {
 			type: String
@@ -113,10 +112,10 @@ export default{
 	methods: {
 		//点赞
 		toggle: function () {
-			if(!this.checked){
+			if(this.checked === 0){
 				activity.ZAN(this.activityId, this.signId)
 				this.zan++
-				this.checked = true
+				this.checked = 1
 			}
 		},
 		comment: function () {

@@ -8,19 +8,30 @@
 
 var redis = require('redis'),
 	config = require('../config'),
-	redisClient = redis.createClient(config.redis.port, config.redis.host),
+	OAuth = require('wechat-oauth'),
+	redisClient = redis.createClient(),
 	API = require('wechat-api'),
 	api = config.API,
 	http = require('http'),
 	Q = require('q');
 
+var client = new OAuth(config.appid, config.appsecret, function (openid, callback) {
+	redisClient.get(openid + ':access_token', function (err, reply) {
+		callback(err, JSON.parse(reply));
+	});
+}, function (openid, token, callback) {
+	redisClient.set(openid + ':access_token', JSON.stringify(token), function (err, reply) {
+		callback(err, reply);
+		redisClient.expire(openid +':access_token', 7200);
+	});
+});
+
 var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
 	redisClient.get('access_token', function (err, reply) {
-		callback(err, reply);
+		callback(err, JSON.parse(reply));
 	});
 }, function (token, callback) {
-	redisClient.set('access_token', token.accessToken, function (err, reply) {
-		console.log('access_token', token.accessToken)
+	redisClient.set('access_token', JSON.stringify(token), function (err, reply) {
 		callback(err, reply);
 		redisClient.expire('access_token', 7200);
 	});
