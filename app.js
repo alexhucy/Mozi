@@ -41,13 +41,16 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname + ''));
 app.set('view engine', 'html'); //替换文件扩展名ejs为html;;
 app.use(express.static(path.join(__dirname, './public/assets')));
-app.use(express.static(path.join(__dirname, './media')))
+app.use('/thumb/', express.static(path.join(__dirname, './thumb')))
+app.use('/media/', express.static(path.join(__dirname, './media')))
 app.use(express.query());
 app.use(cookieParser());
 
 app.use('/',routes);
 
 app.use('/', proxy);
+
+
 
 app.use('/', weixin);
 

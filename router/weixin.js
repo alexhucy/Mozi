@@ -7,6 +7,7 @@ var wechat = require('wechat'),
 		config = require('../config'),
 		router = express.Router(),
 		weixinServcie = require('../service/weixinService'),
+		imageService = require('../service/imageCompressService'),
 		path = require('path'),
 	  fs = require('fs');
 
@@ -46,9 +47,10 @@ router.use('/wechat/getMedia', function (req, response) {
 		weixinServcie.getMedia(media_id, function (err, result,res) {
 			if(err === null || err === undefined || err === '' ){
 				var filename = getFileName(res.headers['content-disposition']);
-				fs.writeFile(path.join(__dirname, '../media',filename), result, function (err) {
+				fs.writeFile(path.join(__dirname, '../media', filename), result, function (err) {
 					 if(!err){
-						 response.json({'state':'10000', 'url': config.cdn + filename})
+						 imageService.thumb(result, filename)
+						 response.json({'state':'10000', 'url': config.cdn + '/media/'+ filename})
 					 }
 					 else{
 						 response.json({'state':'11010', 'message': '文件保存失败'})

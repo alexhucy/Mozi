@@ -18,6 +18,10 @@ module.exports = {
 		createOrUpdateUser:'/api/create-weixin-user/',
 		checkAuth: '/api/refresh-token'
 	},
-	domain: 'http://edu.ngrok.chainz.net/',
-	cdn:'http://edu.ngrok.chainz.net/'
+	redis: {
+		port: '6379',
+		host: '127.0.0.1'
+	},
+	domain: 'http://edu.ngrok.chainz.net',
+	cdn:'http://edu.ngrok.chainz.net'
 }

@@ -18,6 +18,10 @@ module.exports = {
 		createOrUpdateUser:'/api/create-weixin-user/',
 		checkAuth: '/api/refresh-token'
 	},
+	redis: {
+		port: '6379',
+		host: '127.0.0.1'
+	},
 	domain: 'http://weixin.xingaokaowang.cn',
-	cdn:'http://weixin.xingaokaowang.cn/'
+	cdn:'http://weixin.xingaokaowang.cn'
 }

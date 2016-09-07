@@ -112,7 +112,7 @@ export default{
 								if(data.data.state == '10000'){
 									_self.url = data.data.url
 									_self.$dispatch('success','图片上传成功')
-									_self.previewImg = _self.url
+									_self.previewImg = localIds[0]
 								}
 								else{
 									_self.message = '图片上传失败'

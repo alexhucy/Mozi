@@ -11,6 +11,7 @@
 		text-align: center;
 		color:#fff;
 		font-size: 1.4rem;
+		padding: 0 8px;
 	}
 	.mz-top{
 		top:0;

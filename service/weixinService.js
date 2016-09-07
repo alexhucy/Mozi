@@ -6,14 +6,26 @@
  * Created by Alex on 16/7/28.
  */
 
-var OAuth=require('wechat-oauth'),
+var redis = require('redis'),
 	config = require('../config'),
-	client = new OAuth(config.appid, config.appsecret),
+	redisClient = redis.createClient(config.redis.port, config.redis.host),
 	API = require('wechat-api'),
-	wechatAPI = new API(config.appid, config.appsecret),
 	api = config.API,
 	http = require('http'),
 	Q = require('q');
+
+var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
+	redisClient.get('access_token', function (err, reply) {
+		callback(err, reply);
+	});
+}, function (token, callback) {
+	redisClient.set('access_token', token.accessToken, function (err, reply) {
+		console.log('access_token', token.accessToken)
+		callback(err, reply);
+		redisClient.expire('access_token', 7200);
+	});
+})
+
 
 module.exports={
 	/*@param{String} openId 获取到的openId */
