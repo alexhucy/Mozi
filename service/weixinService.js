@@ -9,39 +9,68 @@
 var redis = require('redis'),
 	config = require('../config'),
 	OAuth = require('wechat-oauth'),
-	redisClient = redis.createClient(),
 	API = require('wechat-api'),
 	api = config.API,
-	http = require('http'),
-	Q = require('q');
+	http = require('http');
+
+var redisClient = redis.createClient({
+	retry_strategy: function (options) {
+		// if (options.error && options.error.code === 'ECONNREFUSED'){
+		// 	return new Error('The server refused the connection');
+		// }
+		if (options.total_retry_time > 1000*60*5) {
+			// End reconnecting after a specific timeout and flush all commands with a individual error
+			return new Error('Retry time exhausted');
+		}
+		if (options.times_connected > 10) {
+			// End reconnecting with built in error
+			return undefined;
+		}
+		// reconnect after
+		return Math.max(options.attempt * 100, 3000);
+	}
+});
+
+redisClient.on('error', function (err) {
+	console.log(err)
+})
+
 
 var client = new OAuth(config.appid, config.appsecret, function (openid, callback) {
 	redisClient.get(openid + ':access_token', function (err, reply) {
-		callback(err, JSON.parse(reply));
+		if(err){return callback('500', reply)}
+		callback(null, JSON.parse(reply));
 	});
 }, function (openid, token, callback) {
 	redisClient.set(openid + ':access_token', JSON.stringify(token), function (err, reply) {
-		callback(err, reply);
+		if(err){return callback('500', reply)}
+		callback(null, reply);
 		redisClient.expire(openid +':access_token', 7200);
 	});
 });
 
 var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
 	redisClient.get('access_token', function (err, reply) {
-		callback(err, JSON.parse(reply));
+		if(err){return callback('500', reply)}
+		callback(null, JSON.parse(reply));
 	});
 }, function (token, callback) {
 	redisClient.set('access_token', JSON.stringify(token), function (err, reply) {
-		callback(err, reply);
+		if(err){return callback('500', reply)}
+		callback(null, reply);
 		redisClient.expire('access_token', 7200);
 	});
 })
 
 
+
 module.exports={
-	/*@param{String} openId 获取到的openId */
-	getUserInfo: function (openId) {
-		var delay = Q.defer();
+	/***
+	 *
+	 * @param openId
+	 * @param callback
+	 */
+	getUserInfo: function (openId, callback) {
 		var options = {
 			host: config.logic.Host,
 			port: config.logic.Port,
@@ -52,69 +81,67 @@ module.exports={
 			}
 		};
 		wechatAPI.getUser(openId, function (err, result) {
-			if(err !== null && err !== '' && err !== undefined){
-				delay.reject(err);
-			}
-			var userInfo = result,
-				postData = {
-					openId: openId,
-					headImgUrl: userInfo.headimgurl,
-					nickName: userInfo.nickname,
-					sex: userInfo.sex
-				};
-			var req = http.request(options, function(res) {
-				res.on('data',function (chunk) {
-					var data = JSON.parse(chunk);
-					if (res.statusCode >=200 && res.statusCode <300){
-						delay.resolve(data);
-					}
-					else{
-						delay.reject(data)
-					}
+			if(err === null || err === '' || err === undefined) {
+				var userInfo = result,
+					postData = {
+						openId: openId,
+						headImgUrl: userInfo.headimgurl,
+						nickName: userInfo.nickname,
+						sex: userInfo.sex
+					};
+
+				var req = http.request(options, function (res) {
+					res.on('data', function (chunk) {
+						var data = JSON.parse(chunk);
+						if (res.statusCode >= 200 && res.statusCode < 300) {
+							callback(null, data.token)
+						}
+						else {
+							callback('error', data)
+						}
+					});
 				});
-			});
 
-			req.on('error', function(e) {
-				delay.reject(e)
-			});
+				req.on('error', function (e) {
+					callback(e)
+				});
 
-			req.write(JSON.stringify(postData));
-			req.end();
+				req.write(JSON.stringify(postData));
+				req.end();
+			}
+			else {
+				callback('500')
+			}
 		});
-		return delay.promise;
 	},
 
 	/*@param{String} code 微信回传回来的code用于获取openId,并将openid传给业务服务器获取token*/
-	codeForToken: function (code) {
-		var delay = Q.defer(),
-			_self = this;
-		client.getAccessToken(code, function (err, result) {
-			if(err === null || err === '' || err === undefined){
-				var openid = result.data.openid;
-				_self.getUserInfo(openid).then(function (res) {
-					delay.resolve(res.token)
-				}).catch(function(e){
-					delay.reject(e)
-				})
-			}
-			else{
-				delay.reject(err)
-			}
-		});
-		return delay.promise;
+	codeForToken: function (code, callback) {
+		var _self = this;
+		if(code){
+			client.getAccessToken(code, function (err, result) {
+				if(err === null || err === '' || err === undefined) {
+					var openid = result.data.openid;
+					_self.getUserInfo(openid, function (err, data) {
+						callback(err, data)
+					})
+				}
+				else {
+					callback(err)
+				}
+			});
+		}
+		else{
+			callback('NoCode')
+		}
+		
 	},
 
 	/*@param{String} openId 获取到的openId */
-	userHasBindOrNot: function (openId) {
-		var delay = Q.defer();
-		this.getUserInfo(openId).then(function (res) {
-			delay.resolve(res.user.password ?
-				true :
-				false
-			);
-			delay.reject(e)
-		});
-		return delay.promise
+	userHasBindOrNot: function (openId, callback) {
+		this.getUserInfo(openId, function (err, result) {
+			callback(err, result.user.password ? true : false)
+		})
 	},
 
 	getAuthorizeURL: function (redirect, state, scope) {
@@ -123,23 +150,46 @@ module.exports={
 
 	getJSConfig: function (param, callback) {
 		wechatAPI.getJsConfig(param, function (err, result) {
-			if(err === null || err === undefined || err === '' ){
-				callback(null, result)
-			}
-			else {
-				callback(err, result)
-			}
+			callback(err, result)
 		});
 	},
 
 	getMedia: function (serverId, callback) {
-		wechatAPI.getMedia(serverId, function (err, result,res) {
-			if(err === null || err === undefined || err === '' ){
-				callback(null, result, res)
-			}
-			else {
-				callback(err, result, res)
-			}
+		wechatAPI.getMedia(serverId, function (err, result, res) {
+			callback(err, result, res)
 		});
+	},
+	
+	checkAuth: function (auth,callback) {
+		if(!auth){
+			callback({error:'auth不能为空'},'')
+			return false
+		}
+		var options = {
+			host: config.logic.Host,
+			port: config.logic.Port,
+			path: config.API.checkAuth,
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization':auth
+			}
+		};
+		var req = http.request(options, function(res) {
+			res.on('data',function (chunk) {
+				var data = JSON.parse(chunk);
+				if (res.statusCode >=200 && res.statusCode <300){
+					callback(null, data)
+				}
+				else{
+					callback({error:'auth失效'}, data)
+				}
+			});
+		});
+		
+		req.on('error', function(e) {
+			callback(e)
+		});
+		req.end();
 	}
 }

@@ -154,6 +154,7 @@
 	overflow: hidden;
 	-ms-text-overflow: ellipsis;
 	text-overflow: ellipsis;
+	text-align: center;
 }
 .mz-billboard-level{
 	display: inline-block;

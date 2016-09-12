@@ -2,9 +2,10 @@
  * Created by Alex on 16/9/6.
  */
 
+
 module.exports = {
-	appid: 'wxc3378269c5fd45a7',
-	appsecret: '5019a6f743905ac296df161fba2a7c4a',
+	appid: 'wx77025818d05fc144',
+	appsecret: 'df9d2adcea9a29136c31ef0b3b496551',
 	mchid: ' ',
 	token: 'Taidii',
 	proxy: {

@@ -37,7 +37,7 @@
 		width: 100%;
 		height: 70px;
 		background-repeat:no-repeat;
-		background-size:100%;
+		background-size:100% 100%;
 	}
 	.td-half-box p{
 		display: -webkit-box;
