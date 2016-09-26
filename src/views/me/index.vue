@@ -59,7 +59,8 @@
 						:sign-id="item.signin_id"
 						:checked.sync="item.my_agree"
 						@on-loaded="pass(item)"
-						:date="item.signin_time">
+			      :date="item.signin_time"
+						@on-link="timeline(item.activity_id)">
 			</card>
 		</div>
 	</scroller>
@@ -69,7 +70,9 @@
 					:sign="rule.reward_signin"
 					:comment="rule.reward_comment"
 					:completed="rule.reward_complete"
-					:limit="rule.reward_comment_limit">
+					:limit="rule.reward_comment_limit"
+					:share="rule.reward_share"
+					:share-limit="reward_share_limit">
 	</dialog>
 	</div>
 </template>
@@ -176,7 +179,7 @@ import dialog from './awardDialog.vue'
 import {activityOngoingListQuery, setSignInfo, getcompletedActivityListQuery} from '../../vuex/actions/activityAction'
 import {getOngoingActivityList, getCompletedActivityList} from '../../vuex/getters/activityGetter'
 import scroller from '../../../node_modules/vux/dist/components/scroller/index'
-import {childInfoQuery, userUpInfoQuery,} from '../../vuex/actions/userAction'
+import {childInfoQuery, userUpInfoQuery} from '../../vuex/actions/userAction'
 import {getUserUpInfo, } from '../../vuex/getters/userGetter'
 import loader from '../../components/load/loading.vue'
 import promise from '../../../node_modules/vue-resource/src/promise'
@@ -221,6 +224,13 @@ export default {
 			activityService.getActivityRule().then(function (data) {
 				_self.rule = data.data
 			})
+		},
+		timeline: function (id) {
+			console.log(id)
+			this.$router.go({name:'timeline',params:{id:id}})
+		},
+		test: function () {
+			console.log('1111')
 		},
 		query: function () {
 			var _self = this

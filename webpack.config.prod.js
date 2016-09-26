@@ -19,21 +19,22 @@ module.exports = {
 	// where to place the compiled bundle
 	output: {
 		path: './public/assets/',
-		publicPath:'/',
-		filename: 'js/[name].bundle.js',
-		chunkFilename:'js/[chunkhash:8].js'
+		publicPath: 'http://statics.taidii.cn/',
+		filename: 'js/[name].mozi.bundle.js',
+		chunkFilename:'js/[chunkhash:8].mozi.js'
 	},
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "vendor",
 			minChunks: Infinity //Infinity
 		}),
-		new ExtractTextPlugin('style/[name].css', { allChunks: true }),
+		new ExtractTextPlugin('style/[name].mozi.css', { allChunks: true }),
 		new HtmlWebpackPlugin({
 			title: "打卡",
 			template: path.join(__dirname,'./index.html'),
 			filename: '../views/index.html',
-			inject: true
+			inject: true,
+			hash: true
 		}),
 		new webpack.optimize.UglifyJsPlugin({
 			compress: { warnings: false }
@@ -65,6 +66,5 @@ module.exports = {
 			css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader', 'sass-loader','less-loader'),
 			exclude: /node_modules/
 		}
-	},
-	watch:true
+	}
 }

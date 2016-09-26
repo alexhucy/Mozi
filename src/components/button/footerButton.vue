@@ -75,7 +75,7 @@ export default {
 			}
 		},
 		back: function () {
-			window.history.back()
+			this.$router.go({name: 'dynamics'})
 		}
 	}
 }

@@ -20,4 +20,6 @@ export default{
 		}
 	}
 }
+
+"[{'date':'2016-09-20', 'detail':[{'time':'10 am ~ 14pm', 'speaker':'teacher A'}]},{'date':'2016-09-20', 'detail':[{'time':'10 am ~ 14pm', 'speaker':'teacher B'}, {'time':'12 am ~ 15pm', 'speaker':'teacher C'}]"
 </script>

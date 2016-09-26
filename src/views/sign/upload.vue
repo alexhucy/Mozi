@@ -18,6 +18,7 @@
 			<m-button type="success" large @click="submit">确认</m-button>
 		</div>
 
+	  <layer v-ref:layer></layer>
 </template>
 
 <style>
@@ -58,6 +59,9 @@ import loading from '../../../node_modules/vux/dist/components/loading/index'
 import Popup from '../../../node_modules/vux/dist/components/popup/index'
 import {unshiftSigninfo} from '../../vuex/actions/activityAction'
 import xTextarea from '../../components/textarea/textarea.vue'
+import layer from '../../components/layer/shareLayer.vue'
+import {share, getAuthUrl} from '../../service/weixinService'
+import config from '../../config'
 
 export default{
 	data: function () {
@@ -83,7 +87,8 @@ export default{
 		mButton,
 		loading,
 		Popup,
-		xTextarea
+		xTextarea,
+		layer
 	},
 	props:{
 		showPOP: {
@@ -128,22 +133,27 @@ export default{
 
 		submit: function () {
 			var _self = this
-			if(!this.url){
-				this.$dispatch('error','请先上传图片')
-				return false
-			}
-			else if(this. content.length <= 0){
-				this.$dispatch('error','打卡内容不能为空')
-				return false
-			}
+//			if(!this.url){
+//				this.$dispatch('error','请先上传图片')
+//				return false
+//			}
+//			else if(this. content.length <= 0){
+//				this.$dispatch('error','打卡内容不能为空')
+//				return false
+//			}
 			this.$dispatch('loading')
 			activity.sign(this.id, this.url,this.content).then(function (data) {
 				var info = data.data
 				if(info.result === 0){
 					_self.$dispatch('loading')
-					_self.$dispatch('success', '打卡成功!')
 					_self.unshiftSigninfo(info.info)
-					window.history.back()
+					_self.$dispatch('confirm','打卡成功','是否分享给小伙伴', function () {
+						_self.$refs.layer.onShow()
+						share(info.info.user_name +'在漠子打卡完成了:' + info.info.activity_title,
+										info.info.activity_desc,
+										getAuthUrl(config.domain + '/#!/sign/' + info.info.activity_id +'/'+ info.info.signin_id),
+										info.info.image_url)
+					})
 				}
 				else{
 					_self.$dispatch('loading')

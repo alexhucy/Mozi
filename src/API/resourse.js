@@ -58,3 +58,5 @@ export const alterUserInfo_second = Vue.resource(API_ROOT + '/api/profile/partia
 export const rankListResource = Vue.resource(API_ROOT + '/api/signin/ranklist') //排行榜
 
 export const activityRuleResource = Vue.resource(API_ROOT + '/api/signin/score_rule')//积分规则
+export const UserSignResource = Vue.resource(API_ROOT + '/api/signin/user/show_signin/{activity_id}/{signin_id}')//获取单个签到信息
+export const shareResource = Vue.resource(API_ROOT + 'api/signin/user/mysignin_share')//添加

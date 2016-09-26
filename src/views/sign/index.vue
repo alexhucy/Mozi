@@ -63,8 +63,11 @@
 		</f-button>
 
 		<dialog v-ref:dialog
-						@on-confirm="upload">
+						@on-confirm="upload"
+						@on-share="share">
 		</dialog>
+
+		<layer v-ref:layer></layer>
 	</div>
 	</div>
 </template>
@@ -93,6 +96,10 @@ import promise from '../../../node_modules/vue-resource/src/promise'
 import upload from './upload.vue'
 import loading from '../../components/load/loading.vue'
 import {setSignInfo} from '../../vuex/actions/activityAction'
+import layer from '../../components/layer/shareLayer.vue'
+import {share, getAuthUrl} from '../../service/weixinService'
+import {getUserUpInfo} from '../../vuex/getters/userGetter'
+import config from '../../config'
 
 export default {
 	data (){
@@ -107,6 +114,9 @@ export default {
 	vuex:{
 		actions: {
 			setSignInfo
+		},
+		getters: {
+			user: getUserUpInfo
 		}
 	},
 	components: {
@@ -119,7 +129,8 @@ export default {
 		dialog,
 		halfItem,
 		loading,
-		upload
+		upload,
+		layer
 	},
 	route: {
 		data ({to: { params: { id }}}){
@@ -137,8 +148,8 @@ export default {
 				 if(data.data.result === 0){
 					 _self.activityInfo.signup = 1
 					 _self.$refs.dialog.toggle()
-					 _self.$dispatch('loading')
 
+					 _self.$dispatch('loading')
 				 }
 				else{
 				  _self.$dispatch('error','报名失败')
@@ -206,6 +217,13 @@ export default {
 		},
 		pass: function (info) {
 			this.setSignInfo(info)
+		},
+		share: function () {
+			this.$refs.layer.onShow()
+			share(this.user.user_name + '参加了活动:'+ this.activityInfo.info.title,
+							this.activityInfo.info.desc,
+							getAuthUrl(config.domain + '/#!'+ this.$route.path.split('?')[0]),
+							this.activityInfo.info.sponsor_avatar)
 		}
 	},
 	computed: {

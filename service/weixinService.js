@@ -80,7 +80,7 @@ module.exports={
 				'Content-Type': 'application/json'
 			}
 		};
-		wechatAPI.getUser(openId, function (err, result) {
+		client.getUser(openId, function (err, result) {
 			if(err === null || err === '' || err === undefined) {
 				var userInfo = result,
 					postData = {
@@ -122,9 +122,9 @@ module.exports={
 			client.getAccessToken(code, function (err, result) {
 				if(err === null || err === '' || err === undefined) {
 					var openid = result.data.openid;
-					_self.getUserInfo(openid, function (err, data) {
-						callback(err, data)
-					})
+						_self.getUserInfo(openid, function (err, data) {
+							callback(err, data)
+						})
 				}
 				else {
 					callback(err)
@@ -158,6 +158,17 @@ module.exports={
 		wechatAPI.getMedia(serverId, function (err, result, res) {
 			callback(err, result, res)
 		});
+	},
+
+	checkSubscribe: function (openid,callback) {
+		wechatAPI.getUser(openid, function (err, result) {
+			if(err === null || err === undefined || err === ''){
+				callback(null, result.subscribe === 1? true: false)
+			}
+			else {
+				callback(err, false)
+			}
+		})
 	},
 	
 	checkAuth: function (auth,callback) {

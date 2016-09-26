@@ -5,7 +5,7 @@
 				<span v-if="date" class="mz-font-12">{{date | friendlyTime}}</span>
 			</div>
 			<div>
-				<i class="mz-icon mz-icon-comment mz-pull-right mz-space-15"  @click="comment">{{comments}}</i>
+				<i class="mz-icon mz-icon-comment mz-pull-right mz-space-15"  @click.stop="comment">{{comments}}</i>
 				<i class="mz-icon mz-icon-good mz-pull-right mz-space-15"  :class="{'mz-checked': checked===1?true:false}"  @click="toggle">{{zan}}</i>
 			</div>
 		</div>

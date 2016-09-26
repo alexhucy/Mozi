@@ -16,20 +16,36 @@ module.exports = {
 	output: {
 		path: './public/assets/',
 		publicPath:'/',
-		filename: 'js/[name].bundle.js',
-		chunkFilename:'js/[chunkhash:8].js'
+		filename: 'js/[name].mozi.bundle.js',
+		chunkFilename:'js/[chunkhash:8].mozi.js'
 	},
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "vendor",
 			minChunks: Infinity //Infinity
 		}),
-		new ExtractTextPlugin('style/[name].css', { allChunks: true }),
+		new ExtractTextPlugin('style/[name].mozi.css', { allChunks: true }),
 		new HtmlWebpackPlugin({
 			title: "打卡",
 			template: path.join(__dirname,'./index.html'),
 			filename: '../views/index.html',
-			inject: true
+			inject: true,
+			hash: true,
+			files: {
+				css: ['vux.css'],
+				js: ['jweixin-1.0.0.js'],
+
+				chunks: {
+					head: {
+						entry: "assets/head_bundle.js",
+						css: [ "main.css" ]
+					},
+					main: {
+						entry: "assets/main_bundle.js",
+						css: []
+					}
+				}
+			}
 		})
 	],
 	module: {
@@ -59,5 +75,5 @@ module.exports = {
 			exclude: /node_modules/
 		}
 	},
-	watch:true
+	watch: true
 }

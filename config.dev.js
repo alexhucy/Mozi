@@ -24,4 +24,4 @@ module.exports = {
 	},
 	domain: 'http://edu.ngrok.chainz.net',
 	cdn:'http://edu.ngrok.chainz.net'
-}
+} 

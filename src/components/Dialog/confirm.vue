@@ -14,7 +14,7 @@
 			</m-button>
 			<div style="margin-top: 8px">
 				<m-button type="success" large @click="toggle">
-					随便看看
+					喊小伙伴参加
 				</m-button>
 			</div>
 
@@ -71,7 +71,10 @@ export default {
 	},
 	methods: {
 		toggle: function () {
-			this.showNoScroll = !this.showNoScroll;
+			this.showNoScroll = !this.showNoScroll
+			if (!this.showNoScroll){
+				this.$emit('on-share')
+			}
 		},
 		confirm(){
 			this.$emit('on-confirm')

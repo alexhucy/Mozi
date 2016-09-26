@@ -12,7 +12,7 @@ import {
 	alterChildInfoResource,
 	alterUserInfo_first,
 	alterUserInfo_second,
-	headImgResource
+	headImgResource,
 }
 from './resourse'
 

@@ -6,7 +6,7 @@ var wechat = require('wechat'),
 		express = require('express'),
 		config = require('../config'),
 		router = express.Router(),
-		weixinServcie = require('../service/weixinService'),
+		weixinService = require('../service/weixinService'),
 		imageService = require('../service/imageCompressService'),
 		path = require('path'),
 	  fs = require('fs');
@@ -28,7 +28,7 @@ router.use('/wechat/jsconfig/', function (req,res) {
 		jsApiList: data.jsApiList,
 		url: req.headers.referer
 	};
-	weixinServcie.getJSConfig(param, function (err, result) {
+	weixinService.getJSConfig(param, function (err, result) {
 		if(err === null || err === undefined || err === '' ){
 			res.json(result)
 		}
@@ -44,7 +44,7 @@ router.use('/wechat/jsconfig/', function (req,res) {
 router.use('/wechat/getMedia', function (req, response) {
 	var media_id = req.query.id || '';
 	if(media_id){
-		weixinServcie.getMedia(media_id, function (err, result,res) {
+		weixinService.getMedia(media_id, function (err, result,res) {
 			if(err === null || err === undefined || err === '' ){
 				var filename = getFileName(res.headers['content-disposition']);
 				fs.writeFile(path.join(__dirname, '../media', filename), result, function (err) {
@@ -65,6 +65,10 @@ router.use('/wechat/getMedia', function (req, response) {
 	else{
 		response.json({'state':'11002', 'message': '缺少参数id'})
 	}
+})
+
+router.use('/wechat/getAuthorizeURL', function (req, response) {
+	response.json({'state': '10000','url': weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo')})
 })
 
 function getFileName(str) {

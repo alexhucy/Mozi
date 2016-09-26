@@ -5,6 +5,17 @@
 		</router-view>
 
 		<tips v-ref:tips></tips>
+
+		<!--<div class="mz-popularize" v-if="pop">-->
+				<!--<div style="height: 50px;opacity: 0.7;background: #000"></div>-->
+					<!--<span class="mz-close" @click="hide"></span>-->
+				<!--<div style="position: absolute;top: 0;color:#fff;line-height: 50px;padding: 0 10px;">-->
+					<!--<img src="http://ww4.sinaimg.cn/small/006tNc79gw1f74mcjfukij30hs0hs3zq.jpg" width="30" height="30"-->
+					     <!--style="margin-right: 10px;vertical-align: middle ">-->
+					<!--关注'漠子家'公众号，更多内容等你来看~-->
+				<!--</div>-->
+
+		<!--</div>-->
 	</div>
 </template>
 
@@ -27,6 +38,39 @@
 		url('/font/icomoon.svg#Taidii') format('svg');
 		font-weight: normal;
 		font-style: normal;
+	}
+	.mz-popularize{
+		position: absolute;
+		z-index:999999;
+		bottom: 0;
+		height: 50px;
+		left: 0;
+		right: 0;
+	}
+	.mz-close{
+		position: absolute;
+		top: 10px;
+		right: 15px;
+	}
+	.mz-close:after{
+		content: '';
+		position: absolute;
+		height: 1px;
+		width: 15px;
+		top: 50%;
+		left: 0;
+		background: #98979d;
+		transform: rotate(45deg);
+	}
+	.mz-close:before{
+		content: '';
+		position: absolute;
+		height: 1px;
+		width: 15px;
+		top: 50%;
+		left: 0;
+		background: #98979d;
+		transform: rotate(-45deg);
 	}
 	/*.vux-pop-out-transition,*/
 	/*.vux-pop-in-transition {*/
@@ -95,18 +139,21 @@
 import store from '../vuex/store'
 import {userUpInfoQuery,childInfoQuery} from '../vuex/actions/userAction'
 import {getDirection} from '../vuex/getters/activityGetter'
-import {jssdkConfigInit} from '../service/weixinService'
+import {jssdkConfigInit, share} from '../service/weixinService'
 import loading from '../../node_modules/vux/dist/components/loading/index'
 import alert from '../../node_modules/vux/dist/components/loading/index'
 import toast from '../../node_modules/vux/dist/components/toast/index'
 import confirm from '../../node_modules/vux/dist/components/confirm/index'
 import tips from '../components/tips/tips.vue'
+import Cookie from '../../node_modules/react-cookie'
+import masker from '../../node_modules/vux/dist/components/masker'
 
 export default{
 	store: store,
 	components: {
 		tips,
-		loading
+		loading,
+		masker
 	},
 	vuex: {
 		actions:{
@@ -117,9 +164,18 @@ export default{
 			direction: getDirection
 		}
 	},
+	data: function () {
+		return {
+			pop:false
+		}
+	},
 	ready: function () {
-		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage'])
+		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage','onMenuShareTimeline','onMenuShareAppMessage'], function () {
+			share('漠子打卡','天天打卡，积分领不停！','', 'http://ww4.sinaimg.cn/small/006tNc79gw1f74mcjfukij30hs0hs3zq.jpg')
+		})
 		this.userUpInfoQuery()
+		var subscribe = Cookie.load('Subscribe')
+		if(!subscribe)this.pop = true
 	},
 	events: {
 		loading: function (message) {
@@ -137,6 +193,11 @@ export default{
 		confirm: function (title, message, callback) {
 			this.$refs.tips.setTitle(title)
 			this.$refs.tips.toggleConfirm(message, callback)
+		}
+	},
+	methods:{
+		hide: function () {
+			this.pop = false
 		}
 	}
 }
