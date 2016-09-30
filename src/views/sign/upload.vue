@@ -133,14 +133,14 @@ export default{
 
 		submit: function () {
 			var _self = this
-//			if(!this.url){
-//				this.$dispatch('error','请先上传图片')
-//				return false
-//			}
-//			else if(this. content.length <= 0){
-//				this.$dispatch('error','打卡内容不能为空')
-//				return false
-//			}
+			if(!this.url){
+				this.$dispatch('error','请先上传图片')
+				return false
+			}
+			else if(this. content.length <= 0){
+				this.$dispatch('error','打卡内容不能为空')
+				return false
+			}
 			this.$dispatch('loading')
 			activity.sign(this.id, this.url,this.content).then(function (data) {
 				var info = data.data

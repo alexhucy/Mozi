@@ -3,6 +3,6 @@
  */
 
 module.exports = {
-	appid: 'wx77025818d05fc144',
+	appid: 'wxc3378269c5fd45a7',
 	domain: 'http://weixin.xingaokaowang.cn'
 }
