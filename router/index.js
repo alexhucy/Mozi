@@ -23,13 +23,13 @@ router.use('/$',function (req,res) {
 				res.cookie('Authorization',token);
 				res.sendFile(path.join(__dirname,'../public/views/index.html'));
 			}
-			else if(err === '500'){
-				res.setHeader('content-type','text/html; charset=UTF-8');
-				res.writeHead(403);
-				res.end('服务器错误,请重新登陆');
+			else if(err === 'NoCode'){
+				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'));
 			}
 			else{
-				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'));
+				res.setHeader('content-type', 'text/html; charset=UTF-8');
+				res.writeHead(403)
+				res.end('服务器错误,请重新登陆')
 			}
 		})
 	})

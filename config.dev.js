@@ -15,7 +15,7 @@ module.exports = {
 		Port: '8080'
 	},
 	API: {
-		createOrUpdateUser:'/api/create-weixin-user/',
+		createOrUpdateUser:'/api/create-weixin-auth/',
 		checkAuth: '/api/refresh-token'
 	},
 	redis: {

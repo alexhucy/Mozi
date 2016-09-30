@@ -67,10 +67,10 @@ var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
 module.exports={
 	/***
 	 *
-	 * @param openId
+	 * @param code
 	 * @param callback
 	 */
-	getUserInfo: function (openId, callback) {
+	getUserInfo: function (code, callback) {
 		var options = {
 			host: config.logic.Host,
 			port: config.logic.Port,
@@ -80,14 +80,16 @@ module.exports={
 				'Content-Type': 'application/json'
 			}
 		};
-		client.getUser(openId, function (err, result) {
+		client.getUserByCode(code, function (err, result) {
 			if(err === null || err === '' || err === undefined) {
 				var userInfo = result,
 					postData = {
-						openId: openId,
+						openId: userInfo.openid,
 						headImgUrl: userInfo.headimgurl,
 						nickName: userInfo.nickname,
-						sex: userInfo.sex
+						sex: userInfo.sex,
+						unionId: userInfo.unionid || '',
+						weixinApp: 'OFFICIAL_ACCOUNT'
 					};
 
 				var req = http.request(options, function (res) {
@@ -110,7 +112,7 @@ module.exports={
 				req.end();
 			}
 			else {
-				callback('500')
+				callback(err)
 			}
 		});
 	},
@@ -119,17 +121,9 @@ module.exports={
 	codeForToken: function (code, callback) {
 		var _self = this;
 		if(code){
-			client.getAccessToken(code, function (err, result) {
-				if(err === null || err === '' || err === undefined) {
-					var openid = result.data.openid;
-						_self.getUserInfo(openid, function (err, data) {
-							callback(err, data)
-						})
-				}
-				else {
-					callback(err)
-				}
-			});
+			_self.getUserInfo(code, function (err, data) {
+				callback(err, data)
+			})
 		}
 		else{
 			callback('NoCode')
