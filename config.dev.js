@@ -22,6 +22,6 @@ module.exports = {
 		port: '6379',
 		host: '127.0.0.1'
 	},
-	domain: 'http://edu.ngrok.chainz.net',
+	domain: 'http://edu.ngrok.chainz.net/sign',
 	cdn:'http://edu.ngrok.chainz.net'
 } 

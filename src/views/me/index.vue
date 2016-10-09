@@ -91,7 +91,7 @@
 }
 .mz-center-cover{
 	padding: 10px 0;
-	background-image: url("/images/cover.png");
+	background-image: url("/sign/images/cover.png");
 	background-repeat: no-repeat;
 	height: 200px;
 	text-align: center;
@@ -99,7 +99,7 @@
 
 }
 .mz-center-info{
-	background-image: url("/images/info.png");
+	background-image: url("/sign/images/info.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	height: 55px;
@@ -107,7 +107,7 @@
 	padding: 12px 12px 12px 8px;
 }
 .mz-center-billboard{
-	background-image: url("/images/billboard.png");
+	background-image: url("/sign/images/billboard.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	height: 61px;
@@ -161,7 +161,7 @@
 	margin-bottom: 4px;
 }
 .mz-center-crown{
-	background-image: url("/images/title.png");
+	background-image: url("/sign/images/title.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 50px;

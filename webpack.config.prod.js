@@ -19,7 +19,7 @@ module.exports = {
 	// where to place the compiled bundle
 	output: {
 		path: './public/assets/',
-		publicPath: '/',
+		publicPath: '/sign/',
 		filename: 'js/[name].mozi.bundle.js',
 		chunkFilename:'js/[chunkhash:8].mozi.js'
 	},

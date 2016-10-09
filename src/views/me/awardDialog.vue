@@ -45,7 +45,7 @@
 	margin: 40px 10px 0 10px;
 }
 .mz-award-top{
-	background-image: url("/images/award.png");
+	background-image: url("/sign/images/award.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	height: 50px;

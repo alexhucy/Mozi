@@ -4,5 +4,5 @@
 
 module.exports = {
 	appid: 'wxc97b778d9ae31083',
-	domain: 'http://edu.ngrok.chainz.net'
+	domain: 'http://edu.ngrok.chainz.net/sign'
 }

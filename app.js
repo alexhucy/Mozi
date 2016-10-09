@@ -40,21 +40,21 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname + ''));
 app.set('view engine', 'html'); //替换文件扩展名ejs为html;;
-app.use(express.static(path.join(__dirname, './public/assets')));
-app.use('/thumb/', express.static(path.join(__dirname, './thumb')))
-app.use('/media/', express.static(path.join(__dirname, './media')))
+app.use('/sign/', express.static(path.join(__dirname, './public/assets')));
+app.use('/sign/thumb/', express.static(path.join(__dirname, './thumb')))
+app.use('/sign/media/', express.static(path.join(__dirname, './media')))
 app.use(express.query());
 app.use(cookieParser());
 
-app.use('/',routes);
+app.use('/sign/',routes);
 
-app.use('/', proxy);
+app.use('/sign/', proxy);
 
 
 
-app.use('/', weixin);
+app.use('/sign/', weixin);
 
-app.use('/error',function () {
+app.use('/sign/error',function () {
 	throw ({'error':'111'})
 })
 

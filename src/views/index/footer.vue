@@ -11,7 +11,7 @@
 	left: 0;
 	right: 0;
 	height: 60px;
-	background-image: url("/images/me.png");
+	background-image: url("/sign/images/me.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;

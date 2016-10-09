@@ -23,7 +23,7 @@ Vue.http.interceptors.push({
 	}
 });
 
-var API_ROOT = ''
+var API_ROOT = '/sign';
 
 
 export const activityListResource = Vue.resource(API_ROOT + '/api/signin/activity/list')//近期活动列表

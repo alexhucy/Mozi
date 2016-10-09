@@ -4,16 +4,16 @@
 
 
 module.exports = {
-	appid: 'wxc3378269c5fd45a7',
-	appsecret: '5019a6f743905ac296df161fba2a7c4a',
+	appid: 'wx77025818d05fc144',
+	appsecret: 'df9d2adcea9a29136c31ef0b3b496551',
 	mchid: ' ',
 	token: 'Taidii',
 	proxy: {
-		Host: 'http://localhost:9090'
+		Host: 'http://localhost:8080'
 	},
 	logic: {
 		Host: 'localhost',
-		Port: '9090'
+		Port: '8080'
 	},
 	API: {
 		createOrUpdateUser:'/api/create-weixin-auth/',
@@ -23,6 +23,6 @@ module.exports = {
 		port: '6379',
 		host: '127.0.0.1'
 	},
-	domain: 'http://weixin.xingaokaowang.cn',
+	domain: 'http://weixin.xingaokaowang.cn/sign/',
 	cdn:'http://weixin.xingaokaowang.cn'
 }

@@ -35,35 +35,32 @@ redisClient.on('error', function (err) {
 	console.log(err)
 })
 
-var client = new OAuth(config.appid, config.appsecret)
 
-var wechatAPI = new API(config.appid, config.appsecret)
+var client = new OAuth(config.appid, config.appsecret, function (unionId, callback) {
+	redisClient.get(unionId + ':access_token', function (err, reply) {
+		if(err){return callback('500', reply)}
+		callback(null, JSON.parse(reply));
+	});
+}, function (unionId, token, callback) {
+	redisClient.set(unionId + ':access_token', JSON.stringify(token), function (err, reply) {
+		if(err){return callback('500', reply)}
+		callback(null, reply);
+		redisClient.expire(unionId +':access_token', 7200);
+	});
+});
 
-// var client = new OAuth(config.appid, config.appsecret, function (openid, callback) {
-// 	redisClient.get(openid + ':access_token', function (err, reply) {
-// 		if(err){return callback('500', reply)}
-// 		callback(null, JSON.parse(reply));
-// 	});
-// }, function (openid, token, callback) {
-// 	redisClient.set(openid + ':access_token', JSON.stringify(token), function (err, reply) {
-// 		if(err){return callback('500', reply)}
-// 		callback(null, reply);
-// 		redisClient.expire(openid +':access_token', 7200);
-// 	});
-// });
-//
-// var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
-// 	redisClient.get('access_token', function (err, reply) {
-// 		if(err){return callback('500', reply)}
-// 		callback(null, JSON.parse(reply));
-// 	});
-// }, function (token, callback) {
-// 	redisClient.set('access_token', JSON.stringify(token), function (err, reply) {
-// 		if(err){return callback('500', reply)}
-// 		callback(null, reply);
-// 		redisClient.expire('access_token', 7200);
-// 	});
-// })
+var wechatAPI = new API(config.appid, config.appsecret, function (callback) {
+	redisClient.get('access_token', function (err, reply) {
+		if(err){return callback('500', reply)}
+		callback(null, JSON.parse(reply));
+	});
+}, function (token, callback) {
+	redisClient.set('access_token', JSON.stringify(token), function (err, reply) {
+		if(err){return callback('500', reply)}
+		callback(null, reply);
+		redisClient.expire('access_token', 7200);
+	});
+})
 
 
 

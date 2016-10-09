@@ -31,11 +31,11 @@
 	}
 	@font-face {
 		font-family: 'MOZI';
-		src: url('/font/icomoon.eot');
-		src: url('/font/icomoon.eot?#iefix') format('embedded-opentype'),
-		url('/font/icomoon.woff') format('woff'),
-		url('/font/icomoon.ttf') format('truetype'),
-		url('/font/icomoon.svg#Taidii') format('svg');
+		src: url('/sign/font/icomoon.eot');
+		src: url('/sign/font/icomoon.eot?#iefix') format('embedded-opentype'),
+		url('/sign/font/icomoon.woff') format('woff'),
+		url('/sign/font/icomoon.ttf') format('truetype'),
+		url('/sign/font/icomoon.svg#Taidii') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
