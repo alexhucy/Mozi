@@ -29,7 +29,7 @@
 }
 .mz-dialog-success .mz-dialog-tip{
 	height: 100px;
-	background-image: url('/images/success.png');
+	background-image: url('/sign/images/success.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%;
@@ -41,7 +41,7 @@
 
 .mz-dialog-failed .mz-dialog-tip{
 	height: 100px;
-	background-image: url('/images/failed.png');
+	background-image: url('/sign/images/failed.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%;

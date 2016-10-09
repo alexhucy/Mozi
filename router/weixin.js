@@ -50,7 +50,7 @@ router.use('/wechat/getMedia', function (req, response) {
 				fs.writeFile(path.join(__dirname, '../media', filename), result, function (err) {
 					 if(!err){
 						 imageService.thumb(result, filename)
-						 response.json({'state':'10000', 'url': config.cdn + '/media/'+ filename})
+						 response.json({'state':'10000', 'url': config.cdn + '/sign/media/'+ filename})
 					 }
 					 else{
 						 response.json({'state':'11010', 'message': '文件保存失败'})
