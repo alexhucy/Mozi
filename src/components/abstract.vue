@@ -171,7 +171,7 @@ export default{
 	},
 	ready: function () {
 		jssdkConfigInit(false,['uploadImage','chooseImage','previewImage','onMenuShareTimeline','onMenuShareAppMessage'], function () {
-			share('漠子打卡','天天打卡，积分领不停！','', 'http://ww4.sinaimg.cn/small/006tNc79gw1f74mcjfukij30hs0hs3zq.jpg')
+			share('打卡','天天打卡，积分领不停！','', 'http://ww4.sinaimg.cn/small/006tNc79gw1f74mcjfukij30hs0hs3zq.jpg')
 		})
 		this.userUpInfoQuery()
 		var subscribe = Cookie.load('Subscribe')

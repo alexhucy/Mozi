@@ -149,7 +149,7 @@ export default{
 					_self.unshiftSigninfo(info.info)
 					_self.$dispatch('confirm','打卡成功','是否分享给小伙伴', function () {
 						_self.$refs.layer.onShow()
-						share(info.info.user_name +'在漠子打卡完成了:' + info.info.activity_title,
+						share(info.info.user_name +'在打卡完成了:' + info.info.activity_title,
 										info.info.activity_desc,
 										getAuthUrl(config.domain + '/#!/sign/' + info.info.activity_id +'/'+ info.info.signin_id),
 										info.info.image_url)
