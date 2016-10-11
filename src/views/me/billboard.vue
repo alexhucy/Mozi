@@ -16,7 +16,7 @@
 
 			<div class="mz-billboard-avatar">
 
-					<img src="/images/crown.png" class="mz-billboard-top-1-crown">
+					<img src="/sign/images/crown.png" class="mz-billboard-top-1-crown">
 					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 
 				  <div class="mz-billboard-top-1-decorate">

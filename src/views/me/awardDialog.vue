@@ -12,7 +12,7 @@
 					<p>每日打卡+{{sign||2}}分</p>
 					<p>评论+{{comment||1}}分</p>
 					<p class="mz-award-supply">(评论次数不限定,封顶{{limit*comment||20}}分)</p>
-					<p>每日分享+{{limit||2}}</p>
+					<p>每日分享+{{share||2}}</p>
 					<p class="mz-award-supply">(分享次数不限定,封顶{{share*shareLimit||20}}分)</p>
 				</div>
 				<m-button type="success" large @click="awardIntroduce">

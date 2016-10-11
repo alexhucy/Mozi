@@ -23,6 +23,6 @@ module.exports = {
 		port: '6379',
 		host: '127.0.0.1'
 	},
-	domain: 'http://weixin.xingaokaowang.cn/sign/',
-	cdn:'http://weixin.xingaokaowang.cn'
+	domain: 'http://www.xingaokaowang.cn/sign/',
+	cdn:'http://www.xingaokaowang.cn'
 }

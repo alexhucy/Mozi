@@ -1,6 +1,6 @@
 <template>
 	<layer :show="show">
-			<img src="/images/arrow.png" height="120">
+			<img src="/sign/images/arrow.png" height="120">
 			<p style="margin-bottom:20px">
 				点击右上角<b style="color:#ffba27;">"分享"</b>,分享至朋友圈,</br>
 				邀请好友<span style="color:#72e4dc">围观</span>动态/<span style="color:#b0d160">参加</span>活动/<span style="color:#fe7f85">监督</span>任务</br>
