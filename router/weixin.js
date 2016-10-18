@@ -9,6 +9,7 @@ var wechat = require('wechat'),
 		weixinService = require('../service/weixinService'),
 		imageService = require('../service/imageCompressService'),
 		path = require('path'),
+	  uuid = require('node-uuid'),
 	  fs = require('fs');
 
 router.use('/wechat/$',wechat(config, function (req, res, next) {
@@ -46,7 +47,7 @@ router.use('/wechat/getMedia', function (req, response) {
 	if(media_id){
 		weixinService.getMedia(media_id, function (err, result,res) {
 			if(err === null || err === undefined || err === '' ){
-				var filename = getFileName(res.headers['content-disposition']);
+				var filename = uuid.v1()
 				fs.writeFile(path.join(__dirname, '../media', filename), result, function (err) {
 					 if(!err){
 						 imageService.thumb(result, filename)
