@@ -1,6 +1,6 @@
 <template>
-	<box type = "success">
-		<div v-link="{name:'timeline',params:{id:activityId}}" style="padding: 15px 30px 0">
+	<box type = "success" @click="link">
+		<div style="padding: 15px 30px 0">
 			<h4>{{title}}</h4>
 			<p v-html="content|newLine"></p>
 			<image-item :src="cover"></image-item>
@@ -9,7 +9,7 @@
 		         :comments="comments"
 		         :activity-id="activityId"
 		         :sign-id="signId"
-		         :checked="checked"
+		         :checked.sync="checked"
 							@on-loaded="loaded"
 							:date="date">
 
@@ -55,7 +55,7 @@ export default {
 			type: Number
 		},
 		checked: {
-			type: Boolean
+			type: Number
 		},
 		date: {
 			type: String
@@ -64,6 +64,9 @@ export default {
 	methods: {
 		loaded: function () {
 			this.$emit('on-loaded')
+		},
+		link: function () {
+			this.$emit('on-link')
 		}
 	}
 }

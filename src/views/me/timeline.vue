@@ -10,7 +10,7 @@
 			         :comments="comments"
 			         :activity-id="activityId"
 			         :sign-id="signId"
-							 :checked="checked"
+							 :checked.sync="checked"
 								@on-loaded="loaded">
 			</comment>
 		</div>
@@ -68,7 +68,7 @@ export default{
 		comments: Number,
 		signId: Number,
 		activityId: Number,
-		checked: Boolean
+		checked: Number
 	},
 	methods: {
 		loaded: function () {

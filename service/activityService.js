@@ -7,7 +7,6 @@ var redisClient = require('../utility/redisClient');
 
 module.exports = {
 	/**
-	 * 
 	 * @param obj {object}
 	 * @param callback {function}
 	 */

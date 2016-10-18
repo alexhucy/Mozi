@@ -18,7 +18,9 @@ import {
 	recordResource,
 	rankListResource,
 	completedActivityListResource,
-	activityRuleResource
+	activityRuleResource,
+	UserSignResource,
+	shareResource
 } from './resourse'
 
 const size = 10
@@ -84,5 +86,13 @@ export default {
 	
 	API_GET_RULE: function () {
 		return activityRuleResource.get()
+	},
+	
+	API_GET_USER_SIGN: function (acitivity_id, sign_id) {
+		return UserSignResource.get({activity_id:acitivity_id, signin_id: sign_id})
+	},
+	
+	API_SHARE_SUCCESS: function () {
+		return shareResource.get()
 	}
 }

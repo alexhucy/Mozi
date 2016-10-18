@@ -17,7 +17,7 @@
 					   :comments="comments"
 		         :activity-id="activityId"
 		         :sign-id="signId"
-					   :checked="checked"
+					   :checked.sync="checked"
 							@on-loaded="loaded"
              :date="date">
 		</comment>
@@ -65,7 +65,7 @@ export default{
 		state: String,
 		activityId: Number,
 		signId: Number,
-		checked: Boolean,
+		checked: Number,
 		date: String
 	},
 	methods: {

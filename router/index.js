@@ -7,34 +7,34 @@ var wechat = require('wechat'),
 	router = express.Router(),
 	path = require('path'),
 	weixinService = require('../service/weixinService'),
-	config = require('../config');
+	config = require('../config'),
+	http = require('http');
 
 
 router.use('/$',function (req,res) {
-	if(req.cookies.Authorization){
-		res.sendFile(path.join(__dirname,'../public/views/index.html'))
-		return false
-	}
 	var code = req.query.code || '';
-	if (code) {
-		weixinService.codeForToken(code).then(function (token) {
-			res.cookie('Authorization',token)
-			res.sendFile(path.join(__dirname,'../public/views/index.html'))
-		}).catch(function (error) {
-			console.log(error.code)
-			if(error.code){
-				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
+	weixinService.checkAuth(req.cookies.Authorization, function (err) {
+		if(err === '' || err === undefined || err === null){
+			res.sendFile(path.join(__dirname,'../public/views/index.html'));
+			return false
+		}
+		weixinService.codeForToken(code, function (err, token) {
+			if(err === null || err === undefined || err ===''){
+				res.cookie('Authorization',token);
+				res.sendFile(path.join(__dirname,'../public/views/index.html'));
+			}
+			else if(err === 'NoCode'){
+				res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'));
 			}
 			else{
-				res.setHeader('content-type','text/html; charset=UTF-8');
+				res.setHeader('content-type', 'text/html; charset=UTF-8');
 				res.writeHead(403)
 				res.end('服务器错误,请重新登陆')
 			}
 		})
-	}
-	else {
-		res.redirect(weixinService.getAuthorizeURL(config.domain, '', 'snsapi_userinfo'))
-	}
+	})
+
 });
+
 
 module.exports = router;

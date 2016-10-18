@@ -16,17 +16,7 @@ import userUpdate from './components/alterInfo/userInfoModify.vue'
 import upload from './views/sign/upload.vue'
 import comment from './views/sign/comment.vue'
 import publish from './views/sign/publish.vue'
-import test from './views/text.vue'
-
-
-import store from './vuex/store'
-
-let history = window.sessionStorage
-history.clear()
-let historyCount = history.getItem('count') * 1 || 0
-history.setItem('/',0)
-
-const commit = store.commit || store.dispatch
+import sharePage from './views/share/share.vue'
 
 module.exports = function (router) {
 	router.map({
@@ -37,16 +27,19 @@ module.exports = function (router) {
 				'/': {
 					name: 'dynamics',
 					component: dynamic,
+					title: '一周动态'
 				},
 				'/mysign': {
 					name: 'mysign',
 					component: mysign,
+					title: '我的打卡'
 				}
 			}
 		},
 		'/billboard': {
 			name: 'billboard',
 			component: billboard,
+			title:'排行榜'
 		},
 		'/item/:id/book': {
 			name: 'book',
@@ -58,11 +51,13 @@ module.exports = function (router) {
 		},
 		'/center': {
 			name:'center',
-			component: center
+			component: center,
+			title: '我'
 		},
 		'/info/edit': {
 			name: 'info',
-			component: info
+			component: info,
+			title: '个人资料'
 		},
 		'/info/updateInfo': {
 			name: 'update',
@@ -78,19 +73,22 @@ module.exports = function (router) {
 		},
 		'/item/:id/upload':{
 			name:'upload',
-			component: upload
+			component: upload,
+			title: '上传图证'
 		},
 		'/sign/:activityId/:signId/comment':{
 			name:'comment',
-			component: comment
+			component: comment,
+			title: '评论'
 		},
 		'/sign/:activityId/:signId/publish':{
 			name:'publish',
-			component: publish
+			component: publish,
+			title:'发表评论'
 		},
-		'/test':{
-			name:'test',
-			component: test
+		'/sign/:activityId/:signId': {
+			name: 'share',
+			component: sharePage
 		}
 	})
 
@@ -98,23 +96,25 @@ module.exports = function (router) {
 		'*': '/'
 	})
 
-
-	// router.beforeEach( function({to, from, next}){
-	// 	console.log('1')
-	// 	const toIndex = history.getItem(to.path)
-	// 	const fromIndex = history.getItem(from.path)
-	// 	if (toIndex) {
-	// 		if (toIndex > fromIndex) {
-	// 			commit('UPDATE_DIRECTION', 'forward')
-	// 		} else {
-	// 			commit('UPDATE_DIRECTION', 'reverse')
-	// 		}
-	// 	} else {
-	// 		++historyCount
-	// 		history.setItem('count', historyCount)
-	// 		to.path !== '/' && history.setItem(to.path, historyCount)
-	// 		commit('UPDATE_DIRECTION', 'forward')
-	// 	}
-	// 	setTimeout(next, 50)
-	// })
+	
+	// router.beforeEach(transition => {
+	// 	dynamicTitle(transition.to.title || document.title)
+	// 	transition.next()
+	// });
 }
+
+
+// var dynamicTitle = function (title) {
+// 	document.title = title;
+// 	var iframe = document.createElement("iframe");
+// 	iframe.style.display = "none";
+// 	iframe.setAttribute("src", "http://named.cn/page/take/img/icon_phone.png");
+// 	var d = function() {
+// 		setTimeout(function() {
+// 			iframe.removeEventListener('load', d);
+// 			document.body.removeChild(iframe);
+// 		}, 0);
+// 	};
+// 	iframe.addEventListener('load', d);
+// 	document.body.appendChild(iframe);
+// }

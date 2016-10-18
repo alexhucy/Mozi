@@ -33,8 +33,6 @@
 
     <group>
         <x-button type="primary" @click="updateInfo">确认</x-button>
-
-	      <x-button type="red" @click="cancel">取消</x-button>
     </group>
     </div>
 </template>

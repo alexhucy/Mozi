@@ -24,10 +24,8 @@
 		max-width: 50px;
 	}
 	.mz-avatar img{
-		max-height: 50px;
-		max-width: 50px;
-		width: 100%;
-		height: 100%;
+		height: 50px;
+		width: 50px;
 		border-radius: 50%;
 	}
 	.mz-avatar span{

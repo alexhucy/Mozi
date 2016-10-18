@@ -1,17 +1,17 @@
 <template>
 	<div class="mz-photo-preview" v-if="src">
-		<img :src="src" @click.stop="preview(src)" class="mz-photo">
+		<img :src="src.replace('/media','/thumb')" @click.stop="preview(src)" class="mz-photo">
 	</div>
 </template>
 
 <style>
 .mz-photo{
-	max-height: 200px;
-	max-width: 200px;
+	max-height: 100px;
+	max-width: 100px;
 }
 .mz-photo-preview{
 	margin-top:10px;
-	height: 200px;
+	height: 100px;
 }
 </style>
 

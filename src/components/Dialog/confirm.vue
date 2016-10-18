@@ -14,7 +14,7 @@
 			</m-button>
 			<div style="margin-top: 8px">
 				<m-button type="success" large @click="toggle">
-					随便看看
+					喊小伙伴参加
 				</m-button>
 			</div>
 
@@ -29,7 +29,7 @@
 }
 .mz-dialog-success .mz-dialog-tip{
 	height: 100px;
-	background-image: url('/images/success.png');
+	background-image: url('/sign/images/success.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%;
@@ -41,7 +41,7 @@
 
 .mz-dialog-failed .mz-dialog-tip{
 	height: 100px;
-	background-image: url('/images/failed.png');
+	background-image: url('/sign/images/failed.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%;
@@ -71,7 +71,10 @@ export default {
 	},
 	methods: {
 		toggle: function () {
-			this.showNoScroll = !this.showNoScroll;
+			this.showNoScroll = !this.showNoScroll
+			if (!this.showNoScroll){
+				this.$emit('on-share')
+			}
 		},
 		confirm(){
 			this.$emit('on-confirm')

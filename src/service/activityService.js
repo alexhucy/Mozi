@@ -47,5 +47,13 @@ module.exports = {
 	
 	getActivityRule: function () {
 		return API.API_GET_RULE()
+	},
+	
+	getSign: function (activity_id, sign_id, callback) {
+		return API.API_GET_USER_SIGN(activity_id, sign_id).then(function (data) {
+			callback(null, data.data)
+		}).catch(function (err) {
+			callback(err, null)
+		})
 	}
 };

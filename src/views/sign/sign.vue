@@ -52,7 +52,7 @@
 								:content="item.text"
 								:activity-id="item.activity_id"
 								:sign-id="item.signin_id"
-								:checked="item.my_agree === 1?true:false"
+								:checked.sync="item.my_agree"
 							  @on-loaded="pass(item)"
 								:date="item.signin_time"
 								:name="item.user_name">
@@ -187,17 +187,24 @@ export default {
 	computed: {
 		status: function () {
 			if (this.activity.info) {
-				var endDate = new Date(this.activity.info.end_time + ' 23:59:59')
+				var endDate = new Date(this.activity.info.end_time + ' 23:59:59'),
+						startDate = new Date(this.activity.info.start_time + '00:00:00');
 				if (new Date() > endDate) {
 					return {
 						action: '活动已结束',
 						disable: true
 					}
 				}
+				else if(new Date()< startDate){
+					return {
+						action: '活动未开始',
+						disable: true
+					}
+				}
 				else {
 					return {
 						action: this.activity.signin === 1 ? '今日已打卡' : '我要打卡',
-						disable:this.activity.signin === 1 ? true : false
+						disable: this.activity.signin === 1 ? true : false
 					}
 				}
 			}

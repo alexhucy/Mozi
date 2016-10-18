@@ -1,7 +1,9 @@
 <template>
 	<div>
 	<scroller v-ref:scroller
-			  lock-x>
+			  lock-x
+	      use-pulldown
+	      @pulldown:loading="refresh">
 
 	<div class="mz-billboard mz-item">
 		<loading v-ref:loading
@@ -14,7 +16,7 @@
 
 			<div class="mz-billboard-avatar">
 
-					<img src="/images/crown.png" class="mz-billboard-top-1-crown">
+					<img src="/sign/images/crown.png" class="mz-billboard-top-1-crown">
 					<img :src="item.user_avatar" class="mz-billboard-img-avatar">
 
 				  <div class="mz-billboard-top-1-decorate">
@@ -152,6 +154,7 @@
 	overflow: hidden;
 	-ms-text-overflow: ellipsis;
 	text-overflow: ellipsis;
+	text-align: center;
 }
 .mz-billboard-level{
 	display: inline-block;
@@ -173,6 +176,8 @@ import {getRankList} from '../../vuex/getters/activityGetter'
 import {rankListQuery} from '../../vuex/actions/activityAction'
 import loading from '../../components/load/loading.vue'
 import Scroller from '../../../node_modules/vux/dist/components/scroller/index'
+import {isEmptyObject} from '../../common'
+
 export default{
 	vuex: {
 		getters: {
@@ -191,12 +196,12 @@ export default{
 			var _self = this;
 			this.$refs.loading.OnLoading()
 			this.rankListQuery().then(function (data) {
-//				if(isEmptyObject(_self.items)){
-//					_self.$refs.loading.OnEmpty()
-//				}
-//				else{
+				if(isEmptyObject(_self.items)){
+					_self.$refs.loading.OnEmpty()
+				}
+				else{
 					_self.$refs.loading.OnHide()
-//				}
+				}
 			}).catch(function () {
 				_self.$refs.loading.OnError()
 			})
@@ -204,6 +209,13 @@ export default{
 		loaded: function () {
 			this.$nextTick(() => {
 				this.$refs.scroller.reset()
+			})
+		},
+
+		refresh: function (uuid) {
+			var _self = this
+			this.rankListQuery().then(function (data) {
+				_self.$broadcast('pulldown:reset', uuid)
 			})
 		}
 	},
